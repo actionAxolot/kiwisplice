@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+{% endblock %}
+
+{% block layout %}
+    {% block navigation %}
+        <div class="navbar navbar-inverse navbar-fixed-top">
+              <div class="navbar-inner">
+                <div class="container">
+                  <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a class="brand" href="./index.html">PCTV</a>
+                  <div class="nav-collapse collapse">
+                    <ul class="nav">
+                      <li class="">
+                        <a href="/">Home</a>
+                      </li>
+                      <li class="">
+                        <a href="/cobranza/">Cobranza</a>
+                      </li>
+                      <li class="">
+                        <a href="/prospeccion/">Prospectos</a>
+                      </li>
+                      <li class="">
+                        <a href="/inventario/">inventario</a>
+                      </li>
+                      <li class="">
+                        <a href="/cliente/">Clientes</a>
+                      </li>
+                      <li class="">
+                        <a href="/credito/">Créditos</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+    {% endblock navigation %}
+
+
+    <div class="container" id="content-pane">
+            <div class="row">
+                <aside class="span3">
+                    {% block left_side_bar %}{% endblock left_side_bar %}
+                </aside><!-- /span3 -->
+
+                <div class="span9">
+                    {% block header %}
+                        
+                    {% endblock header %}
+                    <div class="row">
+                        {% block content %}{% endblock content %}
+                    </div>
+        	    </div><!-- /span9 -->
+            </div><!-- /row-fluid -->
+    </div><!-- /container-fluid -->
+{% endblock %}
+
+{# Block for additional scripts #}
+{% block extrascripts %}
+    {{ block.super }}
+{% endblock %}
