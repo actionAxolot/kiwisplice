@@ -7,7 +7,7 @@ if os.getenv("LOGNAME") == "axolote":
     DEBUG = True
     LOCAL_DEV = True
 else:
-    DEBUG = False
+    DEBUG = True
     LOCAL_DEV = False
 
 TEMPLATE_DEBUG = DEBUG
