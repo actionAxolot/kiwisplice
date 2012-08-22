@@ -76,7 +76,7 @@ USE_TZ = True
 if LOCAL_DEV:
     MEDIA_ROOT = os.path.join(PROJECT_DIRNAME, 'assets', 'media')
 else:
-    MEDIA_ROOT = os.path.abspath(os.path.join(PROJECT_DIRNAME, '..', '..', 'staticapp', 'pctv', 'media'))
+    MEDIA_ROOT = os.path.abspath(os.path.join(PROJECT_DIRNAME, '..', '..', 'staticapp', 'media'))
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -90,7 +90,7 @@ MEDIA_URL = '/static/media/'
 if LOCAL_DEV:
     STATIC_ROOT = os.path.join(PROJECT_DIRNAME, 'static')
 else:
-    STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_DIRNAME, '..', '..', 'staticapp', 'pctv', 'static'))
+    STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_DIRNAME, '..', '..', 'staticapp'))
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
