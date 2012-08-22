@@ -14,8 +14,18 @@ framework.
 
 """
 import os
+import sys
+import site
+
+PATH = "/home/actionaxolot/webapps/django/pctv"
+VIRTUALENV_HOME = "/home/actionaxolot/.virtualenvs"
+os.environ["PYTHON_EGG_CACHE"] = PATH + '/.egg_cache'
+
+site.addsitedir('%s/pctv/lib/python2.7/site-packages' % VIRTUALENV_HOME)
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pctv.settings")
+
+sys.path.append("%s/pctv" % PATH)
 
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION
