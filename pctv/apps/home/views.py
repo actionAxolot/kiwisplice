@@ -1,9 +1,13 @@
 # Create your views here.
 from django.views.generic import TemplateView
+from django.conf import settings
 
 class CobranzaView(TemplateView):
 	"""Some people just want to watch the world burn"""
 	template_name = "home/cobranza.html"
+
+	def get_context_data(self, **kwargs):
+		return {'media_path': settings.MEDIA_ROOT, 'static_path': settings.STATIC_ROOT}
 
 
 class ProspeccionView(TemplateView):
