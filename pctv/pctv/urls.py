@@ -14,10 +14,10 @@ urlpatterns = patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
     (r'^cobranza/', CobranzaView.as_view()),
     (r'^prospeccion/', ProspeccionView.as_view()),
     (r'^inventario/', InventarioView.as_view()),
     (r'^cliente/', ClienteView.as_view()),
     (r'^credito/', CreditoView.as_view()),
+    url(r'^', include(admin.site.urls)),
 )
