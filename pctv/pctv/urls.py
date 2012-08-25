@@ -19,5 +19,6 @@ urlpatterns = patterns('',
     (r'^inventario/', InventarioView.as_view()),
     (r'^cliente/', ClienteView.as_view()),
     (r'^credito/', CreditoView.as_view()),
-    url(r'^', include(admin.site.urls)),
+    (r'^grappelli/', include('grappelli.urls')),
+    url(r'^admin/', include(admin.site.urls)),
 )
