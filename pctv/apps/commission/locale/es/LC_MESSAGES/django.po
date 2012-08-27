@@ -1,0 +1,66 @@
+# This file is distributed under the same license as the PCTV package.
+#
+# Translators:
+# Mario R. Vallejo <mario.r.vallejo@gmail.com>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: PCTV\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-26 02:43+0100\n"
+"PO-Revision-Date: 2012-08-26 13:49+0000\n"
+"Last-Translator: mario.r.vallejo <mario.r.vallejo@gmail.com>\n"
+"Language-Team: Spanish (Mexico)"
+"language/es_MX/)\n"
+"Language: es_MX\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: models.py:8
+msgid "Pending"
+msgstr "Pendiente"
+
+#: models.py:9
+msgid "Payed"
+msgstr "Pagado"
+
+#: models.py:10
+msgid "About to cancel"
+msgstr "A punto de cancelar"
+
+#: models.py:15
+msgid "Payment group"
+msgstr "Grupo de pago"
+
+#: models.py:17
+msgid "Cancellation date"
+msgstr "Fecha de cancelación"
+
+#: models.py:23 models.py:28
+msgid "Commission group"
+msgstr "Grupo de comisión"
+
+#: models.py:24
+msgid "Commission groups"
+msgstr "Grupos de comisiones"
+
+#: models.py:29
+msgid "Payment date"
+msgstr "Fecha de pago"
+
+#: models.py:30
+msgid "Percentage"
+msgstr "Porcentaje"
+
+#: models.py:33
+msgid "Status"
+msgstr "Estatus"
+
+#: models.py:39
+msgid "Commission"
+msgstr "Comisión"
+
+#: models.py:40
+msgid "Commissions"
+msgstr "Comisiones"

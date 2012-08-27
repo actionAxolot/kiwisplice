@@ -1,6 +1,8 @@
 from django.db import models
 from apps.account.models import Profile
 from apps.inventory.models import FinancialInstitution
+from django.contrib.contenttypes import generic
+from apps.comment.models import Comment
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -61,3 +63,10 @@ class Prospection(models.Model):
 	visitation_date = models.DateField(blank=False, null=False)
 	status = models.CharField(blank=False, null=False, max_length=50, 
 		verbose_name=_(u"Status"), choices=PROSPECTION_STATUS_CHOICES)
+
+	comments = generic.GenericRelation(Comment)
+
+
+	class Meta:
+		verbose_name = _(u"Prospection")
+		verbose_name_plural = _(u"Prospections")

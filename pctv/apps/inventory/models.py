@@ -1,10 +1,9 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
 from apps.account.models import Profile
 
 
-# Porcentajes options... this is probably retarded
+# Porcentajes options... this is probably retardedr
 PERCENTAGES_OPTIONS = tuple([(unicode(x), u"%" + unicode(x)) for x in xrange(0, 110, 10)])
 
 
@@ -82,7 +81,7 @@ class Inventory(models.Model):
 	street = models.CharField(blank=False, null=False, 
 		verbose_name=_(u"Street"), max_length=50)
 	number = models.CharField(blank=False, null=False, 
-		verbose_name=_(u'Realstate number'), max_length=50)
+		verbose_name=_(u'Realestate number'), max_length=50)
 	lot_size = models.IntegerField(blank=False, null=False, verbose_name=_(u"Lot size"))
 	construction_size = models.IntegerField(blank=False, null=False, verbose_name=_(u'Construction size'))
 	construction_end_date = models.DateField(blank=False, null=False, verbose_name=_(u"Construction end date"))
@@ -96,12 +95,12 @@ class Inventory(models.Model):
 	# the one in the Inventory entry
 
 	class Meta:
-		verbose_name = _(u"Realstate")
-		verbose_name_plural = _(u"Realstate")
+		verbose_name = _(u"Realestate")
+		verbose_name_plural = _(u"Realestate")
 
 
 class BridgeCredit(models.Model):
-	inventory = models.ForeignKey(Inventory, verbose_name=_(u"Realstate"))
+	inventory = models.ForeignKey(Inventory, verbose_name=_(u"Realestate"))
 	financial_institution = models.ForeignKey(FinancialInstitution, verbose_name=_(u"Financial institution"))
 	status = models.CharField(choices=BRIDGE_CREDIT_STATUSES, verbose_name=_(u"Status"), 
 		max_length=30, default=0)
@@ -139,7 +138,7 @@ class UtilityType(models.Model):
 
 
 class UtilityPayment(models.Model):
-	inventory = models.ForeignKey(Inventory, verbose_name=_(u"Realstate"))
+	inventory = models.ForeignKey(Inventory, verbose_name=_(u"Realestate"))
 	utility_type = models.ForeignKey(UtilityType, verbose_name=_(u"Utility type"))
 	amount = models.DecimalField(blank=False, null=False, max_digits=10, 
 		decimal_places=2, verbose_name=_(u"Amount"))

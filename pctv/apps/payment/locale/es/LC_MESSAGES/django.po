@@ -1,0 +1,78 @@
+# This file is distributed under the same license as the PCTV package.
+#
+# Translators:
+# Mario R. Vallejo <mario.r.vallejo@gmail.com>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: PCTV\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-26 02:43+0100\n"
+"PO-Revision-Date: 2012-08-26 13:49+0000\n"
+"Last-Translator: mario.r.vallejo <mario.r.vallejo@gmail.com>\n"
+"Language-Team: Spanish (Mexico)"
+"language/es_MX/)\n"
+"Language: es_MX\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: models.py:10
+msgid "Current"
+msgstr "Actual"
+
+#: models.py:11
+msgid "Paid"
+msgstr "Pagado"
+
+#: models.py:12
+msgid "Late"
+msgstr "Vencido"
+
+#: models.py:17
+msgid "Client"
+msgstr "Cliente"
+
+#: models.py:18
+msgid "Total"
+msgstr "Total"
+
+#: models.py:19
+msgid "Date created"
+msgstr "Fecha de creación"
+
+#: models.py:20
+msgid "Date closed"
+msgstr "Fecha de cierre"
+
+#: models.py:26 models.py:31
+msgid "Payment group"
+msgstr "Grupo de pago"
+
+#: models.py:27
+msgid "Payment groups"
+msgstr "Grupos de pago"
+
+#: models.py:32
+msgid "Amount"
+msgstr "Cantidad"
+
+#: models.py:33
+msgid "Date due"
+msgstr "Fecha de vencimiento"
+
+#: models.py:34
+msgid "Date payed"
+msgstr "Fecha pagado"
+
+#: models.py:35
+msgid "Status"
+msgstr "Estatus"
+
+#: models.py:41
+msgid "Payment"
+msgstr "Pago"
+
+#: models.py:42
+msgid "Payments"
+msgstr "Pagos"

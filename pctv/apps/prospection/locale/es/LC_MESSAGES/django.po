@@ -1,0 +1,94 @@
+# This file is distributed under the same license as the PCTV package.
+#
+# Translators:
+# Mario R. Vallejo <mario.r.vallejo@gmail.com>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: PCTV\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-26 02:43+0100\n"
+"PO-Revision-Date: 2012-08-26 13:49+0000\n"
+"Last-Translator: mario.r.vallejo <mario.r.vallejo@gmail.com>\n"
+"Language-Team: Spanish (Mexico)"
+"language/es_MX/)\n"
+"Language: es_MX\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: models.py:11
+msgid "Not qualified"
+msgstr "No calificado"
+
+#: models.py:12
+msgid "About to close"
+msgstr "A punto de cerrar"
+
+#: models.py:13
+msgid "Uninterested"
+msgstr "Sin interes"
+
+#: models.py:14
+msgid "Layaway"
+msgstr "Apartado"
+
+#: models.py:15
+msgid "Canceled"
+msgstr "Cancelado"
+
+#: models.py:21
+msgid "Financial institution"
+msgstr "Institución financiera"
+
+#: models.py:25 models.py:46
+msgid "Value"
+msgstr "Valor"
+
+#: models.py:29 models.py:60
+msgid "Financial channel"
+msgstr "Canal financiero"
+
+#: models.py:30
+msgid "Financial channels"
+msgstr "Canales financieros"
+
+#: models.py:35
+msgid "Name"
+msgstr "Nombre"
+
+#: models.py:39 models.py:40
+msgid "Prospection media"
+msgstr "Medios de prospección"
+
+#: models.py:44
+msgid "Media"
+msgstr "Medios"
+
+#: models.py:50 models.py:61
+msgid "Prospection channel"
+msgstr "Canal de prospección"
+
+#: models.py:51
+msgid "Prospection channels"
+msgstr "Canales de prospección"
+
+#: models.py:56
+msgid "Salesperson"
+msgstr "Vendedor"
+
+#: models.py:58
+msgid "Client"
+msgstr "Cliente"
+
+#: models.py:65
+msgid "Status"
+msgstr "Estatus"
+
+#: models.py:71
+msgid "Prospection"
+msgstr "Prospección"
+
+#: models.py:72
+msgid "Prospections"
+msgstr "Prospecciones"

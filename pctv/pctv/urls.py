@@ -21,4 +21,5 @@ urlpatterns = patterns('',
     (r'^credito/', CreditoView.as_view()),
     (r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^rosetta/', include('rosetta.urls')),
 )

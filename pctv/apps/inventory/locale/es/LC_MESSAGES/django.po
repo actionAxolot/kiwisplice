@@ -1,0 +1,212 @@
+# This file is distributed under the same license as the PCTV package.
+#
+# Translators:
+# Mario R. Vallejo <mario.r.vallejo@gmail.com>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: PCTV\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-26 02:43+0100\n"
+"PO-Revision-Date: 2012-08-26 13:49+0000\n"
+"Last-Translator: mario.r.vallejo <mario.r.vallejo@gmail.com>\n"
+"Language-Team: Spanish (Mexico)"
+"language/es_MX/)\n"
+"Language: es_MX\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: models.py:12
+msgid "Approved"
+msgstr "Aprovado"
+
+msgid "Inventory"
+msgstr "Inventario"
+
+msgid "Sites"
+msgstr "Sitios"
+
+#: models.py:13
+msgid "Not approved"
+msgstr "No aprovado"
+
+#: models.py:18
+msgid "Building"
+msgstr "En construcción"
+
+#: models.py:19
+msgid "Approved and building"
+msgstr "Aprovado y en construcción"
+
+#: models.py:20
+msgid "Finished"
+msgstr "Terminado"
+
+#: models.py:21 models.py:26
+msgid "Blocked"
+msgstr "Bloqueado"
+
+#: models.py:25
+msgid "Free"
+msgstr "Libre"
+
+#: models.py:31 models.py:44 models.py:53 models.py:132
+msgid "Name"
+msgstr "Nombre"
+
+#: models.py:32
+msgid "Image"
+msgstr "Imagen"
+
+#: models.py:33 models.py:92
+msgid "Price"
+msgstr "Precio"
+
+#: models.py:37 models.py:64
+msgid "Prototype"
+msgstr "Prototipo"
+
+#: models.py:38
+msgid "Prototypes"
+msgstr "Prototipos"
+
+#: models.py:48 models.py:65
+msgid "Section"
+msgstr "Etapa"
+
+#: models.py:49
+msgid "Sections"
+msgstr "Etapas"
+
+#: models.py:57 models.py:104
+msgid "Financial institution"
+msgstr "Institución financiera"
+
+#: models.py:58
+msgid "Financial Institutions"
+msgstr "Instituciones financieras"
+
+#: models.py:63
+msgid "Created by"
+msgstr "Creado por"
+
+#: models.py:67
+msgid "Construction status"
+msgstr "Estatus de construcción"
+
+#: models.py:69
+msgid "Location Status"
+msgstr "Estatus de ubicación"
+
+#: models.py:70
+msgid "CUV"
+msgstr "CUV"
+
+#: models.py:71
+msgid "Official Identifier"
+msgstr "Identificador oficial"
+
+#: models.py:75
+msgid "Unique identifier (Block + Macrolot + Lot)"
+msgstr "Identificador único (Manzana + Macrolote + Lot)"
+
+#: models.py:76
+msgid "Block"
+msgstr "Manzana"
+
+#: models.py:78
+msgid "Macro lot"
+msgstr "Macro lote"
+
+#: models.py:80
+msgid "Lot"
+msgstr "Lote"
+
+#: models.py:82
+msgid "Street"
+msgstr "Calle"
+
+#: models.py:84
+msgid "Realestate number"
+msgstr "Número del Inmueble"
+
+#: models.py:85
+msgid "Lot size"
+msgstr "Tamaño del lote"
+
+#: models.py:86
+msgid "Construction size"
+msgstr "Tamaño de la construcción"
+
+#: models.py:87
+msgid "Construction end date"
+msgstr "Fecha de terminación de la construcción"
+
+#: models.py:89
+msgid "Percent completed"
+msgstr "Porcentaje completado"
+
+#: models.py:91
+msgid "CLG emission date"
+msgstr "Fecha de emisión de CLG"
+
+#: models.py:98 models.py:99 models.py:103 models.py:141
+msgid "Realestate"
+msgstr "Inmueble"
+
+#: models.py:105
+msgid "Status"
+msgstr "Estatus"
+
+#: models.py:107
+msgid "Approved on"
+msgstr "Aprovado en"
+
+#: models.py:109
+msgid "Approved amount"
+msgstr "Cantidad aprovada"
+
+#: models.py:111
+msgid "Ministered amount"
+msgstr "Cantidad ministrada"
+
+#: models.py:115
+msgid "Bridge Credit"
+msgstr "Crédito puente"
+
+#: models.py:116
+msgid "Bridge Credits"
+msgstr "Créditos puente"
+
+#: models.py:120
+msgid "Bridge credit"
+msgstr "Crédito puente"
+
+#: models.py:122 models.py:144
+msgid "Amount"
+msgstr "Cantidad"
+
+#: models.py:123 models.py:145
+msgid "Payment date"
+msgstr "Fecha de pago"
+
+#: models.py:127 models.py:128
+msgid "Bridge Credit Payment"
+msgstr "Pagos de crédito puente"
+
+#: models.py:136 models.py:142
+msgid "Utility type"
+msgstr "Tipo de servicio"
+
+#: models.py:137
+msgid "Utility types"
+msgstr "Tipos de servicio"
+
+#: models.py:149
+msgid "Utility payment"
+msgstr "Pago de servicio"
+
+#: models.py:150
+msgid "Utility payments"
+msgstr "Pagos de servicios"

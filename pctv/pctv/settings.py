@@ -53,9 +53,7 @@ else:
 # In a Windows environment this must be set to your system time zone.
 TIME_ZONE = 'America/Mexico_City'
 
-# Language code for this installation. All choices can be found here:
-# http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'es-mx'
+
 
 SITE_ID = 1
 
@@ -70,6 +68,23 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
+
+INTERNAL_IPS = ('127.0.0.1',)
+
+
+# Language code for this installation. All choices can be found here:
+# http://www.i18nguy.com/unicode/language-identifiers.html
+LANGUAGE_CODE = 'es-mx'
+
+ugettext = lambda s: s
+LANGUAGES = (
+    ('es-mx', ugettext('Spanish')),
+    ('en-us', ugettext('English')),
+)
+
+# LOCALE_PATHS = (
+#     os.path.join(PROJECT_DIRNAME, "pctv", "locale"),
+# )
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
@@ -128,6 +143,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -145,6 +161,17 @@ TEMPLATE_DIRS = (
 )
 
 
+# TEMPLATE_CONTEXT_PROCESSORS = (
+#     # default template context processors
+#     'django.contrib.auth.context_processors.auth',
+#     'django.core.context_processors.debug',
+#     'django.core.context_processors.i18n',
+#     'django.core.context_processors.media',
+#     # required by django-admin-tools
+#     'django.core.context_processors.request',
+# )
+
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -153,16 +180,28 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
+    # 'grappelli.dashboard',
     'grappelli',
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
-    'apps.account',
+    'apps.account', # translated
     'apps.home',
-    'apps.inventory',
-    'apps.prospection',
+    'apps.inventory', # translated
+    'apps.prospection', # translated
+    'apps.client', # translated
+    'apps.comment', # translated
+    'apps.commission',
+    'apps.payment', # translated
+    'rosetta',
     'south',
+    'debug_toolbar',
 )
+
+
+# GRAPPELLI CONFIGS
+GRAPPELLI_ADMIN_TITLE = u"PCTV"
+# GRAPPELLI_INDEX_DASHBOARD = 'pctv.dashboard.CustomIndexDashboard'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

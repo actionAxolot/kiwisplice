@@ -1,0 +1,110 @@
+# This file is distributed under the same license as the PCTV package.
+#
+# Translators:
+# Mario R. Vallejo <mario.r.vallejo@gmail.com>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: PCTV\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-26 02:43+0100\n"
+"PO-Revision-Date: 2012-08-26 13:49+0000\n"
+"Last-Translator: mario.r.vallejo <mario.r.vallejo@gmail.com>\n"
+"Language-Team: Spanish (Mexico)"
+"language/es_MX/)\n"
+"Language: es_MX\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: models.py:9
+msgid "No client"
+msgstr "Sin cliente"
+
+#: models.py:10
+msgid "Integration"
+msgstr "Integración"
+
+#: models.py:11
+msgid "Pre-authorization"
+msgstr "Pre-autorización"
+
+#: models.py:12
+msgid "Analysis"
+msgstr "Análisis"
+
+#: models.py:13
+msgid "Salvity"
+msgstr "Salvedad"
+
+#: models.py:14
+msgid "Authorized"
+msgstr "Autorizado"
+
+#: models.py:15
+msgid "Dictamination"
+msgstr "Dictaminación"
+
+#: models.py:16
+msgid "About to sign"
+msgstr "A punto de firmar"
+
+#: models.py:17
+msgid "Signed"
+msgstr "Firmado"
+
+#: models.py:18
+msgid "Charged"
+msgstr "Cobrado"
+
+#: models.py:19
+msgid "Delivered"
+msgstr "Entregado"
+
+#: models.py:20
+msgid "Canceled"
+msgstr "Cancelado"
+
+#: models.py:26
+msgid "Profile"
+msgstr "Perfil"
+
+#: models.py:27
+msgid "Integration date"
+msgstr "Fecha de integración"
+
+#: models.py:28
+msgid "Signature date"
+msgstr "Fecha de firma"
+
+#: models.py:29
+msgid "Authorization date"
+msgstr "Fecha de autorización"
+
+#: models.py:30
+msgid "Pricing date"
+msgstr "Fecha de avalúo"
+
+#: models.py:31
+msgid "Payment date"
+msgstr "Fecha de pago"
+
+#: models.py:32
+msgid "Notary"
+msgstr "Notaría"
+
+#: models.py:33
+msgid "Delivery date"
+msgstr "Fecha de entrega"
+
+#: models.py:37
+msgid "Status"
+msgstr "Estatus"
+
+#: models.py:42
+msgid "Client"
+msgstr "Cliente"
+
+#: models.py:43
+msgid "Clients"
+msgstr "Clientes"
