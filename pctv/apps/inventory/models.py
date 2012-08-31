@@ -1,10 +1,13 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from apps.account.models import Profile
+from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
+
 
 
 # Porcentajes options... this is probably retardedr
-PERCENTAGES_OPTIONS = tuple([(unicode(x), u"%" + unicode(x)) for x in xrange(0, 110, 10)])
+PERCENTAGES_OPTIONS = tuple([(x, unicode(x) + u"%") for x in xrange(0, 110, 10)])
 
 
 # How's the brige credit going?
@@ -52,6 +55,9 @@ class Section(models.Model):
 class FinancialInstitution(models.Model):
 	name = models.CharField(blank=False, null=False, max_length=50, verbose_name=_(u"Name"))
 
+	content_type = models.ForeignKey(ContentType, verbose_name=_(u"Content type"))
+	object_id = models.PositiveIntegerField(verbose_name=_(u"Object ID"))
+	content_object = generic.GenericForeignKey('content_type', 'object_id')
 
 	class Meta:
 		verbose_name = _(u"Financial institution")
@@ -91,8 +97,13 @@ class Inventory(models.Model):
 	clg_emission_date = models.DateField(blank=False, null=False, verbose_name=_(u"CLG emission date"))
 	price = models.DecimalField(null=True, max_digits=20, decimal_places=2, verbose_name=_(u"Price"))
 
+	financial_institution = generic.GenericRelation(FinancialInstitution)
+
 	# TODO: Add a get_price method that returns the correct price. Either the one in the prototype or
 	# the one in the Inventory entry
+
+	def __unicode__(self):
+		return u"%s%s%s" % (self.block, self.macro_lot, self.lot)
 
 	class Meta:
 		verbose_name = _(u"Realestate")

@@ -3,6 +3,7 @@ from apps.account.models import Profile
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 from apps.comment.models import Comment
+from apps.inventory.models import FinancialInstitution
 
 
 CLIENT_STATUS = (
@@ -19,6 +20,7 @@ CLIENT_STATUS = (
 	("delivered", _(u"Delivered")),
 	("canceled", _(u"Canceled")),
 )
+
 
 # Create your models here.
 class Client(models.Model):
@@ -37,6 +39,7 @@ class Client(models.Model):
 		verbose_name=_(u"Status"))
 
 	comments = generic.GenericRelation(Comment)
+	financial_institution = generic.GenericRelation(FinancialInstitution)
 
 	class Meta:
 		verbose_name = _(u"Client")
