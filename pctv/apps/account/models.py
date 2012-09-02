@@ -7,10 +7,12 @@ import datetime
 import random
 import datetime
 
+PROSPECTION_USER = User.objects.get(username="prospecciones")
+
 # Account module for PCTV software
 class Profile(models.Model):
 	""" Extension of the user model """
-	user = models.OneToOneField(User, verbose_name=_(u"user"))
+	user = models.OneToOneField(User, blank=True, null=False, default=PROSPECTION_USER.pk, verbose_name=_(u"user"))
 
 
 	# Things to know... just in case...
@@ -28,21 +30,8 @@ class Profile(models.Model):
 	total_income = models.DecimalField(null=True, max_digits=20, decimal_places=2, verbose_name=_(u"Total income"))
 
 
-	def save(self, *args, **kwargs):
-		if not self.user:
-			# Create a new anonymouse user
-			random_number = random.randint(0, 1000000)
-			timestamp = datetime.datetime.now()
-
-			self.user = User.objects.create_user(self.first_name + "_" + self.last_name + "_" + str(timestamp), 
-			 email=self.email, password=str(timestamp) + str(random_number))
-
-		# Now save everything
-		super(Profile, self).save(*args, **kwargs)
-
-
 	def __unicode__(self):
-		return u"%s %s" % (self.user.first_name, self.user.last_name)
+		return u"%s %s %s" % (self.first_name, self.father_lastname, self.mother_lastname)
 
 
 	class Meta:

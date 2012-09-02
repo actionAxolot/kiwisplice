@@ -1,14 +1,23 @@
 from django.contrib import admin
-from models import FinancialChannel, ProspectionMedia, ProspectionChannel, \
+from models import ProspectionMedia, ProspectionChannel, \
 	Prospection
-from apps.account.models import Profile
-
 
 class ProspectionAdmin(admin.ModelAdmin):
-	pass
+	list_display = (
+		'salesperson',
+		'prospect',
+		'visitation_date',
+		'status',
+	)
+
+	list_filter = (
+		'salesperson',
+		'prospect',
+		'visitation_date',
+		'status',
+	)
 
 
-admin.site.register(FinancialChannel)
 admin.site.register(ProspectionMedia)
 admin.site.register(ProspectionChannel)
 admin.site.register(Prospection, ProspectionAdmin)

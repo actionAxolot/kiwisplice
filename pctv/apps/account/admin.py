@@ -1,13 +1,5 @@
 from django.contrib import admin
 from models import Profile, PhoneLabel, PhoneNumber
-from apps.prospection.models import Prospection
-
-
-class ProspectionInline(admin.TabularInline):
-	model = Prospection
-	fk_name = "prospect"
-	extra = 1
-	max_num = 1
 
 
 class PhoneNumberInline(admin.TabularInline):
@@ -18,9 +10,9 @@ class PhoneNumberInline(admin.TabularInline):
 class ProfileAdmin(admin.ModelAdmin):
 	exclude = ("user", )
 	inlines = [
-		ProspectionInline,
 		PhoneNumberInline,
 	]
 
 
 admin.site.register(Profile, ProfileAdmin)
+admin.site.register(PhoneLabel)

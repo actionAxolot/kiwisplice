@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
 from apps.account.models import Profile
+
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 
@@ -52,18 +54,6 @@ class Section(models.Model):
 		verbose_name_plural = _(u'Sections')
 
 
-class FinancialInstitution(models.Model):
-	name = models.CharField(blank=False, null=False, max_length=50, verbose_name=_(u"Name"))
-
-	content_type = models.ForeignKey(ContentType, verbose_name=_(u"Content type"))
-	object_id = models.PositiveIntegerField(verbose_name=_(u"Object ID"))
-	content_object = generic.GenericForeignKey('content_type', 'object_id')
-
-	class Meta:
-		verbose_name = _(u"Financial institution")
-		verbose_name_plural = _(u"Financial Institutions")
-
-
 class Inventory(models.Model):
 	""" What houses are / will be available? """
 	created_by = models.ForeignKey(Profile, verbose_name=_(u'Created by'))
@@ -97,8 +87,6 @@ class Inventory(models.Model):
 	clg_emission_date = models.DateField(blank=False, null=False, verbose_name=_(u"CLG emission date"))
 	price = models.DecimalField(null=True, max_digits=20, decimal_places=2, verbose_name=_(u"Price"))
 
-	financial_institution = generic.GenericRelation(FinancialInstitution)
-
 	# TODO: Add a get_price method that returns the correct price. Either the one in the prototype or
 	# the one in the Inventory entry
 
@@ -112,7 +100,6 @@ class Inventory(models.Model):
 
 class BridgeCredit(models.Model):
 	inventory = models.ForeignKey(Inventory, verbose_name=_(u"Realestate"))
-	financial_institution = models.ForeignKey(FinancialInstitution, verbose_name=_(u"Financial institution"))
 	status = models.CharField(choices=BRIDGE_CREDIT_STATUSES, verbose_name=_(u"Status"), 
 		max_length=30, default=0)
 	approved_on = models.DateField(blank=False, null=False, verbose_name=_(u"Approved on"))
