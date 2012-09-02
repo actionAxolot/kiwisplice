@@ -7,12 +7,12 @@ import datetime
 import random
 import datetime
 
-PROSPECTION_USER = User.objects.get(username="prospecciones")
+# PROSPECTION_USER = User.objects.get(username="prospecciones")
 
 # Account module for PCTV software
 class Profile(models.Model):
 	""" Extension of the user model """
-	user = models.OneToOneField(User, blank=True, null=False, default=PROSPECTION_USER.pk, verbose_name=_(u"user"))
+	user = models.OneToOneField(User, blank=True, null=False, default=1, verbose_name=_(u"user"))
 
 
 	# Things to know... just in case...
