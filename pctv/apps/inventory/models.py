@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from apps.account.models import Profile
+from django.contrib.auth.models import User
 
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
@@ -34,8 +34,12 @@ LOCATION_STATUS = (
 
 class Prototype(models.Model):
 	name = models.CharField(blank=False, null=False, max_length=50, verbose_name=_(u'Name'))
-	image = models.ImageField(upload_to="prototype_pics", null=True, verbose_name=_(u"Image"))
+	image = models.ImageField(upload_to="prototype_pics", null=True, blank=True, verbose_name=_(u"Image"))
 	price = models.CharField(blank=False, null=False, max_length=50, verbose_name=_(u"Price"))
+
+
+	def __unicode__(self):
+		return u"%s" % (self.name,)
 
 
 	class Meta:
@@ -49,6 +53,10 @@ class Section(models.Model):
 		max_length=50, verbose_name=_(u"Name"))
 
 
+	def __unicode__(self):
+		return u"%s" % self.name
+
+
 	class Meta:
 		verbose_name = _(u'Section')
 		verbose_name_plural = _(u'Sections')
@@ -56,18 +64,18 @@ class Section(models.Model):
 
 class Inventory(models.Model):
 	""" What houses are / will be available? """
-	created_by = models.ForeignKey(Profile, verbose_name=_(u'Created by'))
+	created_by = models.ForeignKey(User, verbose_name=_(u'Created by'))
 	prototype = models.ForeignKey(Prototype, verbose_name=_(u'Prototype'))
 	section = models.ForeignKey(Section, verbose_name=_(u"Section"))
 	construction_status = models.CharField(max_length=40, blank=False, null=False, 
 		choices=CONSTRUCTION_STATUS, verbose_name=_(u"Construction status"))
 	location_status = models.CharField(blank=False, null=False, 
 		max_length=50, verbose_name=_(u"Location Status"), choices=LOCATION_STATUS)
-	cuv = models.CharField(max_length=200, blank=False, null=False, verbose_name=_(u'CUV'))
+	cuv = models.CharField(max_length=200, blank=True, null=False, verbose_name=_(u'CUV'), )
 	official_id = models.CharField(max_length=200, blank=False, null=False, verbose_name=_(u"Official Identifier"))
 
 	# TODO: This one should be filled automatically
-	unique_id = models.CharField(max_length=50, blank=False, null=False, 
+	unique_id = models.CharField(max_length=50, blank=True, null=True, 
 		verbose_name=_(u"Unique identifier (Block + Macrolot + Lot)"))
 	block = models.CharField(max_length=50, blank=False, null=False, verbose_name=_(u'Block'))
 	macro_lot = models.CharField(blank=False, null=False, 
@@ -92,6 +100,13 @@ class Inventory(models.Model):
 
 	def __unicode__(self):
 		return u"%s%s%s" % (self.block, self.macro_lot, self.lot)
+
+
+	def save(self, *args, **kwargs):
+		self.unique_id = u"%s%s%s" % (self.block, self.macro_lot, self.lot)
+
+		super(Inventory, self).save(*args, **kwargs)
+
 
 	class Meta:
 		verbose_name = _(u"Realestate")
