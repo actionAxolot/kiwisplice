@@ -14,9 +14,11 @@ TEMPLATE_DEBUG = DEBUG
 DIRNAME = os.path.abspath(__file__)
 PROJECT_DIRNAME = os.path.abspath(os.path.join(DIRNAME, '..', '..', '..'))
 
+LOGIN_REDIRECT_URL = '/'
+
 
 # Profile configurations
-AUTH_PROFILE_MODULE = 'apps.account.Profile'
+AUTH_PROFILE_MODULE = 'account.Profile'
 
 ADMINS = (
     ('Mario R. Vallejo', 'mario.r.vallejo@gmail.com'),
@@ -181,7 +183,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
     # 'grappelli.dashboard',
-    'grappelli',
+    # 'grappelli',
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
@@ -200,8 +202,14 @@ INSTALLED_APPS = (
 )
 
 
+# Django debug toolbar config
+DEBUG_TOOLBAR_CONFIG = {
+    "INTERCEPT_REDIRECTS": False,
+}
+
+
 # GRAPPELLI CONFIGS
-GRAPPELLI_ADMIN_TITLE = u"PCTV"
+# GRAPPELLI_ADMIN_TITLE = u"PCTV"
 # GRAPPELLI_INDEX_DASHBOARD = 'pctv.dashboard.CustomIndexDashboard'
 
 # A sample logging configuration. The only tangible logging

@@ -16,7 +16,7 @@ class Profile(models.Model):
 
 
 	def __unicode__(self):
-		return u"Perfil para %s" % (self.user.username,)
+		return u"%s %s" % (self.user.first_name, self.last_name)
 
 
 	class Meta:

@@ -1,0 +1,45 @@
+{% extends "prospection/base.html" %}
+
+{% block content %}
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span6">
+				<div class="widget-box">
+					<div class="widget-title">
+						<h5>Captura de prospecto</h5>
+					</div>
+					<div class="widget-content nopadding">
+						{% if form.non_field_errors %}
+						<div class="row-fluid">
+							<div class="span12">
+								{{ form.non_field_errors }}
+							</div>
+						</div>
+						{% endif %}
+						<form action="." method="post" class="form-horizontal">
+						{% for field in form %}
+							<div class="control-group">
+								<div class="control-label">
+									{{ field.label_tag }}
+								</div>
+								<div class="controls">
+									{{ field }}
+								</div>
+							</div>
+						{% endfor %}
+							<div class="form-actions">
+								<input type="submit" class="btn btn-success" value="Guardar" />
+								<input type="submit" class="btn btn-primary" value="Aprovar" />
+								<input type="submit" class="btn btn-danger" value="Borrar" />
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock content %}
+{% block extrascripts %}
+	<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/prospection/scripts.js"></script>
+{% endblock extrascripts %}

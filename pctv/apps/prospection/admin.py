@@ -1,6 +1,5 @@
 from django.contrib import admin
-from models import ProspectionMedia, ProspectionChannel, \
-	Prospection, PhoneNumber, PhoneLabel
+from models import Prospection, PhoneNumber, PhoneLabel
 
 class PhoneNumberInline(admin.TabularInline):
 	model = PhoneNumber
@@ -20,13 +19,19 @@ class ProspectionAdmin(admin.ModelAdmin):
 		'status',
 	)
 
+	exclude = (
+		'salesperson',
+	)
+
 	inlines = (
 		PhoneNumberInline,
 	)
 
+	def save_model(self, request, obj, form, change):
+		obj.salesperson = request.user
+		obj.save()
 
-admin.site.register(ProspectionMedia)
-admin.site.register(ProspectionChannel)
+
 admin.site.register(PhoneNumber)
 admin.site.register(PhoneLabel)
 admin.site.register(Prospection, ProspectionAdmin)

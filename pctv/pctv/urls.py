@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from apps.home.views import CobranzaView, ProspeccionView, InventarioView, ClienteView, CreditoView
+from apps.home.views import HomeView
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -12,14 +12,14 @@ urlpatterns = patterns('',
 
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    (r'^cobranza/', CobranzaView.as_view()),
-    (r'^prospeccion/', ProspeccionView.as_view()),
-    (r'^inventario/', InventarioView.as_view()),
-    (r'^cliente/', ClienteView.as_view()),
-    (r'^credito/', CreditoView.as_view()),
-    (r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^rosetta/', include('rosetta.urls')),
+    # Uncomment the next line to enable the admin:
+    (r'^inventario/', include('apps.inventory.urls')),
+    (r'^clientes-linea-de-produccion/', include('apps.client.urls')),
+    (r'^prospeccion/', include('apps.prospection.urls')),
+    (r'^comisiones/', include('apps.commission.urls')),
+    # (r'^grappelli/', include('grappelli.urls')),
+    (r'^', include('apps.home.urls')),
 )

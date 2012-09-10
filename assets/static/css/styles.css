@@ -9,3 +9,8 @@ div.filters {
 input {
 	width: 150px;
 }
+
+#login-box {
+	margin-left: 400px;
+	text-align: center;
+}

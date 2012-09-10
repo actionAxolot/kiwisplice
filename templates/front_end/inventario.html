@@ -1,0 +1,172 @@
+{% extends "front_end/layout.html" %}
+{% block content %}
+		<div class="container" id="content-pane">
+			<div class="row">
+				<div class="span7">
+					<table class="table table-bordered datatablethis">
+						<thead>
+							<tr>
+								<td>ETAPAS Y PROTOTIPO</td>
+								<td>VIVIENDAS</td>
+								<td>MILES PESOS</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="info">ETAPA 3</td>
+								<td><a href="#invModal" data-toggle="modal">1</a></td>
+								<td>$55,555</td>
+							</tr>
+							<tr>
+								<td>MARINE</td>
+								<td><a href="#invModal" data-toggle="modal">1</a></td>
+								<td>$55,555</td>
+							</tr>
+							<tr>
+								<td>AKUA</td>
+								<td><a href="#invModal" data-toggle="modal">1</a></td>
+								<td>$55,555</td>
+							</tr>
+							<tr>
+								<td class="info">ETAPA 2</td>
+								<td><a href="#invModal" data-toggle="modal">1</a></td>
+								<td>$55,555</td>
+							</tr>
+							<tr>
+								<td>MARINE</td>
+								<td><a href="#invModal" data-toggle="modal">1</a></td>
+								<td>$55,555</td>
+							</tr>
+							<tr>
+								<td>AKUA</td>
+								<td><a href="#invModal" data-toggle="modal">1</a></td>
+								<td>$55,555</td>
+							</tr>
+							<tr>
+								<td class="info">ETAPA 1</td>
+								<td><a href="#invModal" data-toggle="modal">1</a></td>
+								<td>$55,555</td>
+							</tr>
+							<tr>
+								<td>MARINE</td>
+								<td><a href="#invModal" data-toggle="modal">1</a></td>
+								<td>$55,555</td>
+							</tr>
+							<tr>
+								<td>AKUA</td>
+								<td><a href="#invModal" data-toggle="modal">1</a></td>
+								<td>$55,555</td>
+							</tr>
+							<tr>
+								<td>Total general</td>
+								<td><a href="#invModal" data-toggle="modal">1</a></td>
+								<td>$55,555</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="span2">
+					<a href="#stgModal" class="btn span2" data-toggle="modal">Capturar nueva etapa</a>
+				</div>
+			</div><!-- /row-fluid -->
+		</div><!-- /container-fluid -->
+
+		<div class="modal hide fade" id="invModal">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3>Inventario</h3>
+			</div>
+			<div class="modal-body">
+				<table class="table datatablethis">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>CALLE</th>
+							<th>ESTATUS</th>
+							<th>PROTOTIPO</th>
+							<th>ETAPA</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><a href="#">000000</a></td>
+							<td>TALAVERA</td>
+							<td>EN OBRA</td>
+							<td>AKUA</td>
+							<td>ETAPA 3</td>
+						</tr>
+						<tr>
+							<td><a href="#">000000</a></td>
+							<td>TALAVERA</td>
+							<td>EN OBRA</td>
+							<td>AKUA</td>
+							<td>ETAPA 3</td>
+						</tr>
+						<tr>
+							<td><a href="#">000000</a></td>
+							<td>TALAVERA</td>
+							<td>EN OBRA</td>
+							<td>AKUA</td>
+							<td>ETAPA 3</td>
+						</tr>
+						<tr>
+							<td><a href="#">000000</a></td>
+							<td>TALAVERA</td>
+							<td>EN OBRA</td>
+							<td>AKUA</td>
+							<td>ETAPA 3</td>
+						</tr>
+						<tr>
+							<td><a href="#">000000</a></td>
+							<td>TALAVERA</td>
+							<td>EN OBRA</td>
+							<td>AKUA</td>
+							<td>ETAPA 3</td>
+						</tr>
+						<tr>
+							<td><a href="#">000000</a></td>
+							<td>TALAVERA</td>
+							<td>EN OBRA</td>
+							<td>AKUA</td>
+							<td>ETAPA 3</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+					<button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+			</div>
+		</div>
+
+		<div class="modal hide fade" id="stgModal">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3>Capturar nueva etapa</h3>
+			</div>
+			<div class="modal-body">
+				<form action="" method="">
+					<label>Nombre de la etapa</label>
+					<input type="text" class="medium-text" name="" />
+						<label>Casa</label>
+						<select name="">
+							<option>Casa 1</option>
+							<option>Casa 2</option>
+							<option>Casa 3</option>
+							<option>Casa 4</option>
+							<option>Casa 5</option>
+						</select>
+						<a class="btn" href="#"><i class="icon-plus-sign"></i></a>
+				</form>
+			</div>
+			<div class="modal-footer">
+					<button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+			</div>
+		</div>
+{% endblock %}
+{% block extrascripts %}
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".datatablethis").dataTable();
+	});
+</script>
+{% endblock extrascripts %}

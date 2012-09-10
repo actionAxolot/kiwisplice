@@ -1,0 +1,203 @@
+{% extends 'front_end/layout.html' %}
+{% block content %}
+		<div class="container" id="content-pane">
+			<div class="row">
+				<div class="span12">
+					<div class="row">
+						<table class="table table-bordered datatablethis" id="cobranza-table">
+							<thead>
+								<tr>
+									<th>&nbsp;</th>
+									<th>ENE</th>
+									<th>FEB</th>
+									<th>MAR</th>
+									<th>ABR</th>
+									<th>MAY</th>
+									<th>JUN</th>
+									<th>JUL</th>
+									<th>AGO</th>
+									<th>SEP</th>
+									<th>OCT</th>
+									<th>NOV</th>
+									<th>DIC</th>
+									<th>Total</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>NO. CLIENTES VENCIDO</td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+								</tr>
+								<tr>
+									<td>VENCIDO $</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+								</tr>
+								<tr>
+									<td>NO. CLIENTES VIGENTE</td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+								</tr>
+								<tr>
+									<td>VENCIDO $</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+								</tr>
+								<tr>
+									<td>NO. CLIENTES PAGADO</td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+									<td><a href="#modalClients" data-toggle="modal">1</a></td>
+								</tr>
+								<tr>
+									<td>VENCIDO $</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+									<td>$0.00</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div><!-- /row-fluid -->
+		</div><!-- /container-fluid -->
+
+		<div class="modal hide fade" id="modalClients">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3>Inventario</h3>
+			</div>
+			<div class="modal-body">
+				<table class="table datatablethis">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>CALLE</th>
+							<th>ESTATUS</th>
+							<th>PROTOTIPO</th>
+							<th>ETAPA</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><a href="#">000000</a></td>
+							<td>TALAVERA</td>
+							<td>EN OBRA</td>
+							<td>AKUA</td>
+							<td>ETAPA 3</td>
+						</tr>
+						<tr>
+							<td><a href="#">000000</a></td>
+							<td>TALAVERA</td>
+							<td>EN OBRA</td>
+							<td>AKUA</td>
+							<td>ETAPA 3</td>
+						</tr>
+						<tr>
+							<td><a href="#">000000</a></td>
+							<td>TALAVERA</td>
+							<td>EN OBRA</td>
+							<td>AKUA</td>
+							<td>ETAPA 3</td>
+						</tr>
+						<tr>
+							<td><a href="#">000000</a></td>
+							<td>TALAVERA</td>
+							<td>EN OBRA</td>
+							<td>AKUA</td>
+							<td>ETAPA 3</td>
+						</tr>
+						<tr>
+							<td><a href="#">000000</a></td>
+							<td>TALAVERA</td>
+							<td>EN OBRA</td>
+							<td>AKUA</td>
+							<td>ETAPA 3</td>
+						</tr>
+						<tr>
+							<td><a href="#">000000</a></td>
+							<td>TALAVERA</td>
+							<td>EN OBRA</td>
+							<td>AKUA</td>
+							<td>ETAPA 3</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+					<button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+			</div>
+		</div>
+{% endblock %}
+{% block extrascripts %}
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".datatablethis").dataTable();
+	});
+</script>
+{% endblock %}

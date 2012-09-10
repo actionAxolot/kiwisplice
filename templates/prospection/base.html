@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block prospeccion %}
+active
+{% endblock prospeccion %}
+
+{% block content %}
+<div id="content-header">
+	<h1>Prospección</h1>
+	<div class="btn-group">
+		<a class="btn btn-large tip-bottom" href="{% url prospection_home %}" title="Ver Prospecciones"><i class="icon-search"></i></a>
+		<a class="btn btn-large tip-bottom" href="{% url prospection_create %}" title="Crear Prospección"><i class="icon-plus-sign"></i></a>
+	</div>
+</div>
+	
+	{% block sub_content %}{% endblock %}
+
+{% endblock content %}
+{% block extrascripts %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/unicorn.tables.js"></script>
+{% endblock extrascripts %}

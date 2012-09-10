@@ -21,9 +21,9 @@ BRIDGE_CREDIT_STATUSES = (
 # Construction options
 CONSTRUCTION_STATUS = (
 	(u"building", _(u"Building")),
-	(u"Approved and building", _(u"Approved and building")),
-	(u"Finished", _(u"Finished")),
-	(u"Blocked", _(u"Blocked")),
+	(u"approved and building", _(u"Approved and building")),
+	(u"finished", _(u"Finished")),
+	(u"blocked", _(u"Blocked")),
 )
 
 LOCATION_STATUS = (
@@ -39,7 +39,7 @@ class Prototype(models.Model):
 
 
 	def __unicode__(self):
-		return u"%s" % (self.name,)
+		return u"%s" % self.name
 
 
 	class Meta:
