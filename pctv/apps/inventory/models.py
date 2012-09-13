@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -14,22 +15,23 @@ PERCENTAGES_OPTIONS = tuple([(x, unicode(x) + u"%") for x in xrange(0, 110, 10)]
 
 # How's the brige credit going?
 BRIDGE_CREDIT_STATUSES = (
-	(u"approved", _(u"Approved")),
-	(u"not approved", _(u"Not approved")),
+	(u"Liberado", _(u"Liberado")),
+	(u"No liberado", _(u"No Liberado")),
 )
 
 # Construction options
 CONSTRUCTION_STATUS = (
-	(u"building", _(u"Building")),
-	(u"approved and building", _(u"Approved and building")),
-	(u"finished", _(u"Finished")),
-	(u"blocked", _(u"Blocked")),
+	(u"En obra", _(u"En obra")),
+	(u"Libre", _(u"Libre")),
+	(u"Bloqueado", _(u"Bloqueado")),
+	(u"Con cliente", _(u"Con cliente")),
+	(u"Firmado", _(u"Firmado")),
 )
 
-LOCATION_STATUS = (
-	(u"free", _(u"Free")),
-	(u"blocked", _(u"Blocked")),
-)
+# LOCATION_STATUS = (
+# 	(u"free", _(u"Free")),
+# 	(u"blocked", _(u"Blocked")),
+# )
 
 
 class Prototype(models.Model):
@@ -64,19 +66,19 @@ class Section(models.Model):
 
 class Inventory(models.Model):
 	""" What houses are / will be available? """
-	created_by = models.ForeignKey(User, verbose_name=_(u'Created by'))
+	created_by = models.ForeignKey(User, verbose_name=_(u'Created by'), blank=True, null=True)
 	prototype = models.ForeignKey(Prototype, verbose_name=_(u'Prototype'))
 	section = models.ForeignKey(Section, verbose_name=_(u"Section"))
 	construction_status = models.CharField(max_length=40, blank=False, null=False, 
 		choices=CONSTRUCTION_STATUS, verbose_name=_(u"Construction status"))
-	location_status = models.CharField(blank=False, null=False, 
-		max_length=50, verbose_name=_(u"Location Status"), choices=LOCATION_STATUS)
+	# location_status = models.CharField(blank=False, null=False, 
+		# max_length=50, verbose_name=_(u"Location Status"), choices=LOCATION_STATUS)
 	cuv = models.CharField(max_length=200, blank=True, null=False, verbose_name=_(u'CUV'), )
 	official_id = models.CharField(max_length=200, blank=False, null=False, verbose_name=_(u"Official Identifier"))
 
 	# TODO: This one should be filled automatically
 	unique_id = models.CharField(max_length=50, blank=True, null=True, 
-		verbose_name=_(u"Unique identifier (Block + Macrolot + Lot)"))
+		verbose_name=_(u"Identificador único"))
 	block = models.CharField(max_length=50, blank=False, null=False, verbose_name=_(u'Block'))
 	macro_lot = models.CharField(blank=False, null=False, 
 		verbose_name=_(u'Macro lot'), max_length=50)
@@ -103,7 +105,7 @@ class Inventory(models.Model):
 
 
 	def save(self, *args, **kwargs):
-		self.unique_id = u"%s%s%s" % (self.block, self.macro_lot, self.lot)
+		self.cuv = u"%s%s%s" % (self.block, self.macro_lot, self.lot)
 
 		super(Inventory, self).save(*args, **kwargs)
 

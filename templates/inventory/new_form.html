@@ -1,4 +1,4 @@
-{% extends "prospection/base.html" %}
+{% extends "inventory/base.html" %}
 
 {% block sub_content %}
 	<div class="container-fluid">
@@ -7,12 +7,14 @@
 				<form action="." method="post" class="">
 					<div class="widget-box">
 						<div class="widget-title">
-							<h5>Captura de prospecto</h5>
+							<h5>Captura de Inventario</h5>
 						</div>
 						<div class="widget-content nopadding form-horizontal">
 							{% csrf_token %}
-							{{ formset.management_form }}
 							{% for field in form %}
+							{% if field.is_hidden %}
+								{{ field }}
+							{% else %}
 								<div class="control-group {% if field.errors %}error{% endif %}">
 									<div class="control-label">
 										{{ field.label_tag }}
@@ -24,38 +26,10 @@
 										</span>
 									</div>
 								</div>
+							{% endif %}
 							{% endfor %}
 						</div>
 					</div>
-
-					{% for form in formset %}
-					<div class="widget-box">
-						<div class="widget-title">
-							<h5>Número Telefónico</h5>
-						</div>
-						<div class="widget-content nopadding form-horizontal">
-							{{ form.id }}
-							{% for field in form %}
-								{% if field.is_hidden %}
-									{{ field }}
-								{% else %}
-									<div class="control-group {% if field.errors %}error{% endif %} ">
-										<div class="control-label">
-											{{ field.label_tag }}
-										</div>
-										<div class="controls">
-											{{ field }}
-											<span class="help-block">
-												{{ field.errors }}
-											</span>
-										</div>
-									</div>
-								{% endif %}
-							{% endfor %}
-						</div>
-					</div>
-					{% endfor %}
-
 
 					<div class="widget-box">
 						<div class="widget-title">
@@ -75,5 +49,5 @@
 {% endblock sub_content %}
 {% block extrascripts %}
 	<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-datepicker.js"></script>
-	<script type="text/javascript" src="{{ STATIC_URL }}js/prospection/scripts.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/client/scripts.js"></script>
 {% endblock extrascripts %}

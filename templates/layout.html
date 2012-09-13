@@ -28,7 +28,7 @@
 					<a href="{% url client_home %}"><i class="icon icon-file"></i> <span>Clientes</span></a>
 					<ul>
 						<li class="{% block listado_cliente %}{% endblock %}"><a href="{% url client_home %}">Listado de Clientes</a></li>
-						<li class="{% block cobranza %}{% endblock %}"><a href="chat.html">Cobranza</a></li>
+						<li class="{% block cobranza %}{% endblock %}"><a href="{% url client_financial_list %}">Cobranza</a></li>
 						<li class="{% block entrega_vivienda %}{% endblock %}"><a href="calendar.html">Entrega de Vivienda</a></li>
 					</ul>
 				</li>
