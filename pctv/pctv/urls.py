@@ -1,4 +1,7 @@
 from django.conf.urls import patterns, include, url
+from django.conf.urls.static import static
+from django.conf import settings
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from apps.home.views import HomeView
 
 # Uncomment the next two lines to enable the admin:
@@ -23,3 +26,11 @@ urlpatterns = patterns('',
     # (r'^grappelli/', include('grappelli.urls')),
     (r'^', include('apps.home.urls')),
 )
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT, show_indexes=True)
+    # urlpatterns += patterns('',
+    #         url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+    #             'document_root': settings.MEDIA_ROOT,
+    #         }),
+    #    )

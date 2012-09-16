@@ -1,6 +1,7 @@
 from django import forms
 from django.forms.widgets import DateInput, TextInput, HiddenInput
-from models import Inventory
+from models import Inventory, Section, Prototype, BridgeCredit, BridgeCreditPayment
+from django.forms.models import inlineformset_factory
 
 
 class InventoryForm(forms.ModelForm):
@@ -25,3 +26,29 @@ class InventoryForm(forms.ModelForm):
 		if commit:
 			inst.save()
 		return inst
+
+
+class SectionForm(forms.ModelForm):
+	class Meta:
+		model = Section
+
+
+class PrototypeForm(forms.ModelForm):
+	class Meta:
+		model = Prototype
+
+
+class BridgeCreditForm(forms.ModelForm):
+	class Meta:
+		model = BridgeCredit
+		widgets = {
+			"approved_on": DateInput(format='%d/%m/%Y', attrs={"class": "date-picker"}),
+		}
+
+
+class BridgeCreditPaymentForm(forms.ModelForm):
+	class Meta:
+		model = BridgeCreditPayment
+
+
+BridgeCreditPaymentsFormset = inlineformset_factory(BridgeCredit, BridgeCreditPayment, extra=5)

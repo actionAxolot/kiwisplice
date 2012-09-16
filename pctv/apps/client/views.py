@@ -87,3 +87,11 @@ class ClientFinancialView(TemplateView):
 class ClientFinancialListView(ListView):
 	template_name = 'client/index.html'
 	model = Client
+
+
+class ClientSalesView(TemplateView):
+	tempate_name = 'client/index.html'
+
+
+class ClientDownpaymentView(TemplateView):
+	template_name = 'client/index.html'

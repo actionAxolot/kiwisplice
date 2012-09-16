@@ -1,0 +1,54 @@
+{% extends "inventory/base.html" %}
+
+{% block inventario %}
+	active
+{% endblock inventario %}
+
+{% block github_buttons %}
+	<h1>Etapas</h1>
+	<div class="btn-group">
+		<a class="btn btn-large tip-bottom" href="{% url inventory_section %}" title="Ver Etapas"><i class="icon-search"></i></a>
+		<a class="btn btn-large tip-bottom" href="{% url inventory_section_create %}" title="Crear Etapa"><i class="icon-plus-sign"></i></a>
+	</div>
+{% endblock github_buttons %}
+
+{% block sub_content %}
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="alert alert-info">
+				Recuerde los botones mostrados arriba. Con ellos puede navegar al rededor de esta sección
+				<a href="#" data-dismiss="alert" class="close">×</a>
+			</div>
+
+			<div class="widget-box">
+				<div class="widget-title">
+					<h5>Listado de Etapas</h5>
+				</div>
+				<div class="widget-content nopadding">
+					{# Render a table with every item in the object available #}
+					<table class="table table-bordered data-table">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Nombre</th>
+								<th>Borrar</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for o in object_list %}								
+							<tr>
+								<td><a href="{% url inventory_section_create_params section_id=o.pk %}">{{ o.pk }}</a></td>
+								<td>{{ o.name }}</td>
+								<td><a href="{% url inventory_section_delete section_id=o.pk %}" class="btn btn-danger">X</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>					
+		</div>
+	</div>
+</div>
+
+{% endblock %}
