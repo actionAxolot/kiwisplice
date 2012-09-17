@@ -99,7 +99,10 @@ else:
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = '/media/'
+if LOCAL_DEV:
+    MEDIA_URL = '/media/'
+else:
+    MEDIA_URL = '/static/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -108,7 +111,7 @@ MEDIA_URL = '/media/'
 if LOCAL_DEV:
     STATIC_ROOT = os.path.join(PROJECT_DIRNAME, 'static')
 else:
-    STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_DIRNAME, '..', '..', 'staticapp'))
+    STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_DIRNAME, '..', '..', 'static_pctv'))
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
