@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Django settings for pctv project.
 import os
 
@@ -30,7 +31,7 @@ MANAGERS = ADMINS
 if LOCAL_DEV:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+            'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
             'NAME': 'pctv',                      # Or path to database file if using sqlite3.
             'USER': 'root',                      # Not used with sqlite3.
             'PASSWORD': '',                  # Not used with sqlite3.
@@ -41,7 +42,7 @@ if LOCAL_DEV:
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+            'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
             'NAME': 'actionaxolot_pc',                      # Or path to database file if using sqlite3.
             'USER': 'actionaxolot_pc',                      # Not used with sqlite3.
             'PASSWORD': 'mediaGartorifa21',                  # Not used with sqlite3.
@@ -55,7 +56,6 @@ else:
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
 TIME_ZONE = 'America/Mexico_City'
-
 
 
 SITE_ID = 1
@@ -191,14 +191,14 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
-    'apps.account', # translated
+    'apps.account',  # translated
     'apps.home',
-    'apps.inventory', # translated
-    'apps.prospection', # translated
-    'apps.client', # translated
-    'apps.comment', # translated
+    'apps.inventory',  # translated
+    'apps.prospection',  # translated
+    'apps.client',  # translated
+    'apps.comment',  # translated
     'apps.commission',
-    'apps.payment', # translated
+    'apps.payment',  # translated
     'apps.finance',
     'rosetta',
     'south',

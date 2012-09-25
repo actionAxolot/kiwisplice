@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
 from django.contrib.auth.models import User
+import datetime
 
 # Porcentajes options... this is probably retardedr
 PERCENTAGES_OPTIONS = tuple([(x, unicode(x) + u"%") for x in xrange(0, 110, 10)])
@@ -14,6 +14,7 @@ BRIDGE_CREDIT_STATUSES = (
     (u"No liberado", _(u"No Liberado")),
 )
 
+
 # Construction options
 CONSTRUCTION_STATUS = (
     (u"En obra", _(u"En obra")),
@@ -22,11 +23,6 @@ CONSTRUCTION_STATUS = (
     (u"Con cliente", _(u"Con cliente")),
     (u"Firmado", _(u"Firmado")),
 )
-
-# LOCATION_STATUS = (
-#   (u"free", _(u"Free")),
-#   (u"blocked", _(u"Blocked")),
-# )
 
 
 class Prototype(models.Model):
@@ -79,24 +75,50 @@ class Inventory(models.Model):
         verbose_name=_(u"Street"), max_length=50)
     number = models.CharField(blank=False, null=False,
         verbose_name=_(u'Realestate number'), max_length=50)
-    lot_size = models.IntegerField(blank=False, null=False, verbose_name=_(u"Lot size"))
-    construction_size = models.IntegerField(blank=False, null=False, verbose_name=_(u'Construction size'))
+    lot_size = models.IntegerField(blank=False, null=False, verbose_name=_(u"Extensión de terreno"))
+    construction_size = models.IntegerField(blank=False, null=False, verbose_name=_(u'Extensión de construcción'))
     construction_end_date = models.DateField(blank=False, null=False, verbose_name=_(u"Construction end date"))
+
+    build_end_date = models.DateField(blank=True, null=True, verbose_name=_(u"Fecha de terminación de obra"))
     percent_completed = models.IntegerField(blank=False, null=False,
         default=0, verbose_name=_(u"Percent completed"), choices=PERCENTAGES_OPTIONS)
 
+    # New additions about SIAPA, PREDIAL and CLG
+    siapa_account = models.CharField(blank=False, null=False, max_length=50, verbose_name=_(u"Cuenta SIAPA"))
+    predial_account = models.CharField(blank=False, null=False, max_length=50, verbose_name=_(u"Cuenta PREDIAL"))
+    clg_folium = models.CharField(blank=False, null=False, max_length=50, verbose_name=_(u"Folio CLG"))
+
+    # When was stuff payed?
+    siapa_payment_date = models.DateField(blank=True, null=True, verbose_name=_(u"Fecha de pago SIAPA"))
+    predial_payment_date = models.DateField(blank=True, null=True, verbose_name=_(u"Fecha de pago PREDIAL"))
     clg_emission_date = models.DateField(blank=False, null=False, verbose_name=_(u"CLG emission date"))
-    price = models.DecimalField(null=True, max_digits=20, decimal_places=2, verbose_name=_(u"Price"))
+    price = models.DecimalField(null=True, blank=True, max_digits=20, decimal_places=2, verbose_name=_(u"Price"))
 
     # TODO: Add a get_price method that returns the correct price. Either the one in the prototype or
     # the one in the Inventory entry
 
     def __unicode__(self):
-        return u"%s%s%s" % (self.block, self.macro_lot, self.lot)
+        return u"%s" % self.cuv
 
     def save(self, *args, **kwargs):
-        self.cuv = u"%s%s%s" % (self.block, self.macro_lot, self.lot)
+        """
+        Prepopulate the CUV field. Every element of it must be 2 characters long. If
+        they're not just append a 0
+        """
+        self.block = self.block if len(self.block) > 1 else "0%s" % self.block
+        self.macro_lot = self.macro_lot if len(self.macro_lot) > 1 else "0%s" % self.macro_lot
+        self.lot = self.lot if len(self.lot) > 1 else "0%s" % self.lot
+        self.unique_id = u"%s%s%s" % (self.block, self.macro_lot, self.lot)
+        self.price = self.price if self.price else self.get_price()
+
         super(Inventory, self).save(*args, **kwargs)
+
+    def get_price(self):
+        """
+        Returns the price of the inventory item if it's defined. Otherwise it
+        returns the Prototype's defined price
+        """
+        return self.price if self.price else self.prototype.price
 
     class Meta:
         verbose_name = _(u"Realestate")
@@ -112,6 +134,8 @@ class BridgeCredit(models.Model):
         decimal_places=2, verbose_name=_(u"Approved amount"))
     ministered_amount = models.DecimalField(blank=False, null=False, max_digits=20,
         decimal_places=2, verbose_name=_(u"Ministered amount"))
+    payed_amount = models.DecimalField(blank=True, null=False, max_digits=20,
+        decimal_places=2, verbose_name=_(u"Cantidad pagada"))
 
     class Meta:
         verbose_name = _(u"Bridge Credit")
@@ -127,23 +151,3 @@ class BridgeCreditPayment(models.Model):
     class Meta:
         verbose_name = _(u"Bridge Credit Payment")
         verbose_name_plural = _(u"Bridge Credit Payment")
-
-
-class UtilityType(models.Model):
-    name = models.CharField(null=False, blank=False, max_length=50, verbose_name=_(u"Name"))
-
-    class Meta:
-        verbose_name = _(u"Utility type")
-        verbose_name_plural = _(u"Utility types")
-
-
-class UtilityPayment(models.Model):
-    inventory = models.ForeignKey(Inventory, verbose_name=_(u"Realestate"))
-    utility_type = models.ForeignKey(UtilityType, verbose_name=_(u"Utility type"))
-    amount = models.DecimalField(blank=False, null=False, max_digits=10,
-        decimal_places=2, verbose_name=_(u"Amount"))
-    payment_date = models.DateField(blank=False, null=False, verbose_name=_(u"Payment date"))
-
-    class Meta:
-        verbose_name = _(u"Utility payment")
-        verbose_name_plural = _(u"Utility payments")

@@ -1,7 +1,7 @@
 from django import forms
 from django.forms.widgets import DateInput, TextInput, HiddenInput
 from models import (Inventory, Section,
-    Prototype, BridgeCredit, BridgeCreditPayment, UtilityPayment, UtilityType)
+    Prototype, BridgeCredit, BridgeCreditPayment)
 from django.forms.models import inlineformset_factory
 
 
@@ -11,7 +11,10 @@ class InventoryForm(forms.ModelForm):
         widgets = {
             'construction_end_date': DateInput(format='%d/%m/%Y', attrs={"class": "date-picker"}),
             'clg_emission_date': DateInput(format='%d/%m/%Y', attrs={"class": "date-picker"}),
-            'cuv': TextInput(attrs={"disabled": "disabled"}),
+            'siapa_payment_date': DateInput(format='%d/%m/%Y', attrs={"class": "date-picker"}),
+            'predial_payment_date': DateInput(format='%d/%m/%Y', attrs={"class": "date-picker"}),
+            'build_end_date': DateInput(format='%d/%m/%Y', attrs={"class": "date-picker"}),
+            'unique_id': HiddenInput(),
             'created_by': HiddenInput(),
         }
 
@@ -48,16 +51,6 @@ class BridgeCreditForm(forms.ModelForm):
 class BridgeCreditPaymentForm(forms.ModelForm):
     class Meta:
         model = BridgeCreditPayment
-
-
-class UtilityPaymentForm(forms.ModelForm):
-    class Meta:
-        model = UtilityPayment
-
-
-class UtilityTypeForm(forms.ModelForm):
-    class Meta:
-        model = UtilityType
 
 
 BridgeCreditPaymentsFormset = inlineformset_factory(BridgeCredit, BridgeCreditPayment, extra=5)

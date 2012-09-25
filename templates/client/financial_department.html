@@ -55,6 +55,7 @@
 		</div>
 		<form action="." method="post">
 			{{ formset.management_form }}
+			{% csrf_token %}
 			{% for form in formset %}
 			{{ form.id }}
 			<div class="row-fluid">
@@ -106,3 +107,7 @@
 		</form>
 	</div>
 {% endblock sub_content %}
+{% block extrascripts %}
+	<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/client/scripts.js"></script>
+{% endblock extrascripts %}

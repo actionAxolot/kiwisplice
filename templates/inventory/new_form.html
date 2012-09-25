@@ -1,4 +1,5 @@
 {% extends "inventory/base.html" %}
+{% load credit_percentages %}
 
 {% block sub_content %}
 	<div class="container-fluid">
@@ -44,6 +45,65 @@
 					</div>
 				</form>
 			</div>
+
+			{% if inventory_id %}
+			<div class="span6">
+				<div class="widget-box">
+					<div class="widget-title">
+						<h5>Datos</h5>
+					</div>
+					<div class="widget-content nopadding form-horizontal">
+						<table class="table table-bordered table-striped">
+							<tbody>
+								<tr>
+									<td>Identificador</td>
+									<td>{{ inventory.unique_id }}</td>
+								</tr>
+								<tr>
+									<td>Proyección de obra</td>
+									<td>{{ inventory.build_end_date|format_time_spans }}</td>
+								</tr>
+								<tr>
+									<td>Estatus crédito puente</td>
+									<td>{{ inventory.bridgecredit_set.all.0.status }}</td>
+								</tr>
+								{% ifequal inventory.bridgecredit_set.all.0.status "Liberado" %}
+								<tr>
+									<td>Monto crédito puente por ejercer</td>
+									<td>${{ inventory.bridgecredit_set.all.0.approved_amount|bridge_credit_left:inventory.bridgecredit_set.all.0.ministered_amount }}</td>
+								</tr>
+								<tr>
+									<td>Saldo crédito puente</td>
+									<td>${{ inventory.bridgecredit_set.all.0.approved_amount|bridge_credit_owed:inventory.bridgecredit_set.all.0.payed_amount }}</td>
+								</tr>
+								<tr>
+									<td>% de crédito puente ministrado</td>
+									<td>%{{ inventory.bridgecredit_set.all.0.approved_amount|bridge_credit_ministered_percentage:inventory.bridgecredit_set.all.0.ministered_amount }}</td>
+								</tr>
+								<tr>
+									<td>% de crédito puente por ejercer</td>
+									<td>%{{ inventory.bridgecredit_set.all.0.approved_amount|bridge_credit_left_percentage:inventory.bridgecredit_set.all.0.ministered_amount }}</td>
+								</tr>
+								{% endifequal %}
+								<tr>
+									<td>Pago SIAPA</td>
+									<td>{{ inventory.siapa_payment_date|days_from_now }}</td>
+								</tr>
+								<tr>
+									<td>Pago PREDIAL</td>
+									<td>{{ inventory.predial_payment_date|days_from_now }}</td>
+								</tr>
+								<tr>
+									<td>CLG</td>
+									<td>{{ inventory.clg_emission_date|days_from_now }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			{% endif %}
+
 		</div>
 	</div>
 {% endblock sub_content %}

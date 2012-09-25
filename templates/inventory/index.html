@@ -20,7 +20,7 @@
 							<tr>
 								<th>ID</th>
 								<th>Prototipo</th>
-								<th>CUV</th>
+								<th>Identificador</th>
 								<th>Etapa</th>
 								<th>Estatus de construcción</th>
 								<th>Calle</th>
@@ -33,7 +33,7 @@
 							<tr>
 								<td><a href="{% url inventory_create_params inventory_id=o.pk %}">{{ o.pk }}</a></td>
 								<td>{{ o.prototype.name }}</td>
-								<td>{{ o.cuv }}</td>
+								<td>{{ o.unique_id }}</td>
 								<td>{{ o.section.name }}</td>
 								<td>{{ o.construction_status }}</td>
 								<td>{{ o.street }}</td>

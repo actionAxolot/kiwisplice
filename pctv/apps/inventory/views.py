@@ -2,9 +2,9 @@
 from django.views.generic import TemplateView, ListView
 from django.shortcuts import redirect
 from models import (Inventory, Section,
-    Prototype, BridgeCredit, UtilityPayment, UtilityType)
+    Prototype, BridgeCredit)
 from forms import (InventoryForm, SectionForm,
-    PrototypeForm, BridgeCreditForm, UtilityPaymentForm, UtilityTypeForm)
+    PrototypeForm, BridgeCreditForm)
 
 
 # <----- START LANDING PAGE ------>
@@ -31,7 +31,9 @@ class InventoryCreateView(TemplateView):
         inventory_form = InventoryForm(instance=inventory, user=request.user)
 
         return self.render_to_response({
-            "form": inventory_form
+            "form": inventory_form,
+            'inventory': inventory,
+            'inventory_id': inventory_id,
         })
 
     def post(self, request, inventory_id=None):
@@ -45,6 +47,8 @@ class InventoryCreateView(TemplateView):
 
         return self.render_to_response({
             "form": inventory_form,
+            'inventory': inventory,
+            'inventory_id': inventory_id,
         })
 
 
@@ -171,19 +175,3 @@ class InventoryBridgeCreditDeleteView(TemplateView):
     def get(self, request, bridge_credit_id):
         BridgeCredit.objects.get(pk=bridge_credit_id).delete()
         return redirect("inventory_bridge_credit")
-
-
-# <----- START DPF ------>
-class InventoryDPFView(ListView):
-    template_name = "inventory/dpf_index.html"
-    model = UtilityPayment
-
-
-class InventoryDPFCreateView(TemplateView):
-    template_name = "inventory/dpf_new_form.html"
-
-
-class InventoryDPFDeleteView(TemplateView):
-    def get(self, request, dpf_id=None):
-        UtilityPayment.objects.get(pk=dpf_id).delete()
-        redirect("dpf_home")

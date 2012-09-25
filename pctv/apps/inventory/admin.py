@@ -1,10 +1,10 @@
 from django.contrib import admin
 from models import Prototype, Section, Inventory, \
-	BridgeCredit, BridgeCreditPayment, UtilityType, UtilityPayment
+    BridgeCredit, BridgeCreditPayment
 
 
 class InventoryAdmin(admin.ModelAdmin):
-	readonly_fields = ('unique_id',)
+    readonly_fields = ('cuv',)
 
 
 admin.site.register(Prototype)
@@ -12,5 +12,3 @@ admin.site.register(Section)
 admin.site.register(Inventory, InventoryAdmin)
 admin.site.register(BridgeCredit)
 admin.site.register(BridgeCreditPayment)
-admin.site.register(UtilityType)
-admin.site.register(UtilityPayment)

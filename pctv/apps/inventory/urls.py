@@ -6,8 +6,7 @@ from apps.inventory.views import (InventoryView, InventoryCreateView,
     InventoryPrototypeView,
     InventoryPrototypeCreateView, InventoryPrototypeDeleteView,
     InventoryBridgeCreditView,
-    InventoryBridgeCreditCreateView, InventoryBridgeCreditDeleteView,
-    InventoryDPFView, InventoryDPFDeleteView, InventoryDPFCreateView)
+    InventoryBridgeCreditCreateView, InventoryBridgeCreditDeleteView)
 
 
 urlpatterns = patterns('',
@@ -33,12 +32,6 @@ urlpatterns = patterns('',
     url(r'^credito-puente/crear/$', login_required(InventoryBridgeCreditCreateView.as_view()), {}, name="inventory_bridge_credit_create"),
     url(r'^credito-puente/crear/(?P<bridge_credit_id>\w+)/$', login_required(InventoryBridgeCreditCreateView.as_view()), {}, name="inventory_bridge_credit_create_params"),
     url(r'^credito-puente/borrar/(?P<bridge_credit_id>\w+)/$', login_required(InventoryBridgeCreditDeleteView.as_view()), {}, name="inventory_bridge_credit_delete"),
-
-    # DPF
-    url(r'^dpf/$', login_required(InventoryDPFView.as_view()), {}, name="inventory_dpf"),
-    url(r'^dpf/crear/$', login_required(InventoryDPFCreateView.as_view()), {}, name="inventory_dpf_create"),
-    url(r'^dpf/crear/(?P<dpf_id>\w+)/$', login_required(InventoryDPFCreateView.as_view()), {}, name="inventory_dpf_create_params"),
-    url(r'^dpf/borrar/(?P<dpf_id>\w+)/$', login_required(InventoryDPFCreateView.as_view()), {}, name="inventory_dpf_delete"),
 
     # Fallback
     url(r'^$', login_required(InventoryView.as_view()), {}, name="inventory_home"),
