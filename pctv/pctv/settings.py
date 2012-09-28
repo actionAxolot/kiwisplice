@@ -200,6 +200,7 @@ INSTALLED_APPS = (
     'apps.commission',
     'apps.payment',  # translated
     'apps.finance',
+    'apps.utils',
     'rosetta',
     'south',
     'debug_toolbar',

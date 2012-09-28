@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from models import (Inventory, Section,
     Prototype, BridgeCredit)
 from forms import (InventoryForm, SectionForm,
-    PrototypeForm, BridgeCreditForm)
+    PrototypeForm, BridgeCreditForm, BridgeCreditPaymentsFormset)
 
 
 # <----- START LANDING PAGE ------>
@@ -151,9 +151,11 @@ class InventoryBridgeCreditCreateView(TemplateView):
             bridge_credit = BridgeCredit.objects.get(pk=bridge_credit_id)
 
         form = BridgeCreditForm(instance=bridge_credit)
+        inline_formset = BridgeCreditPaymentsFormset(instance=bridge_credit)
 
         return self.render_to_response({
             'form': form,
+            'inline_formset': inline_formset,
         })
 
     def post(self, request, bridge_credit_id=None):
@@ -163,11 +165,18 @@ class InventoryBridgeCreditCreateView(TemplateView):
 
         form = BridgeCreditForm(request.POST, request.FILES, instance=bridge_credit)
         if form.is_valid():
-            form.save()
-            return redirect("inventory_bridge_credit")
+            created_credit = form.save()
+            inline_formset = BridgeCreditPaymentsFormset(request.POST, request.FILES, instance=created_credit)
+            if inline_formset.is_valid():
+                inline_formset.save()
+                if request.POST.get("add-another", None):
+                    return redirect("inventory_bridge_credit_create_params", bridge_credit_id=created_credit.pk)
+                else:
+                    return redirect("inventory_bridge_credit")
 
         return self.render_to_response({
             "form": form,
+            "inline_formset": inline_formset,
         })
 
 

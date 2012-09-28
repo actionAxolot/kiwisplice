@@ -93,6 +93,8 @@ class Inventory(models.Model):
     predial_payment_date = models.DateField(blank=True, null=True, verbose_name=_(u"Fecha de pago PREDIAL"))
     clg_emission_date = models.DateField(blank=False, null=False, verbose_name=_(u"CLG emission date"))
     price = models.DecimalField(null=True, blank=True, max_digits=20, decimal_places=2, verbose_name=_(u"Price"))
+    x = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=6)
+    y = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=6)
 
     # TODO: Add a get_price method that returns the correct price. Either the one in the prototype or
     # the one in the Inventory entry

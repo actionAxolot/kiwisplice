@@ -16,6 +16,8 @@ class InventoryForm(forms.ModelForm):
             'build_end_date': DateInput(format='%d/%m/%Y', attrs={"class": "date-picker"}),
             'unique_id': HiddenInput(),
             'created_by': HiddenInput(),
+            'x': HiddenInput(),
+            'y': HiddenInput(),
         }
 
     def __init__(self, *args, **kwargs):
@@ -51,6 +53,9 @@ class BridgeCreditForm(forms.ModelForm):
 class BridgeCreditPaymentForm(forms.ModelForm):
     class Meta:
         model = BridgeCreditPayment
+        widgets = {
+            'payment_date': DateInput(format='%d/%m/%Y', attrs={"class": "date-picker"}),
+        }
 
 
-BridgeCreditPaymentsFormset = inlineformset_factory(BridgeCredit, BridgeCreditPayment, extra=5)
+BridgeCreditPaymentsFormset = inlineformset_factory(BridgeCredit, BridgeCreditPayment, form=BridgeCreditPaymentForm, extra=1)

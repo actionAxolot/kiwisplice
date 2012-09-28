@@ -2,7 +2,7 @@
 	margin-top: 60px;
 }
 
-div.filters {
+.filters {
 	margin-bottom: 18px;
 }
 
@@ -13,4 +13,10 @@ input {
 #login-box {
 	margin-left: 400px;
 	text-align: center;
+}
+
+#map-container {
+    width: 1180px;
+    height: 336px;
+    background-image: url(../img/map-background.png);
 }
