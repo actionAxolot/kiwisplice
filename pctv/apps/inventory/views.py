@@ -184,3 +184,11 @@ class InventoryBridgeCreditDeleteView(TemplateView):
     def get(self, request, bridge_credit_id):
         BridgeCredit.objects.get(pk=bridge_credit_id).delete()
         return redirect("inventory_bridge_credit")
+
+
+class InventoryDeliveryOrderView(TemplateView):
+    """
+    Just generate fucking documents. Ugh...
+    """
+    template_name = "inventory/documents/orden_entrega.html"
+

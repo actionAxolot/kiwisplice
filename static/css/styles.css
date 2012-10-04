@@ -1,0 +1,22 @@
+#content-pane {
+	margin-top: 60px;
+}
+
+.filters {
+	margin-bottom: 18px;
+}
+
+input {
+	width: 150px;
+}
+
+#login-box {
+	margin-left: 400px;
+	text-align: center;
+}
+
+#map-container {
+    width: 1180px;
+    height: 336px;
+    background-image: url(../img/map-background.png);
+}

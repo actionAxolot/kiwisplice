@@ -17,8 +17,8 @@ $("#map-container").on("click", function(e){
     $("#map-container").html(img);
     $("#pointer-thing").css({
         position: 'absolute',
-        top: y + 5,
-        left: x - 9,
+        top: y - 40,
+        left: x -25,
         zIndex: 3500
     });
 
@@ -26,19 +26,16 @@ $("#map-container").on("click", function(e){
 });
 
 $(document).ready(function(){
-  if($("#id_x").val()){
-    var x = parseFloat($("#id_x").val());
-    var y = parseFloat($("#id_y").val());
-
-    var img = "<img id='pointer-thing' src='/static/img/pointer.png' />";
-    $("#map-container").html(img);
-    $("#pointer-thing").css({
-      position: 'absolute',
-      top: y + 5,
-      left: x - 9,
-      zIndex: 3500
-    });
-
-    return false;
-  }
+    if($("#id_x").val()){
+        var x = $("#id_x").val();
+        var y = $("#id_y").val();
+        var img = "<img id='pointer-thing' src='/static/img/pointer.png' />";
+        $("#map-container").html(img);
+        $("#pointer-thing").css({
+            position: 'absolute',
+            top: y - 40,
+            left: x -25,
+            zIndex: 3500
+        });
+    }
 })
