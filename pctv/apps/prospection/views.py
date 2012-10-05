@@ -73,6 +73,8 @@ class ProspectionDashboardView(TemplateView):
 
 
 class ProspectionCreateView(TemplateView):
+    # TODO: Cuando el status este setteado a apartado redireccionar a la pantalla ya de cliente.
+    # Deja de ser prospecto
     template_name = "prospection/new_form.html"
 
     def post(self, request, prospection_id=None):
