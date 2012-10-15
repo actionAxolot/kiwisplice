@@ -1,0 +1,131 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="es"> 
+  <head>
+    <!-- <title>{{ contract_name }}</title> -->
+    <title>ENTREGA</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/documents.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <img class="left" src="{{ STATIC_URL }}img/image001.png" />
+      </div>
+      
+      <div class="row info-cell-spacing">
+        <div class="span6 offset3" id="document-title">
+          <h1>ORDEN DE ENTREGA</h1>
+        </div>
+      </div>
+      
+      <div class="row info-cell-spacing" id="document-date">
+        <div class="span3 offset9">
+          <strong>FECHA:</strong> {% now "d/m/Y" %}
+        </div>
+      </div>
+      
+      <div class="row info-cell-spacing" id="document-client">
+        <div class="span6 left" id="document-client-name">
+          <strong>CLIENTE:</strong> {{ p.get_full_name|upper }}
+        </div>
+        <div class="span6 right" id="document-notaria-name">
+          <strong>NOTARÍA:</strong> {{ p.client_set.all.0.notary }}
+        </div>
+      </div>
+
+      <div class="row info-cell-spacing" id="document-location">
+        <div class="span3" id="document-location-title">
+          <strong>UBICACIÓN</strong>
+        </div>
+        
+        <div class="span3 right" id="document-location-manzana">
+          <strong>MANZANA:</strong> {{ p.client_set.all.0.inventory.block }}
+        </div>
+        
+        <div class="span3 right" id="document-location-macrolote">
+          <strong>MACROLOTE:</strong> {{ p.client_set.all.0.inventory.macro_lot }}
+        </div>
+        
+        <div class="span3 right" id="document-location-lote">
+          <strong>LOTE:</strong> {{ p.client_set.all.0.inventory.lot }}
+        </div>
+      </div>
+
+      <div class="row info-cell-spacing">
+        <div class="span12" id="document-address">
+          <strong>DIRECCIÓN:</strong> {{ p.street }} {{ p.block }}
+        </div>
+      </div>
+      
+      <div class="sub-section">
+        <div class="row info-cell-spacing" id="document-realstate-price">
+          <div class="span6">
+            <strong>VALOR VIVIENDA:</strong> <span class="throw-right">${{ p.client_set.all.0.inventory.get_price|floatformat:2|intcomma }}</span>
+          </div>
+        </div>
+        
+        <div class="row info-cell-spacing" id="document-realstate-credit">
+          <div class="span6">
+            <strong>PAGO DE CRÉDITO:</strong> <span class="throw-right">${{ credit.total.total|floatformat:2|intcomma }}</span>
+          </div>
+        </div>
+
+        <div class="row info-cell-spacing" id="document-realstate-payed">
+          <div class="span6">
+            <strong>PAGADO:</strong> <span class="throw-right">${{ credit.payed.total|floatformat:2|intcomma }}</span>
+          </div>
+        </div>
+
+        <div class="row info-cell-spacing" id="document-realstate-difference">
+          <div class="span6">
+            <strong>DIFERENCIA:</strong> <span class="throw-right">${{ credit.difference|floatformat:2|intcomma }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="row info-cell-spacing">
+          <div class="span12">
+            <h3>FIRMAS DE AUTORIZACIÓN</3>
+          </div>
+        </div>
+      </div>
+
+      <div class="signature-section">
+        <div class="row info-cell-spacing">
+          <div class="span6">
+            <strong>DIRECCIÓN</strong>
+          </div>
+          <div class="span6">
+            <strong>CONTRALORÍA</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="signature-section">
+        <div class="row info-cell-spacing">
+          <div class="span6">
+            <strong>ADMINISTRACIÓN</strong>
+          </div>
+          <div class="span6">
+            <strong>VENTAS</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="signature-section">
+        <div class="row info-cell-spacing">
+          <div class="span6">
+            <strong>C.C.P. CONTRALORÍA</strong>
+          </div>
+          <div class="span6">
+            <strong>ARCHIVO</strong>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </body>
+</html>

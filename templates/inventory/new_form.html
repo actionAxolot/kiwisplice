@@ -73,11 +73,15 @@
 	      </tr>
 	      <tr>
 		<td>Proyección de obra</td>
-		<td>{{ inventory.build_end_date|format_time_spans }}</td>
+		<td>{{ inventory.construction_end_date|format_time_spans }}</td>
 	      </tr>
 	      <tr>
 		<td>Estatus crédito puente</td>
-		<td>{{ inventory.bridgecredit_set.all.0.status }}</td>
+    {% if inventory.bridgecredit_set.all.0.status %}
+		  <td>{{ inventory.bridgecredit_set.all.0.status }}</td>
+    {% else %}
+      <td>Indefinido</td>
+    {% endif %}
 	      </tr>
 	      {% ifequal inventory.bridgecredit_set.all.0.status "Liberado" %}
 	      <tr>

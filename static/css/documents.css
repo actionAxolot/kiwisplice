@@ -1,0 +1,41 @@
+body {
+    font-size: large;
+}
+
+.info-cell-spacing{
+    margin-top: 18px;
+}
+
+#document-title {
+    text-align: center;
+}
+
+#document-date{
+    text-align: right;
+}
+
+#document-notaria-name{
+    text-align: right;
+}
+
+.right {
+    text-align: right;
+}
+
+.sub-section{
+    margin-top: 36px;
+}
+
+.throw-right{
+    display: block;
+    float: right;
+}
+
+.signature-section{
+    margin-top: 144px;
+    text-align: center;
+}
+
+.sub-section-location {
+    margin-top: 144px;
+}

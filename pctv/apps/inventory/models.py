@@ -79,19 +79,18 @@ class Inventory(models.Model):
     construction_size = models.IntegerField(blank=False, null=False, verbose_name=_(u'Extensión de construcción'))
     construction_end_date = models.DateField(blank=False, null=False, verbose_name=_(u"Construction end date"))
 
-    build_end_date = models.DateField(blank=True, null=True, verbose_name=_(u"Fecha de terminación de obra"))
     percent_completed = models.IntegerField(blank=False, null=False,
         default=0, verbose_name=_(u"Percent completed"), choices=PERCENTAGES_OPTIONS)
 
     # New additions about SIAPA, PREDIAL and CLG
-    siapa_account = models.CharField(blank=False, null=False, max_length=50, verbose_name=_(u"Cuenta SIAPA"))
-    predial_account = models.CharField(blank=False, null=False, max_length=50, verbose_name=_(u"Cuenta PREDIAL"))
-    clg_folium = models.CharField(blank=False, null=False, max_length=50, verbose_name=_(u"Folio CLG"))
+    siapa_account = models.CharField(blank=True, null=True, max_length=50, verbose_name=_(u"Cuenta SIAPA"))
+    predial_account = models.CharField(blank=True, null=True, max_length=50, verbose_name=_(u"Cuenta PREDIAL"))
+    clg_folium = models.CharField(blank=True, null=True, max_length=50, verbose_name=_(u"Folio CLG"))
 
     # When was stuff payed?
     siapa_payment_date = models.DateField(blank=True, null=True, verbose_name=_(u"Fecha de pago SIAPA"))
     predial_payment_date = models.DateField(blank=True, null=True, verbose_name=_(u"Fecha de pago PREDIAL"))
-    clg_emission_date = models.DateField(blank=False, null=False, verbose_name=_(u"CLG emission date"))
+    clg_emission_date = models.DateField(blank=True, null=True, verbose_name=_(u"CLG emission date"))
     price = models.DecimalField(null=True, blank=True, max_digits=20, decimal_places=2, verbose_name=_(u"Price"))
     x = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=6)
     y = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=6)
