@@ -42,7 +42,7 @@ if LOCAL_DEV:
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+            'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
             'NAME': 'actionaxolot_pc',                      # Or path to database file if using sqlite3.
             'USER': 'actionaxolot_pc',                      # Not used with sqlite3.
             'PASSWORD': 'mediaGartorifa21',                  # Not used with sqlite3.
