@@ -38,6 +38,11 @@
 								<td>{{ o.status }}</td>
 								<td>
 									<a href="{% url client_financial_params client_id=o.pk %}" class="btn btn-primary">Cobranza</a>
+                  {% if o.status == "Cancelado" %}
+                    <a href="{% url client_to_prospection client_id=o.pk %}" class="btn btn-primary">Reactivar</a>
+                  {% else %}
+                  <a href="{% url client_to_prospection client_id=o.pk %}" class="btn btn-danger">Cancelar</a>
+                  {% endif %}
 								</td>
 							</tr>
 							{% endfor %}

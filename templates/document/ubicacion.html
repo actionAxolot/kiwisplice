@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es"> 
+  <head>
+    <!-- <title>{{ contract_name }}</title> -->
+    <title>UBICACIÓN</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/documents.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <img class="left" src="{{ STATIC_URL }}img/image001.png" />
+      </div>
+      
+      <div class="row info-cell-spacing">
+        <div class="span6 offset3" id="document-title">
+          <h1>CAMBIO DE UBICACIÓN</h1>
+        </div>
+      </div>
+      
+      <div class="row info-cell-spacing" id="document-date">
+        <div class="span3 offset9">
+          <strong>FECHA:</strong> {% now "d/m/Y" %}
+        </div>
+      </div>
+      
+      <div class="row info-cell-spacing" id="document-client">
+        <div class="span12 left" id="document-client-name">
+          <strong>CLIENTE:</strong> {{ client.prospection.get_full_name|upper }}
+        </div>
+      </div>
+
+      <div class="sub-section-location">
+        <div class="row info-cell-spacing" id="document-location">
+          <div class="span3" id="document-location-title">
+            <strong>UBICACIÓN ACTUAL</strong>
+          </div>
+          
+          <div class="span3 right" id="document-location-manzana">
+            <strong>MANZANA:</strong> {{ client.inventory.block }}
+          </div>
+          
+          <div class="span3 right" id="document-location-macrolote">
+            <strong>MACROLOTE:</strong> {{ client.inventory.macro_lot }}
+          </div>
+          
+          <div class="span3 right" id="document-location-lote">
+            <strong>LOTE:</strong> {{ client.inventory.lot }}
+          </div>
+        </div>
+
+        <!-- <div class="row info-cell-spacing"> -->
+        <!--   <div class="span12" id="document-address"> -->
+        <!--     <strong>DIRECCIÓN:</strong> ISLA CICLADES #2277 INT A -->
+        <!--   </div> -->
+        <!-- </div> -->
+        
+      </div>
+
+      <div class="sub-section-location">
+        <div class="row info-cell-spacing" id="document-location-destination">
+          <div class="span3" id="document-location-title-destination">
+            <strong>UBICACIÓN NUEVA</strong>
+          </div>
+          
+          <div class="span3 right" id="document-location-manzana-destination">
+            <strong>MANZANA:</strong> {{ new_location.block }}
+          </div>
+          
+          <div class="span3 right" id="document-location-macrolote-destination">
+            <strong>MACROLOTE:</strong> {{ new_location.macro_lot }}
+          </div>
+          
+          <div class="span3 right" id="document-location-lote-destination">
+            <strong>LOTE:</strong> {{ new_location.lot }}
+          </div>
+        </div>
+
+        <!-- <div class="row info-cell-spacing"> -->
+        <!--   <div class="span12" id="document-address-destination"> -->
+        <!--     <strong>DIRECCIÓN:</strong> ISLA CICLADES #2277 INT A -->
+        <!--   </div> -->
+        <!-- </div> -->
+      </div>
+
+      <div class="sub-section-location">
+        <div class="row info-cell-spacing">
+          <div class="span12">
+            <h3>FIRMAS DE AUTORIZACIÓN</3>
+          </div>
+        </div>
+      </div>
+
+      <div class="signature-section">
+        <div class="row info-cell-spacing">
+          <div class="span6">
+            <strong>CLIENTE</strong>
+          </div>
+          <div class="span6">
+            <strong>VENTAS</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="signature-section">
+        <div class="row info-cell-spacing">
+          <div class="span6">
+            <strong>ADMINISTRACIÓN DE INVENTARIO</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

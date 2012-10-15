@@ -322,14 +322,15 @@
 			var separator = format.match(/[.\/-].*?/),
 				parts = format.split(/\W+/);
 			if (!separator || !parts || parts.length == 0){
-				throw new Error("Invalid date format.");
+				throw new Error("Formato de fecha inválido");
 			}
 			return {separator: separator, parts: parts};
 		},
 		parseDate: function(date, format) {
 			var parts = date.split(format.separator),
-				date = new Date(2012, 1, 1, 0, 0, 0),
-				val;
+				// date = new Date(2012, 1, 1, 0, 0, 0),
+        date = new Date();
+				// val;
 			if (parts.length == format.parts.length) {
 				for (var i=0, cnt = format.parts.length; i < cnt; i++) {
 					val = parseInt(parts[i], 10)||1;

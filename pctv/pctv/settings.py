@@ -15,12 +15,7 @@ TEMPLATE_DEBUG = DEBUG
 DIRNAME = os.path.abspath(__file__)
 PROJECT_DIRNAME = os.path.abspath(os.path.join(DIRNAME, '..', '..', '..'))
 
-
 LOGIN_REDIRECT_URL = '/'
-
-
-# Profile configurations
-AUTH_PROFILE_MODULE = 'account.Profile'
 
 ADMINS = (
     ('Mario R. Vallejo', 'mario.r.vallejo@gmail.com'),
@@ -42,7 +37,7 @@ if LOCAL_DEV:
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+            'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
             'NAME': 'actionaxolot_pc',                      # Or path to database file if using sqlite3.
             'USER': 'actionaxolot_pc',                      # Not used with sqlite3.
             'PASSWORD': 'mediaGartorifa21',                  # Not used with sqlite3.
@@ -185,13 +180,13 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     # Uncomment the next line to enable the admin:
     # 'grappelli.dashboard',
     # 'grappelli',
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
-    'apps.account',  # translated
     'apps.home',
     'apps.inventory',  # translated
     'apps.prospection',  # translated
@@ -200,6 +195,7 @@ INSTALLED_APPS = (
     'apps.commission',
     'apps.payment',  # translated
     'apps.finance',
+    'apps.document',
     'apps.utils',
     'rosetta',
     'south',

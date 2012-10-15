@@ -46,7 +46,9 @@ def format_time_spans(date):
 
 
 @register.filter
-def days_from_now(date):
+def days_from_now(date=None):
+    if not date:
+        return u"No hay fecha definida"
     today = datetime.date.today()
     difference = today - date
     if difference.days > 0:

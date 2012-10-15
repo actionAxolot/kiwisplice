@@ -47,6 +47,15 @@ class Client(models.Model):
         return u"%s - %s" %(self.prospection.get_full_name(), 
             self.prospection.salesperson.first_name + " " + self.prospection.salesperson.last_name)
 
+    def save(self, *args, **kwargs):
+        # Change status of the inventory to 'Con cliente'
+        if self.pk:
+            self.inventory.construction_status = u"Con cliente"
+            self.inventory.save()
+        super(Client, self).save(*args, **kwargs)
+        
+
+
     class Meta:
         verbose_name = _(u"Client")
         verbose_name_plural = _(u"Clients")

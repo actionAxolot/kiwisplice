@@ -16,7 +16,7 @@ import time
 
 class ProspectionView(ListView):
     model = Prospection
-    queryset = Prospection.objects.all().exclude(status__in=("Apartado"))
+    queryset = Prospection.objects.all().exclude(status__in=("Apartado",))
     template_name = "prospection/index.html"
 
 
@@ -86,7 +86,7 @@ class ProspectionCreateView(TemplateView):
 
         if prospection_form.is_valid():
             created_prospection = prospection_form.save()
-            if created_prospection.status in ("Apartado", "Por cerrar",):
+            if created_prospection.status in ("Apartado",):
                 try:
                     client = Client.objects.get(prospection=created_prospection)
                 except Client.DoesNotExist:
@@ -100,7 +100,7 @@ class ProspectionCreateView(TemplateView):
         if inline_formset.is_valid():
             inline_formset.save()
 
-            if created_prospection.status in ("Apartado", "Por cerrar"):
+            if created_prospection.status in ("Apartado",):
                 return redirect("client_edit", client_id=created_prospection.client_set.all()[0].pk)
             else:
                 return redirect("prospection_home")
@@ -111,8 +111,14 @@ class ProspectionCreateView(TemplateView):
         })
 
     def get(self, request, prospection_id=None):
+        # Because even Apartado prospections need to be display in the
+        # home report, they'll need to have a link for it. kind of
+        # kewl but it makes for horrible design. If the Status is
+        # Apartado redirect to the client create view
         if prospection_id:
             prospection = Prospection.objects.get(pk=prospection_id)
+            if prospection.status in ("Apartado",):
+                return redirect("client_edit", client_id=prospection.pk)
             prospection_form = ProspectionForm(instance=prospection)
         else:
             prospection = Prospection()

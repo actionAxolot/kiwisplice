@@ -40,7 +40,8 @@ class InventoryCreateView(TemplateView):
         inventory = Inventory()
         if inventory_id:
             inventory = Inventory.objects.get(pk=inventory_id)
-        inventory_form = InventoryForm(request.POST, request.FILES, instance=inventory, user=request.user)
+        inventory_form = InventoryForm(request.POST, request.FILES, 
+                                       instance=inventory, user=request.user)
         if inventory_form.is_valid():
             inventory_form.save()
             return redirect("inventory_home")

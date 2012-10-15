@@ -1,9 +1,8 @@
 # Create your views here.
 from django.views.generic import TemplateView, ListView
 from django.shortcuts import redirect
-
 from models import Client, CLIENT_STATUS
-from forms import ClientPaymentFormSet, ClientForm
+from forms import ClientPaymentFormSet, ClientForm, ClientPaymentCollectFormSet
 from apps.utils import format_time_span, MONTHS
 import datetime
 import operator
@@ -76,7 +75,7 @@ class ClientEditView(TemplateView):
                 request.FILES, instance=created_client)
             if inline_formset.is_valid():
                 inline_formset.save()
-            return redirect("client_home")
+                return redirect("client_home")
         else:
             inline_formset = ClientPaymentFormSet(request.POST, request.FILES, instance=client)
 
@@ -96,7 +95,7 @@ class ClientFinancialView(TemplateView):
         else:
             return redirect("client_home")
 
-        inline_formset = ClientPaymentFormSet(instance=client)
+        inline_formset = ClientPaymentCollectFormSet(instance=client)
 
         return self.render_to_response({
             "formset": inline_formset,
@@ -108,7 +107,7 @@ class ClientFinancialView(TemplateView):
         if client_id:
             client = Client.objects.get(pk=client_id)
 
-        inline_formset = ClientPaymentFormSet(request.POST, request.FILES, instance=client)
+        inline_formset = ClientPaymentCollectFormSet(request.POST, request.FILES, instance=client)
         if inline_formset.is_valid():
             inline_formset.save()
             return redirect("client_home")
@@ -130,3 +129,34 @@ class ClientSalesView(TemplateView):
 
 class ClientDownpaymentView(TemplateView):
     template_name = 'client/index.html'
+
+
+class ClientReturnToProspectionView(TemplateView):
+    """
+    Just change the status of the prospection, delete the client with everything pertaining
+    and that's it
+    """
+    def get(self, request, client_id=None):
+        """
+        Change the status, delete client and redirect to prospection view
+        Arguments:
+        - `self`: Duh
+        - `request`: The django HTTP request object
+        """
+        try:
+            client = Client.objects.get(pk=client_id)
+            if client.prospection.status == u"Cancelado":
+                client.prospection.status = u"Apartado"
+            else:
+                client.prospection.status = u"Cancelado"
+            client.prospection.save()
+            
+            if client.status == u"Cancelado":
+                client.status = u"Autorizado"
+            else:
+                client.status = u"Cancelado"
+            client.save()
+            
+            return redirect("client_home")
+        except Client.DoesNotExist:
+            return redirect("client_home")
