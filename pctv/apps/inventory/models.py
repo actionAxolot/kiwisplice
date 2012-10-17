@@ -29,6 +29,8 @@ class Prototype(models.Model):
     name = models.CharField(blank=False, null=False, max_length=50, verbose_name=_(u'Name'))
     image = models.ImageField(upload_to="prototype_pics", null=True, blank=True, verbose_name=_(u"Image"))
     price = models.CharField(blank=False, null=False, max_length=50, verbose_name=_(u"Price"))
+    commission_percentage = models.DecimalField(blank=False, null=False, max_digits=5,
+        decimal_places=2, verbose_name=u'Porcentaje de comisión')
 
     def __unicode__(self):
         return u"%s" % self.name
