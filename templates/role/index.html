@@ -1,0 +1,77 @@
+{% extends "role/base.html" %}
+
+{% block sub_content %}
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="alert alert-info">
+				Recuerde los botones mostrados arriba. Con ellos puede navegar al rededor de esta sección
+				<a href="#" data-dismiss="alert" class="close">×</a>
+			</div>
+
+			<div class="widget-box">
+				<div class="widget-title">
+					<h5>Listado de Roles</h5>
+				</div>
+				<div class="widget-content nopadding">
+					{# Render a table with every item in the object available #}
+					<table class="table table-bordered data-table">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Nombre</th>
+								<th>Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for o in object_list %}								
+							<tr>
+								<td><a href="{% url role_create_params role_id=o.pk %}">{{ o.pk }}</a></td>
+								<td>{{ o.name }}</td>
+								<td><a href="{% url role_delete_params role_id=o.pk %}" class="btn btn-danger">X</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="widget-box">
+				<div class="widget-title">
+					<h5>Listado de Roles</h5>
+				</div>
+				<div class="widget-content nopadding">
+					{# Render a table with every item in the object available #}
+					<table class="table table-bordered data-table">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Nombre de Usuario</th>
+								<th>Nombres</th>
+								<th>Apellidos</th>
+								<th>Email</th>
+								<th>Rol</th>
+								<th>Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for o in user_list %}								
+							<tr>
+								<td><a href="{% url role_create_user_params user_id=o.pk %}">{{ o.pk }}</a></td>
+								<td>{{ o.username }}</td>
+								<td>{{ o.first_name }}</td>
+								<td>{{ o.last_name }}</td>
+								<td>{{ o.email }}</td>
+								{# <td><a href="{% url role_create_params role_id=o.role_set.all.0.pk %}">{{ o.role_set.all.0.name }}</td> #}
+								<td>{{ o.role_set.all.0.name }}</td>
+								<td><a href="{% url role_delete_user_params user_id=o.pk %}" class="btn btn-danger">X</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>				
+		</div>
+	</div>
+</div>
+{% endblock %}

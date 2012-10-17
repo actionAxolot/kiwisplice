@@ -1,0 +1,97 @@
+{% extends "role/base.html" %}
+{# {% load count_status %} #}
+{% load clienttags %}
+
+{% block sub_content %}
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="alert alert-info">
+				Recuerde los botones mostrados arriba. Con ellos puede navegar al rededor de esta sección
+				<a href="#" data-dismiss="alert" class="close">×</a>
+			</div>
+
+			<div class="widget-box">
+				<div class="widget-title">
+					<ul class="nav nav-tabs">
+	                    <li class="active"><a data-toggle="tab" href="#tab1">Clientes</a></li>
+	                    <li><a data-toggle="tab" href="#tab2">Ingresos</a></li>
+	                </ul>
+				</div>
+				<div class="widget-content tab-content">
+					{# Render a table with every item in the object available #}
+					<div class="tab-pane active" id="tab1">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>STATUS</th>
+									<th>{{ months.0 }}</th>
+									<th>{{ months.1 }}</th>
+									<th>{{ months.2 }}</th>
+									<th>{{ months.3 }}</th>
+									<th>{{ months.4 }}</th>
+									<th>{{ months.5 }}</th>
+									<th>{{ months.6 }}</th>
+									<th>{{ months.7 }}</th>
+									<th>TOTAL</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for obj in object_dict %}
+								<tr>
+									<td>{{ obj.0 }}</td>
+									<td>{{ obj.1|count_by_quincena:months.0 }}</td>
+									<td>{{ obj.1|count_by_quincena:months.1 }}</td>
+									<td>{{ obj.1|count_by_quincena:months.2 }}</td>
+									<td>{{ obj.1|count_by_quincena:months.3 }}</td>
+									<td>{{ obj.1|count_by_quincena:months.4 }}</td>
+									<td>{{ obj.1|count_by_quincena:months.5 }}</td>
+									<td>{{ obj.1|count_by_quincena:months.6 }}</td>
+									<td>{{ obj.1|count_by_quincena:months.7 }}</td>
+									<td>{{ obj.1|count_by_quincena }}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+
+					<div class="tab-pane" id="tab2">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>2DA-ABR</th>
+									<th>1RA-MAY</th>
+									<th>2DA-MAY</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>&nsbp;</td>
+									<td>&nsbp;</td>
+									<td>&nsbp;</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<div id="prospection-info" class="modal hide" style="display: none;">
+				<div class="modal-header">
+					<button data-dismiss="modal" class="close" type="button">×</button>
+					<h3>Detalle te Roles</h3>
+				</div>
+				<div id="prospection-info-table" class="modal-body">
+					<div class="progress progress-striped progress-danger active">
+						<div style="width: 100%;" class="bar"></div>
+					</div>
+				</div>
+			</div>				
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block extrascripts %}
+	<script type="text/javascript" src="{{ STATIC_URL }}js/prospection/scripts.js"></script>
+{% endblock extrascripts %}

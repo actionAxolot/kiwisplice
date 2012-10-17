@@ -1,0 +1,44 @@
+{% extends "role/base.html" %}
+
+{% block sub_content %}
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span6">
+                <form action="." method="post" class="">
+                    <div class="widget-box">
+                        <div class="widget-title">
+                            <h5>Captura de roles</h5>
+                        </div>
+                        <div class="widget-content nopadding form-horizontal">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="control-group {% if field.errors %}error{% endif %}">
+                                    <div class="control-label">
+                                        {{ field.label_tag }}
+                                    </div>
+                                    <div class="controls">
+                                        {{ field }}
+                                        <span class="help-block">
+                                            {{ field.errors }}
+                                        </span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="widget-box">
+                        <div class="widget-title">
+                            <h5>Acciones</h5>
+                        </div>
+                        <div class="widget-content no-padding form-horizontal">
+                            <div class="form-actions">
+                                <input type="submit" class="btn btn-success" value="Guardar" />
+                                {# <input type="submit" class="btn btn-primary" value="Aprovar" /> #}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock sub_content %}

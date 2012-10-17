@@ -15,6 +15,7 @@
 			<a href="/" class="visible-phone"><i class="icon icon-home"></i> Inicio</a>
 			<ul>
 				<li class="{% block inicio %}{% endblock %}"><a href="/"><i class="icon icon-home"></i> <span>Inicio</span></a></li>
+        <li class="{% block roles %}{% endblock %}"><a href="{% url role_dashboard %}"><i class="icon icon-user"></i> <span>Usuarios</span></a></li>
 				<li class="submenu {% block inventario %}{% endblock %}">
 					<a href="{% url inventory_home %}"><i class="icon icon-th-list"></i> <span>Inventario</span></a>
 					<ul>

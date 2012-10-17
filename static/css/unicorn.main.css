@@ -614,7 +614,7 @@ a:hover {
     margin-top: 16px;
     margin-bottom: 16px;
     position: relative;
-	overflow: hidden !important;
+	/*overflow: hidden !important;*/
 }
 .accordion .widget-box {
 	margin-top: -2px;

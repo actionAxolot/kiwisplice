@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block roles %}
+active
+{% endblock roles %}
+
+{% block content %}
+<div id="content-header">
+	<h1>Roles</h1>
+	<div class="btn-group">
+		<a class="btn btn-large tip-bottom" href="{% url role_dashboard %}" title="Dashboard"><i class="icon-home"></i></a>
+		<a class="btn btn-large tip-bottom" href="{% url role_create %}" title="Crear Roles"><i class="icon-plus-sign"></i></a>
+		<a class="btn btn-large tip-bottom" href="{% url role_create_user %}" title="Crear Usuarios"><i class="icon-user"></i></a>
+	</div>
+</div>
+	
+	{% block sub_content %}{% endblock %}
+
+{% endblock content %}
+{% block extrascripts %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/unicorn.tables.js"></script>
+{% endblock extrascripts %}

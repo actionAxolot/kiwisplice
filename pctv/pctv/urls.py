@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     (r'^prospeccion/', include('apps.prospection.urls')),
     (r'^comisiones/', include('apps.commission.urls')),
     (r'^documentos/', include('apps.document.urls')),
+    (r'^roles/', include('apps.role.urls')),
     (r'^', include('apps.home.urls')),
 )
 
