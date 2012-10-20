@@ -17,6 +17,9 @@ PROJECT_DIRNAME = os.path.abspath(os.path.join(DIRNAME, '..', '..', '..'))
 
 LOGIN_REDIRECT_URL = '/'
 
+# Configuration about commission percentage
+COMMISSION_PERCENT = 0.10
+
 ADMINS = (
     ('Mario R. Vallejo', 'mario.r.vallejo@gmail.com'),
 )

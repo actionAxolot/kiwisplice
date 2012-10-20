@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block comision %}
+active
+{% endblock comision %}
+
+{% block content %}
+<div id="content-header">
+	<h1>Comisión</h1>
+{% comment %}  
+  <div class="btn-group">
+    <a class="btn btn-large tip-bottom" href="{% url commission_dashboard %}" title="Dashboard"><i class="icon-home"></i></a>
+    <a class="btn btn-large tip-bottom" href="{% url commission_home %}" title="Ver Prospecciones"><i class="icon-search"></i></a>
+		<a class="btn btn-large tip-bottom" href="{% url prospection_create %}" title="Crear Prospección"><i class="icon-plus-sign"></i></a>
+	</div>
+{% endcomment %}  
+</div>
+	
+	{% block sub_content %}{% endblock %}
+
+{% endblock content %}
+{% block extrascripts %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/unicorn.tables.js"></script>
+{% endblock extrascripts %}

@@ -8,7 +8,6 @@ from apps.comment.models import Comment
 
 
 CLIENT_STATUS = (
-    (u"Sin cliente", _(u"Sin cliente")),
     (u"Integración", _(u"Integración")),
     (u"Análisis", _(u"Análisis")),
     (u"Pre-autorizado", _(u"Pre-autorizado")),
