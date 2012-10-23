@@ -6,36 +6,120 @@
 		<div class="span12">
 			<div class="widget-box">
 				<div class="widget-title">
-					<h5>Listado de Comisiones</h5>
+          <ul class="nav nav-tabs">
+	          <li class="active"><a data-toggle="tab" href="#tab1">Vendedor</a></li>
+	          <li><a data-toggle="tab" href="#tab2">Cliente</a></li>
+	          <li><a data-toggle="tab" href="#tab3">Inventario</a></li>
+          </ul>
 				</div>
-				<div class="widget-content nopadding">
+				<div class="widget-content tab-content">
 					{# Render a table with every item in the object available #}
-					<table class="table table-bordered data-table">
-						<thead>
-							<tr>
-								<th>ID</th>
-								<th>Vendedor</th>
-								<th>Nombre del prospecto</th>
-								<th>Clave del inventario</th>
-								<th>Borrar</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for o in object_list %}								
-							<tr>
-								<!-- <td><a href="{% url prospection_create_params prospection_id=o.pk %}">{{ o.pk }}</a></td> -->
-								<td>{{ o.salesperson.first_name }} {{ o.salesperson.last_name }}</td>
-								<td>{{ o.get_full_name }}</td>
-								<td>{{ o.email }}</td>
-								<td>{{ o.visitation_date }}</td>
-								<td>{{ o.status }}</td>
-								<!-- <td><a href="{% url prospection_delete prospection_id=o.pk %}" class="btn btn-danger">X</td> -->
-							</tr>
-							{% endfor %}
-						</tbody>
-					</table>
+          <div class="tab-pane active" id="tab1">
+            <table class="table table-bordered data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre de usuario</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for u in salespeople %}
+                    <tr>
+                        <td><a href="{% url role_create_user_params user_id=u.pk %}">{{ u.pk }}</a></td>
+                        <td>{{ u.username }}</td>
+                        <td>{{ u.first_name }}</td>
+                        <td>{{ u.last_name }}</td>                        
+                        <td>{{ u.email }}</td>
+                        <td>{{ u.role_set.all.0.name }}</td>
+                        <td>
+                           <a href="#" class="btn action-commission" data-app-label="auth" data-model="user" data-id="{{ u.pk }}">Ver Comisiones</a>                          
+                        </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+          </div>
+
+          <div class="tab-pane" id="tab2">
+            <table class="table table-bordered data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Vendedor</th>
+                        <th>Cliente</th>
+                        <th>Email</th>
+                        <th>Fecha de entrega</th>
+                        <th>Estatus</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for c in clients %}
+                    <tr>
+                      <td><a href="{% url client_edit client_id=c.pk %}">{{ c.pk }}</td>
+                      <td>{{ c.prospection.salesperson.first_name }} {{ o.prospection.salesperson.last_name }}</td>
+                      <td>{{ c.prospection.get_full_name }}</td>
+                      <td>{{ c.prospection.email }}</td>
+                      <td>{{ c.delivery_date }}</td>
+                      <td>{{ c.status }}</td>
+                      <td><a href="#" class="btn action-commission" data-app-label="client"
+                             data-model="client" data-is-tabbed="false" data-id="{{ c.pk }}">Ver Comisiones</a></td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+          </div>
+
+          <div class="tab-pane" id="tab3">
+            <table class="table table-bordered data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Prototipo</th>
+                        <th>Identificador</th>
+                        <th>Etapa</th>
+                        <th>Estatus de construcción</th>
+                        <th>Calle</th>
+                        <th>Número</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for i in inventory %}
+                    <tr>
+                      <td><a href="{% url inventory_create_params inventory_id=i.pk %}">{{ i.pk }}</td>
+                      <td>{{ i.prototype.name }}</td>
+                      <td>{{ i.unique_id }}</td>
+                      <td>{{ i.section.name }}</td>
+                      <td>{{ i.construction_status }}</td>
+                      <td>{{ i.street }}</td>
+                      <td>{{ i.number }}</td>
+                      <td><a href="#" class="btn action-commission" data-app-label="inventory"
+                             data-model="inventory" data-is-tabbed="false" data-id="{{ i.pk }}">Ver Comisiones</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+          </div>
 				</div>
 			</div>					
+		</div>
+	</div>
+</div>
+
+<div id="commission-info" class="modal hide big" style="display: none;">
+	<div class="modal-header">
+		<button data-dismiss="modal" class="close" type="button">×</button>
+		<h3>Detalle de comisiones</h3>
+	</div>
+	<div id="commission-info-table" class="modal-body">
+		<div class="progress progress-striped progress-danger active">
+			<div style="width: 100%;" class="bar"></div>
 		</div>
 	</div>
 </div>

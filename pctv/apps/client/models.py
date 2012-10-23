@@ -43,8 +43,7 @@ class Client(models.Model):
     comments = generic.GenericRelation(Comment)
 
     def __unicode__(self):
-        return u"%s - %s" %(self.prospection.get_full_name(), 
-            self.prospection.salesperson.first_name + " " + self.prospection.salesperson.last_name)
+        return u"%s" % self.prospection.get_full_name()
 
     def save(self, *args, **kwargs):
         # Change status of the inventory to 'Con cliente'

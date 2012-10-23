@@ -79,7 +79,7 @@ class ProspectionManager(models.Manager):
 
 class Prospection(models.Model):
     salesperson = models.ForeignKey(User, blank=False, null=False,
-        verbose_name=_(u'Vendedor'), related_name="salesperson")
+        verbose_name=_(u'Vendedor'))
     financial_channel = models.CharField(blank=False, null=False,
         verbose_name=_(u"Canal Financiero"), max_length=50,
         choices=PROSPECTION_FINANCIAL_OPTIONS, default="IMSS")

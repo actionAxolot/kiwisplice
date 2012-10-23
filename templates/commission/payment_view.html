@@ -1,0 +1,51 @@
+{% extends "commission/base.html" %}
+
+{% load commission %}
+
+{% block sub_content %}
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="alert alert-info">
+				Recuerde los botones mostrados arriba. Con ellos puede navegar al rededor de esta sección
+				<a href="#" data-dismiss="alert" class="close">×</a>
+			</div>
+
+			<div class="widget-box">
+				<div class="widget-title">
+					<h5>Listado de Pagos de Comisiones</h5>
+				</div>
+				<div class="widget-content nopadding">
+					{# Render a table with every item in the object available #}
+					<table class="table table-bordered data-table">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Porcentaje</th>
+								<th>Fecha de pago</th>
+								<th>Status</th>
+								<th>Cantidad</th>
+								<th>Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for o in object_list %}								
+							<tr>
+								<td>{{ o.pk }}</td>
+								<td>{{ o.percentage }}</td>
+								<td>{{ o.payment_date }}</td>
+								<td>{{ o.status }}</td>
+								<td>{{ o|get_commission_payment_total }}</td>
+								<td>
+                  <a href="{% url prospection_delete prospection_id=o.pk %}" class="btn btn-danger">Pagar</a>
+                </td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>					
+		</div>
+	</div>
+</div>
+{% endblock %}

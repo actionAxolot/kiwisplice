@@ -1,0 +1,117 @@
+{% load commission %}
+
+<div class="widget-box">
+    <div class="widget-title">
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#popup-tab1">Pendientes</a></li>
+	        <li><a data-toggle="tab" href="#popup-tab2">Pagadas</a></li>
+	        <li><a data-toggle="tab" href="#popup-tab3">Canceladas</a></li>
+        </ul>
+    </div>
+    <div class="widget-content tab-content">
+      <div class="tab-pane active" id="popup-tab1">
+        <table class="table table-bordered data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Vendedor</th>
+              <th>Fecha de creación</th>
+              <th>Fecha de modificación</th>
+              <th>Status</th>
+              <th>Fecha próximo pago</th>
+              <th>Total</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in pending %}
+            <tr>
+              <td><a href="{% url role_create_user_params user_id=c.pk %}">{{ c.pk }}</a></td>
+              <td>{{ c.client }}</td>
+              <td>{{ c.client.prospection.salesperson }}</td>
+              <td>{{ c.created_date }}</td>
+              <td>{{ c.modified_date }}</td>                        
+              <td>{{ c.status }}</td>
+              <td>{{ c|get_next_payment_date}}</td>
+              <td>{{ c|get_commission_total }}</td>
+              <td>
+                <a class="btn" href="{% url commission_payment c.pk %}">Ver Pagos</a>                          
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+       <div class="tab-pane" id="popup-tab2">
+        <table class="table table-bordered data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Vendedor</th>
+              <th>Fecha de creación</th>
+              <th>Fecha de modificación</th>
+              <th>Status</th>
+              <th>Fecha próximo pago</th>
+              <th>Total</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in payed %}
+            <tr>
+              <td><a href="{% url role_create_user_params user_id=c.pk %}">{{ c.pk }}</a></td>
+              <td>{{ c.client }}</td>
+              <td>{{ c.client.prospection.salesperson }}</td>
+              <td>{{ c.created_date }}</td>
+              <td>{{ c.modified_date }}</td>                        
+              <td>{{ c.status }}</td>
+              <td>{{ c|get_next_payment_date}}</td>
+              <td>{{ c|get_commission_total }}</td>
+              <td>
+                <a class="btn" href="{% url commission_payment c.pk %}">Ver Pagos</a>                          
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tab-pane" id="popup-tab3">
+        <table class="table table-bordered data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Vendedor</th>
+              <th>Fecha de creación</th>
+              <th>Fecha de modificación</th>
+              <th>Status</th>
+              <th>Fecha próximo pago</th>
+              <th>Total</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in canceled %}
+            <tr>
+              <td><a href="{% url role_create_user_params user_id=c.pk %}">{{ c.pk }}</a></td>
+              <td>{{ c.client }}</td>
+              <td>{{ c.client.prospection.salesperson }}</td>
+              <td>{{ c.created_date }}</td>
+              <td>{{ c.modified_date }}</td>                        
+              <td>{{ c.status }}</td>
+              <td>{{ c|get_next_payment_date}}</td>
+              <td>{{ c|get_commission_total }}</td>
+              <td>
+                <a class="btn" href="{% url commission_payment c.pk %}">Ver Pagos</a>                          
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>
