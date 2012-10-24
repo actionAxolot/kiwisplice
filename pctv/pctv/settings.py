@@ -199,7 +199,6 @@ INSTALLED_APPS = (
     'apps.payment',  # translated
     'apps.finance',
     'apps.document',
-    'apps.role',
     'apps.utils',
     'rosetta',
     'south',

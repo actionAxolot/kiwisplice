@@ -1,14 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from models import *
-
-
-class RoleForm(forms.ModelForm):
-    class Meta:
-        model = Role
-        exclude = ("user", "slug")
-
 
 class UserCreateForm(forms.Form):
 	username = forms.CharField(max_length=50, label=u"Nombre de usuario", required=True)
@@ -17,7 +10,7 @@ class UserCreateForm(forms.Form):
 	last_name = forms.CharField(max_length=50, label=u"Apellidos", required=True)
 	password1 = forms.CharField(max_length=80, widget=forms.PasswordInput(), label=u"Contraseña", required=True)
 	password2 = forms.CharField(max_length=80, widget=forms.PasswordInput(), label=u"Confirmar contraseña", required=True)
-	role = forms.ModelChoiceField(queryset=Role.objects.all(), label=u"Rol", required=True, empty_label=None)
+	group = forms.ModelChoiceField(queryset=Group.objects.all(), label=u"Grupo", required=True, empty_label=None)
 
 	def clean_username(self):
 		username = self.cleaned_data["username"]
@@ -43,7 +36,7 @@ class UserEditForm(forms.Form):
 	email = forms.EmailField(label=u"Correo electrónico", required=True)
 	first_name = forms.CharField(max_length=50, label=u"Nombres", required=True)
 	last_name = forms.CharField(max_length=50, label=u"Apellidos", required=True)
-	role = forms.ModelChoiceField(queryset=Role.objects.all(), label=u"Rol", required=True, empty_label=None)
+	group = forms.ModelChoiceField(queryset=Group.objects.all(), label=u"Grupo", required=True, empty_label=None)
 
 	def clean_username(self):
 		username = self.cleaned_data["username"]

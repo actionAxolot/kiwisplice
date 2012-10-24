@@ -1,6 +1,6 @@
 from django.views.generic import ListView, TemplateView
 from django.shortcuts import redirect, get_object_or_404
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.forms.models import model_to_dict
 from models import *
 from forms import *
@@ -14,7 +14,7 @@ class RoleIndexView(TemplateView):
 
     def get(self, request):
         # Be kewl
-        object_list = Role.objects.all()
+        object_list = Group.objects.all()
         user_list = User.objects.all()
 
         return self.render_to_response({
@@ -66,7 +66,7 @@ class RoleUserCreateView(TemplateView):
         form = UserCreateForm(request.POST, request.FILES)
 
         if form.is_valid():
-            role = form.cleaned_data.get("role")
+            group = form.cleaned_data.get("group")
             user = User()
             user.username = form.cleaned_data["username"]
             user.email = form.cleaned_data["email"]
@@ -74,14 +74,13 @@ class RoleUserCreateView(TemplateView):
             user.last_name = form.cleaned_data["last_name"]
             user.is_staff = True
 
-            # If selected role is Master also check is_admin
-            if form.cleaned_data["role"].slug == 'master':
+            # If selected group is Master also check is_admin
+            if form.cleaned_data["group"].name == 'Administrador':
                 user.is_superuser = True
 
             user.set_password(form.cleaned_data["password2"])
+            user.groups.add(group)
             user.save()
-            role.user.add(user)
-            role.save()
             return redirect("role_dashboard")
 
         return self.render_to_response({"form": form})
@@ -100,14 +99,17 @@ class RoleUserEditView(TemplateView):
         user = get_object_or_404(User, pk=user_id)
         form = UserEditForm(request.POST, request.FILES)
         if form.is_valid():
-            role = form.cleaned_data.get("role")
+            group = form.cleaned_data.get("group")
             user.username = form.cleaned_data["username"]
             user.email = form.cleaned_data.get("email")
             user.first_name = form.cleaned_data.get("first_name")
             user.last_name = form.cleaned_data.get("last_name")
+
+            if form.cleaned_data["group"] == "Administrador":
+                user.is_superuser = True
+            
+            user.groups.add(group)
             user.save()
-            role.user.add(user)
-            role.save()
             return redirect("role_dashboard")
 
         return self.render_to_response({"form": form})
