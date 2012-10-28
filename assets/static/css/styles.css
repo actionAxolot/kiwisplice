@@ -16,7 +16,8 @@ input {
 }
 
 #map-container {
-    width: 950px;
-    height: 336px;
-    background-image: url(../img/map-background.png);
+    width: 968px;
+    height: 271px;
+    background: url(../img/map-background.png) no-repeat;
+    background-size: 100%;
 }
