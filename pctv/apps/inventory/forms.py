@@ -59,3 +59,4 @@ class BridgeCreditPaymentForm(forms.ModelForm):
 
 
 BridgeCreditPaymentsFormset = inlineformset_factory(BridgeCredit, BridgeCreditPayment, form=BridgeCreditPaymentForm, extra=1)
+InventoryBridgeCreditFormset = inlineformset_factory(Inventory, BridgeCredit, form=BridgeCreditForm)

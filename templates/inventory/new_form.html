@@ -15,111 +15,108 @@
 			</div>
 		</div>
 	</div>
-  <div class="row-fluid">
-    <div class="span6">
-      <form action="." method="post" class="">
-	<div class="widget-box">
-	  <div class="widget-title">
-	    <h5>Captura de Inventario</h5>
-	  </div>
-	  <div class="widget-content nopadding form-horizontal">
-	    {% csrf_token %}
-	    {% for field in form %}
-	    {% if field.is_hidden %}
-	    {{ field }}
-	    {% else %}
-	    <div class="control-group {% if field.errors %}error{% endif %}">
-	      <div class="control-label">
-		{{ field.label_tag }}
-	      </div>
-	      <div class="controls">
-		{{ field }}
-		<span class="help-block">
-		  {{ field.errors }}
-		</span>
-	      </div>
-	    </div>
-	    {% endif %}
-	    {% endfor %}
-	  </div>
-	</div>
+	<div class="row-fluid">
+		<div class="span6">
+			<form action="." method="post" class="">
+				<div class="widget-box">
+					<div class="widget-title">
+						<h5>Captura de Inventario</h5>
+					</div>
+					<div class="widget-content nopadding form-horizontal">
+						{% csrf_token %}
+						{% for field in form %}
+						{% if field.is_hidden %}
+						{{ field }}
+						{% else %}
+						<div class="control-group {% if field.errors %}error{% endif %}">
+							<div class="control-label">
+								{{ field.label_tag }}
+							</div>
+							<div class="controls">
+								{{ field }}
+								<span class="help-block"> {{ field.errors }} </span>
+							</div>
+						</div>
+						{% endif %}
+						{% endfor %}
+					</div>
+				</div>
 
-	<div class="widget-box">
-	  <div class="widget-title">
-	    <h5>Acciones</h5>
-	  </div>
-	  <div class="widget-content no-padding form-horizontal">
-	    <div class="form-actions">
-	      <input type="submit" class="btn btn-success" value="Guardar" />
-	      {# <input type="submit" class="btn btn-primary" value="Aprovar" /> #}
-	    </div>
-	  </div>
-	</div>
-      </form>
-    </div>
+				<div class="widget-box">
+					<div class="widget-title">
+						<h5>Acciones</h5>
+					</div>
+					<div class="widget-content no-padding form-horizontal">
+						<div class="form-actions">
+							<input type="submit" class="btn btn-success" value="Guardar" />
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
 
-    <div class="span6">
-      {% if inventory_id %}
-      <div class="widget-box">
-	<div class="widget-title">
-	  <h5>Datos</h5>
+		<div class="span6">
+			{% if inventory_id %}
+			<div class="widget-box">
+				<div class="widget-title">
+					<h5>Datos</h5>
+				</div>
+				<div class="widget-content nopadding form-horizontal">
+					<table class="table table-bordered table-striped">
+						<tbody>
+							<tr>
+								<td>Identificador</td>
+								<td>{{ inventory.unique_id }}</td>
+							</tr>
+							<tr>
+								<td>Proyección de obra</td>
+								<td>{{ inventory.construction_end_date|format_time_spans }}</td>
+							</tr>
+							<tr>
+								<td>Estatus crédito puente</td>
+								{% if inventory.bridgecredit_set.all.0.status %}
+								<td>{{ inventory.bridgecredit_set.all.0.status }}</td>
+								{% else %}
+								<td>Indefinido</td>
+								{% endif %}
+							</tr>
+							{% ifequal inventory.bridgecredit_set.all.0.status "Liberado" %}
+							<tr>
+								<td>Monto crédito puente por ejercer</td>
+								<td>${{ inventory.bridgecredit_set.all.0.approved_amount|bridge_credit_left:inventory.bridgecredit_set.all.0.ministered_amount }}</td>
+							</tr>
+							<tr>
+								<td>Saldo crédito puente</td>
+								<td>${{ inventory.bridgecredit_set.all.0.approved_amount|bridge_credit_owed:inventory.bridgecredit_set.all.0.payed_amount }}</td>
+							</tr>
+							<tr>
+								<td>% de crédito puente ministrado</td>
+								<td>%{{ inventory.bridgecredit_set.all.0.approved_amount|bridge_credit_ministered_percentage:inventory.bridgecredit_set.all.0.ministered_amount }}</td>
+							</tr>
+							<tr>
+								<td>% de crédito puente por ejercer</td>
+								<td>%{{ inventory.bridgecredit_set.all.0.approved_amount|bridge_credit_left_percentage:inventory.bridgecredit_set.all.0.ministered_amount }}</td>
+							</tr>
+							{% endifequal %}
+							<tr>
+								<td>Pago SIAPA</td>
+								<td>{{ inventory.siapa_payment_date|days_from_now }}</td>
+							</tr>
+							<tr>
+								<td>Pago PREDIAL</td>
+								<td>{{ inventory.predial_payment_date|days_from_now }}</td>
+							</tr>
+							<tr>
+								<td>CLG</td>
+								<td>{{ inventory.clg_emission_date|days_from_now }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			{% endif %}
+		</div>
 	</div>
-	<div class="widget-content nopadding form-horizontal">
-	  <table class="table table-bordered table-striped">
-	    <tbody>
-	      <tr>
-		<td>Identificador</td>
-		<td>{{ inventory.unique_id }}</td>
-	      </tr>
-	      <tr>
-		<td>Proyección de obra</td>
-		<td>{{ inventory.construction_end_date|format_time_spans }}</td>
-	      </tr>
-	      <tr>
-		<td>Estatus crédito puente</td>
-    {% if inventory.bridgecredit_set.all.0.status %}
-		  <td>{{ inventory.bridgecredit_set.all.0.status }}</td>
-    {% else %}
-      <td>Indefinido</td>
-    {% endif %}
-	      </tr>
-	      {% ifequal inventory.bridgecredit_set.all.0.status "Liberado" %}
-	      <tr>
-		<td>Monto crédito puente por ejercer</td>
-		<td>${{ inventory.bridgecredit_set.all.0.approved_amount|bridge_credit_left:inventory.bridgecredit_set.all.0.ministered_amount }}</td>
-	      </tr>
-	      <tr>
-		<td>Saldo crédito puente</td>
-		<td>${{ inventory.bridgecredit_set.all.0.approved_amount|bridge_credit_owed:inventory.bridgecredit_set.all.0.payed_amount }}</td>
-	      </tr>
-	      <tr>
-		<td>% de crédito puente ministrado</td>
-		<td>%{{ inventory.bridgecredit_set.all.0.approved_amount|bridge_credit_ministered_percentage:inventory.bridgecredit_set.all.0.ministered_amount }}</td>
-	      </tr>
-	      <tr>
-		<td>% de crédito puente por ejercer</td>
-		<td>%{{ inventory.bridgecredit_set.all.0.approved_amount|bridge_credit_left_percentage:inventory.bridgecredit_set.all.0.ministered_amount }}</td>
-	      </tr>
-	      {% endifequal %}
-	      <tr>
-		<td>Pago SIAPA</td>
-		<td>{{ inventory.siapa_payment_date|days_from_now }}</td>
-	      </tr>
-	      <tr>
-		<td>Pago PREDIAL</td>
-		<td>{{ inventory.predial_payment_date|days_from_now }}</td>
-	      </tr>
-	      <tr>
-		<td>CLG</td>
-		<td>{{ inventory.clg_emission_date|days_from_now }}</td>
-	      </tr>
-	    </tbody>
-	  </table>
-	</div>
-      </div>
-      {% endif %}
-    </div>
-  </div>
 </div>
 {% endblock sub_content %}
 {% block extrascripts %}

@@ -1,17 +1,15 @@
 # Create your views here.
-import operator
-from django.views.generic import ListView, TemplateView
-from django.shortcuts import redirect
-from django import http
-from django.utils import simplejson
-from django.template import Context, loader
-from django.db.models import Count
-
-from models import Prospection, PROSPECTION_STATUS_CHOICES, PROSPECTION_CHANNEL_OPTIONS, TOTAL_INCOME_BUCKET
 from apps.client.models import Client
+from django import http
+from django.shortcuts import redirect
+from django.template import Context, loader
+from django.utils import simplejson
+from django.views.generic import ListView, TemplateView
 from forms import ProspectionForm, ProspectionPhoneNumberFormset
-
-import time
+from models import Prospection, PROSPECTION_STATUS_CHOICES, \
+    PROSPECTION_CHANNEL_OPTIONS, TOTAL_INCOME_BUCKET
+import datetime
+import operator
 
 
 class ProspectionView(ListView):
@@ -135,6 +133,12 @@ class ProspectionDeleteView(TemplateView):
     def get(self, request, prospection_id=None):
         Prospection.objects.get(pk=prospection_id).delete()
         return redirect("prospection_home")
+    
+    
+class ProspectionByMonthView(TemplateView):
+    def get(self, request):
+        month = request.GET.get("month", "1")
+        year = request.GET.get("year", datetime.date.today().year)
 
 
 class ProspectionAjaxView(TemplateView):

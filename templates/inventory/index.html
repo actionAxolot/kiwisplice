@@ -25,7 +25,7 @@
 								<th>Estatus de construcción</th>
 								<th>Calle</th>
 								<th>Número</th>
-								<th>Borrar</th>
+								<th>Acciones</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -38,7 +38,11 @@
 								<td>{{ o.construction_status }}</td>
 								<td>{{ o.street }}</td>
 								<td>{{ o.number }}</td>
-								<td><a href="{% url inventory_delete inventory_id=o.pk %}" class="btn btn-danger">X</td>
+								<td>
+									<a href="{% url inventory_bridge_credit_create %}?inventario={{ o.pk }}" class="btn btn-success">Crédito Puente</a>
+									<a href="{% url inventory_delete inventory_id=o.pk %}" class="btn btn-danger">X</a>
+
+								</td>
 							</tr>
 							{% endfor %}
 						</tbody>

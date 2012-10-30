@@ -21,11 +21,9 @@
 					<ul>
 						<li class="{% block listado_inventario %}{% endblock %}"><a href="{% url inventory_home %}">Tablero</a></li>
 						<li class="{% block credito_puente%}{% endblock %}"><a href="{% url inventory_bridge_credit %}">Crédito Puente</a></li>
-						<li class="{% block documentacion %}{% endblock %}"><a href="form-validation.html">Documentación</a></li>
-						{# <li class="{% block ventas %}{% endblock %}"><a href="form-wizard.html">Ventas</a></li> #}
+<!-- 						<li class="{% block documentacion %}{% endblock %}"><a href="form-validation.html">Documentación</a></li> -->
 						<li class="{% block prototipo %}{% endblock %}"><a href="{% url inventory_prototype %}">Prototipo</a></li>
 						<li class="{% block etapa %}{% endblock %}"><a href="{% url inventory_section %}">Etapa</a></li>
-						{# <li class="{% block dpf %}{% endblock %}"><a href="{% url inventory_dpf %}">DPF</a></li> #}
 					</ul>
 				</li>
 				<li class="submenu {% block cliente %}{% endblock %}">
@@ -33,9 +31,9 @@
 					<ul>
 						<li class="{% block listado_cliente %}{% endblock %}"><a href="{% url client_dashboard %}">Tablero</a></li>
 						<li class="{% block cobranza %}{% endblock %}"><a href="{% url client_financial_list %}">Cobranza</a></li>
-						<li class="{% block entrega_vivienda %}{% endblock %}"><a href="calendar.html">Entrega de Vivienda</a></li>
+						<!-- <li class="{% block entrega_vivienda %}{% endblock %}"><a href="calendar.html">Entrega de Vivienda</a></li>
 						<li class="{% block ventas_ubicacion %}{% endblock %}"><a href="{% url client_sales %}">Ventas por Ubicación</a></li>
-						<li class="{% block maduracion_enganches %}{% endblock %}"><a href="{% url client_downpayment %}">Maduración de Enganches</a></li>
+						<li class="{% block maduracion_enganches %}{% endblock %}"><a href="{% url client_downpayment %}">Maduración de Enganches</a></li> -->
 					</ul>
 				</li>
 				<li class="{% block prospeccion %}{% endblock %}">
