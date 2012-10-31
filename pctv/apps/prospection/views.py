@@ -108,6 +108,7 @@ class ProspectionCreateView(TemplateView):
             prospection = Prospection.objects.get(pk=prospection_id)
 
         prospection_form = ProspectionForm(request.POST, request.FILES, instance=prospection)
+        inline_formset = ProspectionPhoneNumberFormset(request.POST, instance=prospection)
 
         if prospection_form.is_valid():
             created_prospection = prospection_form.save()
@@ -117,17 +118,16 @@ class ProspectionCreateView(TemplateView):
                 except Client.DoesNotExist:
                     client = Client(prospection=prospection)
                     client.save()
-        else:
-            created_prospection = Prospection()
 
-        inline_formset = ProspectionPhoneNumberFormset(request.POST, instance=created_prospection)
+            inline_formset = ProspectionPhoneNumberFormset(request.POST,
+                                                             instance=created_prospection)
 
-        if inline_formset.is_valid():
-            inline_formset.save()
+            if inline_formset.is_valid():
+                inline_formset.save()
 
-            if created_prospection.status in ("Apartado",):
-                return redirect("client_edit", client_id=created_prospection.client_set.all()[0].pk)
-            else:
+                if created_prospection.status in ("Apartado",):
+                    return redirect("client_edit", client_id=created_prospection.client_set.all()[0].pk)
+
                 return redirect("prospection_home")
 
         return self.render_to_response({

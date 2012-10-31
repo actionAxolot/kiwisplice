@@ -47,7 +47,7 @@ class Client(models.Model):
 
     def save(self, *args, **kwargs):
         # Change status of the inventory to 'Con cliente'
-        if self.pk:
+        if self.pk and self.inventory:
             self.inventory.construction_status = u"Con cliente"
             self.inventory.save()
         super(Client, self).save(*args, **kwargs)

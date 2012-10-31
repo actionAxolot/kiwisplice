@@ -1,6 +1,6 @@
 from django.forms.models import ModelForm
 from django.forms.models import inlineformset_factory
-from django.forms.widgets import HiddenInput, DateInput
+from django.forms.widgets import HiddenInput, DateInput, TextInput
 from models import Client
 from apps.payment.models import Payment
 
@@ -33,8 +33,9 @@ class PaymentCollectForm(ModelForm):
         model = Payment
         widgets = {
             'date_payed': DateInput(format='%d/%m/%Y', attrs={"class": "date-picker"}),
+            'amount': TextInput(attrs={"disabled": "disabled"}),
+            'date_due': DateInput(format='%d/%m/%Y', attrs={"disabled": "disabled"}),
         }
-        exclude = ("amount", "date_due")
 
 
 ClientPaymentFormSet = inlineformset_factory(Client, Payment, form=PaymentForm,

@@ -103,7 +103,7 @@ class Inventory(models.Model):
     # the one in the Inventory entry
 
     def __unicode__(self):
-        return u"%s" % self.cuv
+        return u"%s" % self.unique_id
 
     def save(self, *args, **kwargs):
         """
