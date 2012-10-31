@@ -93,9 +93,9 @@ class Prospection(models.Model):
     # Things to know... just in case...
     first_name = models.CharField(blank=False, null=False,
         max_length=50, verbose_name=_(u"Primer nombre"))
-    middle_name = models.CharField(blank=False, null=True, max_length=50, verbose_name=_(u"Segundo nombre"))
+    middle_name = models.CharField(blank=True, null=True, max_length=50, verbose_name=_(u"Segundo nombre"))
     father_lastname = models.CharField(blank=False, null=False, max_length=50, verbose_name=_(u"Apellido Paterno"))
-    mother_lastname = models.CharField(blank=False, null=True, max_length=50, verbose_name=_(u"Apellido Materno"))
+    mother_lastname = models.CharField(blank=True, null=True, max_length=50, verbose_name=_(u"Apellido Materno"))
     email = models.CharField(blank=False, null=False, max_length=50, verbose_name=_(u"Email"))
 
     street = models.CharField(null=True, max_length=50, verbose_name=_(u"Calle"))
