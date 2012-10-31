@@ -79,6 +79,7 @@ class RoleUserCreateView(TemplateView):
                 user.is_superuser = True
 
             user.set_password(form.cleaned_data["password2"])
+            user.save()
             user.groups.add(group)
             user.save()
             return redirect("role_dashboard")

@@ -77,8 +77,10 @@ class Inventory(models.Model):
         verbose_name=_(u"Street"), max_length=50)
     number = models.CharField(blank=False, null=False,
         verbose_name=_(u'Realestate number'), max_length=50)
-    lot_size = models.IntegerField(blank=False, null=False, verbose_name=_(u"Extensión de terreno"))
-    construction_size = models.IntegerField(blank=False, null=False, verbose_name=_(u'Extensión de construcción'))
+    lot_size = models.DecimalField(blank=False, null=False, max_digits=6, decimal_places=2,
+                                   verbose_name=_(u"Extensión de terreno"))
+    construction_size = models.DecimalField(blank=False, null=False, max_digits=6, decimal_places=2,
+                                            verbose_name=_(u'Extensión de construcción'))
     construction_end_date = models.DateField(blank=False, null=False, verbose_name=_(u"Construction end date"))
 
     percent_completed = models.IntegerField(blank=False, null=False,
