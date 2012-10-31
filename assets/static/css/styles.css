@@ -21,3 +21,13 @@ input {
     background: url(../img/map-background.png) no-repeat;
     background-size: 100%;
 }
+
+ul.time-filters {
+	display: block;
+	list-style: none;
+}
+
+ul.time-filters li {
+	float: left;
+	margin-right: 18px;
+}

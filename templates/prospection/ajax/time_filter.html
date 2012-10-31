@@ -1,0 +1,24 @@
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Vendedor</th>
+			<th>Nombre del prospecto</th>
+			<th>Email del prospecto</th>
+			<th>Fecha de visita</th>
+			<th>Estatus</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for o in obj_this_month %}
+		<tr>
+			<td><a href="{% url prospection_create_params prospection_id=o.pk %}">{{ o.pk }}</a></td>
+			<td>{{ o.salesperson }}</td>
+			<td>{{ o }}</td>
+			<td>{{ o.email }}</td>
+			<td>{{ o.visitation_date }}</td>
+			<td>{{ o.status }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>

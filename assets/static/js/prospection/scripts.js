@@ -54,3 +54,12 @@ $("#prospection-info").on("hidden", function(e){
         '<div class="progress progress-striped progress-danger active"><div style="width: 100%;" class="bar"></div></div>'
     );
 });
+
+// time filters and shit
+$("#time-filter-form").submit(function(e){
+	e.preventDefault();
+	$("#prospection-render-target").load(
+		'/prospeccion/',
+		{month: $("#id_month").val(), year: $("#id_year").val()}
+	)
+});

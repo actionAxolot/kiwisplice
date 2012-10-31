@@ -1,10 +1,12 @@
 # Create your views here.
 from apps.client.models import Client
+from apps.prospection.forms import FilterForm
 from django import http
 from django.shortcuts import redirect
 from django.template import Context, loader
 from django.utils import simplejson
 from django.views.generic import ListView, TemplateView
+from django.views.decorators.csrf import csrf_exempt
 from forms import ProspectionForm, ProspectionPhoneNumberFormset
 from models import Prospection, PROSPECTION_STATUS_CHOICES, \
     PROSPECTION_CHANNEL_OPTIONS, TOTAL_INCOME_BUCKET
@@ -22,6 +24,9 @@ class ProspectionDashboardView(TemplateView):
     """Show the dashboard with kewl information for prospections"""
     template_name = "prospection/dashboard.html"
     # prospections = Prospection.objects.all()
+    @csrf_exempt
+    def dispatch(self, *args, **kwargs):
+        return super(ProspectionDashboardView, self).dispatch(*args, **kwargs)
 
     def get(self, request):
         # Get the respective buckets
@@ -59,6 +64,15 @@ class ProspectionDashboardView(TemplateView):
             total_status_list[x[0]] = len(Prospection.objects.filter(total_income=x[0]))
 
         obj_status_list = sorted(obj_status_list.iteritems(), key=operator.itemgetter(0))
+        
+        # Now get the prospections that have been caught this month
+        month = datetime.date.today().month
+        year = datetime.date.today().year
+        obj_this_month = Prospection.objects.filter(visitation_date__month=month,
+                                                    visitation_date__year=year)
+        
+        # Now create the new form
+        time_filters = FilterForm()
 
         return self.render_to_response({
             'obj_list': obj_list,
@@ -66,8 +80,21 @@ class ProspectionDashboardView(TemplateView):
             'obj_pros_list': obj_pros_list,
             'total_pros_list': total_pros_list,
             'obj_status_list': obj_status_list,
+            'obj_this_month': obj_this_month,
             'total_status_list': total_status_list,
+            'time_filters': time_filters,
         })
+        
+    def post(self, request):
+        # Ugh.. just do it here
+        month = request.POST.get("month", datetime.date.today().month)
+        year = request.POST.get("year", datetime.date.today().year)
+        
+        self.template_name = "prospection/ajax/time_filter.html"
+        obj_this_month = Prospection.objects.filter(visitation_date__month=month,
+                                                    visitation_date__year=year)
+        
+        return self.render_to_response({"obj_this_month": obj_this_month})
 
 
 class ProspectionCreateView(TemplateView):
@@ -136,9 +163,14 @@ class ProspectionDeleteView(TemplateView):
     
     
 class ProspectionByMonthView(TemplateView):
+    template_name = "prospection/view_by_month.html"
     def get(self, request):
         month = request.GET.get("month", "1")
         year = request.GET.get("year", datetime.date.today().year)
+        prospections = Prospection.objects.filter(visitation_date__month=month, visitation_date__year=year)
+        
+        return self.render_to_response({"prospections": prospections})
+        
 
 
 class ProspectionAjaxView(TemplateView):
