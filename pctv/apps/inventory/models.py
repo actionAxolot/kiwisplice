@@ -28,8 +28,8 @@ CONSTRUCTION_STATUS = (
 class Prototype(models.Model):
     name = models.CharField(blank=False, null=False, max_length=50, verbose_name=_(u'Name'))
     image = models.ImageField(upload_to="prototype_pics", null=True, blank=True, verbose_name=_(u"Image"))
-    price = models.CharField(blank=False, null=False, max_length=50, verbose_name=_(u"Price"))
-    commission_percentage = models.DecimalField(blank=False, null=False, max_digits=5,
+    price = models.CharField(blank=True, null=True, max_length=50, verbose_name=_(u"Price"))
+    commission_percentage = models.DecimalField(blank=True, null=True, max_digits=5,
         decimal_places=2, verbose_name=u'Porcentaje de comisión')
 
     def __unicode__(self):
@@ -52,17 +52,26 @@ class Section(models.Model):
         verbose_name = _(u'Section')
         verbose_name_plural = _(u'Sections')
 
+        
+class Condo(models.Model):
+    # Ugh... fucking hate this but whatever
+    name = models.CharField(blank=False, null=False, max_length=30)
+
+    def __unicode__(self):
+        return u"%s" % self.name
+        
 
 class Inventory(models.Model):
     """ What houses are / will be available? """
     created_by = models.ForeignKey(User, verbose_name=_(u'Created by'), blank=True, null=True)
     prototype = models.ForeignKey(Prototype, verbose_name=_(u'Prototype'))
     section = models.ForeignKey(Section, verbose_name=_(u"Section"))
+    condo = models.ForeignKey(Condo, verbose_name=_(u"Condominio"))
     construction_status = models.CharField(max_length=40, blank=False, null=False,
         choices=CONSTRUCTION_STATUS, verbose_name=_(u"Construction status"))
     # location_status = models.CharField(blank=False, null=False,
         # max_length=50, verbose_name=_(u"Location Status"), choices=LOCATION_STATUS)
-    cuv = models.CharField(max_length=200, blank=True, null=False, verbose_name=_(u'CUV'), )
+    cuv = models.CharField(max_length=200, blank=True, null=True, verbose_name=_(u'CUV'), )
     official_id = models.CharField(max_length=200, blank=False, null=False, verbose_name=_(u"Official Identifier"))
 
     # TODO: This one should be filled automatically

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from models import Prototype, Section, Inventory, \
-    BridgeCredit, BridgeCreditPayment
+    BridgeCredit, BridgeCreditPayment, Condo
 
 
 class InventoryAdmin(admin.ModelAdmin):
@@ -12,3 +12,4 @@ admin.site.register(Section)
 admin.site.register(Inventory, InventoryAdmin)
 admin.site.register(BridgeCredit)
 admin.site.register(BridgeCreditPayment)
+admin.site.register(Condo)
