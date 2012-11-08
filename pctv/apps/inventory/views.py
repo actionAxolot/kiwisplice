@@ -197,3 +197,15 @@ class InventoryDeliveryOrderView(TemplateView):
     """
     template_name = "inventory/documents/orden_entrega.html"
 
+
+# ------- START RETARDED MAP THING ---------
+class InventoryCrappyMapView(TemplateView):
+    """
+    Fucking hate these maps that no-one will use
+    """
+    template_name = "inventory/map.html"
+    def get(self, request):
+        """
+        Depending on filters return the correct queryset
+        """
+        return self.render_to_response({})

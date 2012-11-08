@@ -10,7 +10,7 @@ import operator
 
 class ClientView(ListView):
     template_name = 'client/index.html'
-    model = Client
+    queryset = Client.objects.exclude(status=u"Cancelado")
 
 
 class ClientDashboardView(TemplateView):

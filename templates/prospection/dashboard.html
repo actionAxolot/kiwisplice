@@ -4,289 +4,289 @@
 
 {% block sub_content %}
 <div class="container-fluid">
-	<div class="row-fluid">
-		<div class="span12">
-			<div class="alert alert-info">
-				Recuerde los botones mostrados arriba. Con ellos puede navegar al rededor de esta sección
-				<a href="#" data-dismiss="alert" class="close">×</a>
-			</div>
-
-			<div class="widget-box">
-				<div class="widget-title">
-					<ul class="nav nav-tabs">
-	                    <li class="active"><a data-toggle="tab" href="#tab1">Antiguedad</a></li>
-	                    <li><a data-toggle="tab" href="#tab2">Canal de prospección</a></li>
-	                    <li><a data-toggle="tab" href="#tab3">Estatus de prospección</a></li>
-	                    <li><a data-toggle="tab" href="#tab4">Reporte mensual</a></li>
-	                </ul>
-				</div>
-				<div class="widget-content tab-content">
-					{# Render a table with every item in the object available #}
-					<div class="tab-pane active" id="tab1">
-						<table class="table table-bordered">
-							<thead>
-								<tr>
-									<th>Antigüedad</th>
-									<th>Apartado</th>
-									<th>Por cerrar</th>
-									<th>No perfilado</th>
-									<th>Sin interés</th>
-									<th>Cancelado</th>
-									<th>Total general</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for val in obj_list %}
-								<tr>
-									<td>{{ val.0|translate_dictionary_key }}</td>
-									<td>
-										<a class="render_table" href="{% url prospection_ajax %}" data-status="Apartado" data-date="{{ val.0 }}">{{ val.1|count_by_status:"Apartado" }}</a>
-									</td>
-									<td>
-										<a class="render_table" href="{% url prospection_ajax %}" data-status="Por cerrar" data-date="{{ val.0 }}">{{ val.1|count_by_status:"Por cerrar" }}
-									</td>
-									<td>
-										<a class="render_table" href="{% url prospection_ajax %}" data-status="No perfilado" data-date="{{ val.0 }}">{{ val.1|count_by_status:"No perfilado" }}
-									</td>
-									<td>
-										<a class="render_table" href="{% url prospection_ajax %}" data-status="Sin interés" data-date="{{ val.0 }}">{{ val.1|count_by_status:"Sin interés" }}
-									</td>
-									<td>
-										<a class="render_table" href="{% url prospection_ajax %}" data-status="Cancelado" data-date="{{ val.0 }}">{{ val.1|count_by_status:"Cancelado" }}
-									</td>
-									<td>
-										<a class="render_table" href="{% url prospection_ajax %}" data-date="{{ val.0 }}">{{ val.1|count_by_status }}
-									</td>
-								</tr>
-								{% endfor %}
-								<tr>
-									<td>Total general</td>
-									<td>
-										<a class="render_table" href="{% url prospection_ajax %}" data-status="Apartado">{{ total_list|getkey:"Apartado" }}
-									</td>
-									<td>
-										<a class="render_table" href="{% url prospection_ajax %}" data-status="Por cerrar">{{ total_list|getkey:"Por cerrar" }}</a>
-									</td>
-									<td>
-										<a class="render_table" href="{% url prospection_ajax %}" data-status="No perfilado">{{ total_list|getkey:"No perfilado" }}</a>
-									</td>
-									<td>
-										<a class="render_table" href="{% url prospection_ajax %}" data-status="Sin interés">{{ total_list|getkey:"Sin interés" }}</a>
-									</td>
-									<td>
-										<a class="render_table" href="{% url prospection_ajax %}" data-status="Cancelado">{{ total_list|getkey:"Cancelado" }}</a>
-									</td>
-									<td>
-										<a class="render_table" href="{% url prospection_ajax %}">{{ total_list.total_general }}</a>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-
-					<div class="tab-pane" id="tab2">
-						<table class="table table-bordered">
-							<thead>
-								<tr>
-									<th>Canal de prospección</th>
-									<th>Hasta 12 Mil</th>
-									<th>Entre 12 y 18 Mil</th>
-									<th>Entre 18 y 25 Mil</th>
-									<th>Entre 25 y 35 Mil</th>
-									<th>Entre 35 y 45 Mil</th>
-									<th>Mayor a 45 Mil</th>
-									<th>Total general</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for x in obj_pros_list %}
-								<tr>
-									<td>{{ x.0 }}</td>
-
-									<td>
-										<a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="1" data-channel="{{ x.0 }}">
-											{{ x.1|count_by_income:1 }}
-										</a>
-									</td>
-									<td>
-										<a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="2" data-channel="{{ x.0 }}">
-											{{ x.1|count_by_income:2 }}
-										</a>
-									</td>
-									<td>
-										<a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="3" data-channel="{{ x.0 }}">
-											{{ x.1|count_by_income:3 }}
-										</a>
-									</td>
-									<td>
-										<a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="4" data-channel="{{ x.0 }}">
-											{{ x.1|count_by_income:4 }}
-										</a>
-									</td>
-									<td>
-										<a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="5" data-channel="{{ x.0 }}">
-											{{ x.1|count_by_income:5 }}
-										</a>
-									</td>
-									<td>
-										<a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="6" data-channel="{{ x.0 }}">
-											{{ x.1|count_by_income:6 }}
-										</a>
-									</td>
-									<td>
-										<a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-channel="{{ x.0 }}">
-											{{ x.1|count_by_income }}
-										</a>
-									</td>
-								</tr>
-								{% endfor %}
-
-								<tr>
-									<td>Total general</td>
-									<td>
-										<a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="1">{{ total_pros_list|getkey:1 }}
-									</td>
-									<td>
-										<a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="2">{{ total_pros_list|getkey:2 }}</a>
-									</td>
-									<td>
-										<a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="3">{{ total_pros_list|getkey:3 }}</a>
-									</td>
-									<td>
-										<a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="4">{{ total_pros_list|getkey:4 }}</a>
-									</td>
-									<td>
-										<a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="5">{{ total_pros_list|getkey:5 }}</a>
-									</td>
-									<td>
-										<a class="render_table_channel" href="{% url prospection_channel_ajax %}" date-income="6">{{ total_pros_list|getkey:6 }}</a>
-									</td>
-									<td>
-										<a class="render_table" href="{% url prospection_ajax %}">{{ total_list.total_general }}</a>
-									</td>
-								</tr>
-
-							</tbody>
-						</table>
-					</div>
-
-					<div class="tab-pane" id="tab3">
-						<table class="table table-bordered">
-							<thead>
-								<tr>
-									<th>Estatus de prospección</th>
-									<th>Hasta 12 Mil</th>
-									<th>Entre 12 y 18 Mil</th>
-									<th>Entre 18 y 25 Mil</th>
-									<th>Entre 25 y 35 Mil</th>
-									<th>Entre 35 y 45 Mil</th>
-									<th>Mayor a 45 Mil</th>
-									<th>Total general</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for x in obj_status_list %}
-								<tr>
-									<td>{{ x.0 }}</td>
-									<td>
-										<a class="render_table_status" href="{% url prospection_status_ajax %}" data-income="1" data-status="{{ x.0 }}">
-											{{ x.1|count_by_income:1 }}
-										</a>
-									</td>
-									<td>
-										<a class="render_table_status" href="{% url prospection_status_ajax %}" data-income="2" data-status="{{ x.0 }}">
-											{{ x.1|count_by_income:2 }}
-										</a>
-									</td>
-									<td>
-										<a class="render_table_status" href="{% url prospection_status_ajax %}" data-income="3" data-status="{{ x.0 }}">
-											{{ x.1|count_by_income:3 }}
-										</a>
-									</td>
-									<td>
-										<a class="render_table_status" href="{% url prospection_status_ajax %}" data-income="4" data-status="{{ x.0 }}">
-											{{ x.1|count_by_income:4 }}
-										</a>
-									</td>
-									<td>
-										<a class="render_table_status" href="{% url prospection_status_ajax %}" data-income="5" data-status="{{ x.0 }}">
-											{{ x.1|count_by_income:5 }}
-										</a>
-									</td>
-									<td>
-										<a class="render_table_status" href="{% url prospection_status_ajax %}" data-income="6" data-status="{{ x.0 }}">
-											{{ x.1|count_by_income:6 }}
-										</a>
-									</td>
-									<td>
-										<a class="render_table_status" href="{% url prospection_status_ajax %}" data-status="{{ x.0 }}">
-											{{ x.1|count_by_income }}
-										</a>
-									</td>
-								</tr>
-								{% endfor %}
-
-								<tr>
-									<td>Total general</td>
-									<td>
-										<a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="1">{{ total_status_list|getkey:1 }}
-									</td>
-									<td>
-										<a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="2">{{ total_status_list|getkey:2 }}</a>
-									</td>
-									<td>
-										<a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="3">{{ total_status_list|getkey:3 }}</a>
-									</td>
-									<td>
-										<a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="4">{{ total_status_list|getkey:4 }}</a>
-									</td>
-									<td>
-										<a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="5">{{ total_status_list|getkey:5 }}</a>
-									</td>
-									<td>
-										<a class="render_table_channel" href="{% url prospection_channel_ajax %}" date-income="6">{{ total_status_list|getkey:6 }}</a>
-									</td>
-									<td>
-										<a class="render_table" href="{% url prospection_ajax %}">{{ total_list.total_general }}</a>
-									</td>
-								</tr>
-
-							</tbody>
-						</table>
-					</div>
-					
-					<div class="tab-pane" id="tab4">
-						<form action="." method="post" id="time-filter-form">
-							<ul class="time-filters">
-								<li>{{ time_filters.month }}</li>
-								<li>{{ time_filters.year }}</li>
-								<li><input type="submit" class="btn" name="submit" value="Filtrar" /></li>
-							</ul>
-						</form>
-						<div id="prospection-render-target">
-							{% include "prospection/ajax/time_filter.html" %}
-						</div>
-					</div>
-
-				</div>
-			</div>
-
-			<div id="prospection-info" class="modal hide" style="display: none;">
-				<div class="modal-header">
-					<button data-dismiss="modal" class="close" type="button">×</button>
-					<h3>Detalle te prospecciones</h3>
-				</div>
-				<div id="prospection-info-table" class="modal-body">
-					<div class="progress progress-striped progress-danger active">
-						<div style="width: 100%;" class="bar"></div>
-					</div>
-				</div>
-			</div>				
-		</div>
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="alert alert-info">
+	Recuerde los botones mostrados arriba. Con ellos puede navegar al rededor de esta sección
+	<a href="#" data-dismiss="alert" class="close">×</a>
+      </div>
+      
+      <div class="widget-box">
+	<div class="widget-title">
+	  <ul class="nav nav-tabs">
+	    <li class="active"><a data-toggle="tab" href="#tab1">Antiguedad</a></li>
+	    <li><a data-toggle="tab" href="#tab2">Canal de prospección</a></li>
+	    <li><a data-toggle="tab" href="#tab3">Estatus de prospección</a></li>
+	    <li><a data-toggle="tab" href="#tab4">Reporte mensual</a></li>
+	  </ul>
 	</div>
+	<div class="widget-content tab-content">
+	  {# Render a table with every item in the object available #}
+	  <div class="tab-pane active" id="tab1">
+	    <table class="table table-bordered">
+	      <thead>
+		<tr>
+		  <th>Antigüedad</th>
+		  <th>Apartado</th>
+		  <th>Por cerrar</th>
+		  <th>No perfilado</th>
+		  <th>Sin interés</th>
+		  <th>Cancelado</th>
+		  <th>Total general</th>
+		</tr>
+	      </thead>
+	      <tbody>
+		{% for val in obj_list %}
+		<tr>
+		  <td>{{ val.0|translate_dictionary_key }}</td>
+		  <td>
+		    <a class="render_table" href="{% url prospection_ajax %}" data-status="Apartado" data-date="{{ val.0 }}">{{ val.1|count_by_status:"Apartado" }}</a>
+		  </td>
+		  <td>
+		    <a class="render_table" href="{% url prospection_ajax %}" data-status="Por cerrar" data-date="{{ val.0 }}">{{ val.1|count_by_status:"Por cerrar" }}
+		  </td>
+		  <td>
+		    <a class="render_table" href="{% url prospection_ajax %}" data-status="No perfilado" data-date="{{ val.0 }}">{{ val.1|count_by_status:"No perfilado" }}
+		  </td>
+		  <td>
+		    <a class="render_table" href="{% url prospection_ajax %}" data-status="Sin interés" data-date="{{ val.0 }}">{{ val.1|count_by_status:"Sin interés" }}
+		  </td>
+		  <td>
+		    <a class="render_table" href="{% url prospection_ajax %}" data-status="Cancelado" data-date="{{ val.0 }}">{{ val.1|count_by_status:"Cancelado" }}
+		  </td>
+		  <td>
+		    <a class="render_table" href="{% url prospection_ajax %}" data-date="{{ val.0 }}">{{ val.1|count_by_status }}
+		  </td>
+		</tr>
+		{% endfor %}
+		<tr>
+		  <td>Total general</td>
+		  <td>
+		    <a class="render_table" href="{% url prospection_ajax %}" data-status="Apartado">{{ total_list|getkey:"Apartado" }}
+		  </td>
+		  <td>
+		    <a class="render_table" href="{% url prospection_ajax %}" data-status="Por cerrar">{{ total_list|getkey:"Por cerrar" }}</a>
+		  </td>
+		  <td>
+		    <a class="render_table" href="{% url prospection_ajax %}" data-status="No perfilado">{{ total_list|getkey:"No perfilado" }}</a>
+		  </td>
+		  <td>
+		    <a class="render_table" href="{% url prospection_ajax %}" data-status="Sin interés">{{ total_list|getkey:"Sin interés" }}</a>
+		  </td>
+		  <td>
+		    <a class="render_table" href="{% url prospection_ajax %}" data-status="Cancelado">{{ total_list|getkey:"Cancelado" }}</a>
+		  </td>
+		  <td>
+		    <a class="render_table" href="{% url prospection_ajax %}">{{ total_list.total_general }}</a>
+		  </td>
+		</tr>
+	      </tbody>
+	    </table>
+	  </div>
+	  
+	  <div class="tab-pane" id="tab2">
+	    <table class="table table-bordered">
+	      <thead>
+		<tr>
+		  <th>Canal de prospección</th>
+		  <th>Hasta 12 Mil</th>
+		  <th>Entre 12 y 18 Mil</th>
+		  <th>Entre 18 y 25 Mil</th>
+		  <th>Entre 25 y 35 Mil</th>
+		  <th>Entre 35 y 45 Mil</th>
+		  <th>Mayor a 45 Mil</th>
+		  <th>Total general</th>
+		</tr>
+	      </thead>
+	      <tbody>
+		{% for x in obj_pros_list %}
+		<tr>
+		  <td>{{ x.0 }}</td>
+		  
+		  <td>
+		    <a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="1" data-channel="{{ x.0 }}">
+		      {{ x.1|count_by_income:1 }}
+		    </a>
+		  </td>
+		  <td>
+		    <a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="2" data-channel="{{ x.0 }}">
+		      {{ x.1|count_by_income:2 }}
+		    </a>
+		  </td>
+		  <td>
+		    <a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="3" data-channel="{{ x.0 }}">
+		      {{ x.1|count_by_income:3 }}
+		    </a>
+		  </td>
+		  <td>
+		    <a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="4" data-channel="{{ x.0 }}">
+		      {{ x.1|count_by_income:4 }}
+		    </a>
+		  </td>
+		  <td>
+		    <a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="5" data-channel="{{ x.0 }}">
+		      {{ x.1|count_by_income:5 }}
+		    </a>
+		  </td>
+		  <td>
+		    <a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="6" data-channel="{{ x.0 }}">
+		      {{ x.1|count_by_income:6 }}
+		    </a>
+		  </td>
+		  <td>
+		    <a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-channel="{{ x.0 }}">
+		      {{ x.1|count_by_income }}
+		    </a>
+		  </td>
+		</tr>
+		{% endfor %}
+		
+		<tr>
+		  <td>Total general</td>
+		  <td>
+		    <a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="1">{{ total_pros_list|getkey:1 }}
+		  </td>
+		  <td>
+		    <a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="2">{{ total_pros_list|getkey:2 }}</a>
+		  </td>
+		  <td>
+		    <a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="3">{{ total_pros_list|getkey:3 }}</a>
+		  </td>
+		  <td>
+		    <a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="4">{{ total_pros_list|getkey:4 }}</a>
+		  </td>
+		  <td>
+		    <a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="5">{{ total_pros_list|getkey:5 }}</a>
+		  </td>
+		  <td>
+		    <a class="render_table_channel" href="{% url prospection_channel_ajax %}" date-income="6">{{ total_pros_list|getkey:6 }}</a>
+		  </td>
+		  <td>
+		    <a class="render_table" href="{% url prospection_ajax %}">{{ total_list.total_general }}</a>
+		  </td>
+		</tr>
+		
+	      </tbody>
+	    </table>
+	  </div>
+	  
+	  <div class="tab-pane" id="tab3">
+	    <table class="table table-bordered">
+	      <thead>
+		<tr>
+		  <th>Estatus de prospección</th>
+		  <th>Hasta 12 Mil</th>
+		  <th>Entre 12 y 18 Mil</th>
+		  <th>Entre 18 y 25 Mil</th>
+		  <th>Entre 25 y 35 Mil</th>
+		  <th>Entre 35 y 45 Mil</th>
+		  <th>Mayor a 45 Mil</th>
+		  <th>Total general</th>
+		</tr>
+	      </thead>
+	      <tbody>
+		{% for x in obj_status_list %}
+		<tr>
+		  <td>{{ x.0 }}</td>
+		  <td>
+		    <a class="render_table_status" href="{% url prospection_status_ajax %}" data-income="1" data-status="{{ x.0 }}">
+		      {{ x.1|count_by_income:1 }}
+		    </a>
+		  </td>
+		  <td>
+		    <a class="render_table_status" href="{% url prospection_status_ajax %}" data-income="2" data-status="{{ x.0 }}">
+		      {{ x.1|count_by_income:2 }}
+		    </a>
+		  </td>
+		  <td>
+		    <a class="render_table_status" href="{% url prospection_status_ajax %}" data-income="3" data-status="{{ x.0 }}">
+		      {{ x.1|count_by_income:3 }}
+		    </a>
+		  </td>
+		  <td>
+		    <a class="render_table_status" href="{% url prospection_status_ajax %}" data-income="4" data-status="{{ x.0 }}">
+		      {{ x.1|count_by_income:4 }}
+		    </a>
+		  </td>
+		  <td>
+		    <a class="render_table_status" href="{% url prospection_status_ajax %}" data-income="5" data-status="{{ x.0 }}">
+		      {{ x.1|count_by_income:5 }}
+		    </a>
+		  </td>
+		  <td>
+		    <a class="render_table_status" href="{% url prospection_status_ajax %}" data-income="6" data-status="{{ x.0 }}">
+		      {{ x.1|count_by_income:6 }}
+		    </a>
+		  </td>
+		  <td>
+		    <a class="render_table_status" href="{% url prospection_status_ajax %}" data-status="{{ x.0 }}">
+		      {{ x.1|count_by_income }}
+		    </a>
+		  </td>
+		</tr>
+		{% endfor %}
+		
+		<tr>
+		  <td>Total general</td>
+		  <td>
+		    <a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="1">{{ total_status_list|getkey:1 }}
+		  </td>
+		  <td>
+		    <a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="2">{{ total_status_list|getkey:2 }}</a>
+		  </td>
+		  <td>
+		    <a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="3">{{ total_status_list|getkey:3 }}</a>
+		  </td>
+		  <td>
+		    <a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="4">{{ total_status_list|getkey:4 }}</a>
+		  </td>
+		  <td>
+		    <a class="render_table_channel" href="{% url prospection_channel_ajax %}" data-income="5">{{ total_status_list|getkey:5 }}</a>
+		  </td>
+		  <td>
+		    <a class="render_table_channel" href="{% url prospection_channel_ajax %}" date-income="6">{{ total_status_list|getkey:6 }}</a>
+		  </td>
+		  <td>
+		    <a class="render_table" href="{% url prospection_ajax %}">{{ total_list.total_general }}</a>
+		  </td>
+		</tr>
+		
+	      </tbody>
+	    </table>
+	  </div>
+	  
+	  <div class="tab-pane" id="tab4">
+	    <form action="." method="post" id="time-filter-form">
+	      <ul class="time-filters">
+		<li>{{ time_filters.month }}</li>
+		<li>{{ time_filters.year }}</li>
+		<li><input type="submit" class="btn" name="submit" value="Filtrar" /></li>
+	      </ul>
+	    </form>
+	    <div id="prospection-render-target">
+	      {% include "prospection/ajax/time_filter.html" %}
+	    </div>
+	  </div>
+	  
+	</div>
+      </div>
+      
+      <div id="prospection-info" class="modal hide" style="display: none;">
+	<div class="modal-header">
+	  <button data-dismiss="modal" class="close" type="button">×</button>
+	  <h3>Detalle te prospecciones</h3>
+	</div>
+	<div id="prospection-info-table" class="modal-body">
+	  <div class="progress progress-striped progress-danger active">
+	    <div style="width: 100%;" class="bar"></div>
+	  </div>
+	</div>
+      </div>				
+    </div>
+  </div>
 </div>
 {% endblock %}
 
 {% block extrascripts %}
-	<script type="text/javascript" src="{{ STATIC_URL }}js/prospection/scripts.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/prospection/scripts.js"></script>
 {% endblock extrascripts %}

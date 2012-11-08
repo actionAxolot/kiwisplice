@@ -15,6 +15,7 @@ def count_by_status(obj, status=None):
 @register.filter()
 def translate_dictionary_key(key):
     return {
+        0: "Recientes",
         1: "1 Semana",
         2: "2 Semanas",
         3: "3 Semanas",

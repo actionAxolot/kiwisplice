@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Create your views here.
 from apps.client.models import Client
 from apps.prospection.forms import FilterForm
@@ -34,7 +35,7 @@ class ProspectionDashboardView(TemplateView):
         obj_pros_list = {}
         obj_status_list = {}
 
-        for x in xrange(1, 10):
+        for x in xrange(0, 10):
             obj_list[x] = Prospection.objects.get_by_weeks_old(weeks_old=x)
 
         obj_list = sorted(obj_list.iteritems(), key=operator.itemgetter(0))
@@ -98,8 +99,6 @@ class ProspectionDashboardView(TemplateView):
 
 
 class ProspectionCreateView(TemplateView):
-    # TODO: Cuando el status este setteado a apartado redireccionar a la pantalla ya de cliente.
-    # Deja de ser prospecto
     template_name = "prospection/new_form.html"
 
     def post(self, request, prospection_id=None):
@@ -115,6 +114,9 @@ class ProspectionCreateView(TemplateView):
             if created_prospection.status in ("Apartado",):
                 try:
                     client = Client.objects.get(prospection=created_prospection)
+                    if client.status == u"Cancelado":
+                        client.status = u"Integración"
+                        client.save()
                 except Client.DoesNotExist:
                     client = Client(prospection=prospection)
                     client.save()
@@ -142,8 +144,6 @@ class ProspectionCreateView(TemplateView):
         # Apartado redirect to the client create view
         if prospection_id:
             prospection = Prospection.objects.get(pk=prospection_id)
-            if prospection.status in ("Apartado",):
-                return redirect("client_edit", client_id=prospection.pk)
             prospection_form = ProspectionForm(instance=prospection)
         else:
             prospection = Prospection()

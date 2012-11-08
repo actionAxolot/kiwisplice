@@ -6,7 +6,8 @@ from apps.inventory.views import (InventoryView, InventoryCreateView,
     InventoryPrototypeView,
     InventoryPrototypeCreateView, InventoryPrototypeDeleteView,
     InventoryBridgeCreditView,
-    InventoryBridgeCreditCreateView, InventoryBridgeCreditDeleteView, InventoryDeliveryOrderView)
+    InventoryBridgeCreditCreateView, InventoryBridgeCreditDeleteView, InventoryDeliveryOrderView,
+    InventoryCrappyMapView)
 
 
 urlpatterns = patterns('',
@@ -33,6 +34,7 @@ urlpatterns = patterns('',
     url(r'^credito-puente/crear/(?P<bridge_credit_id>\w+)/$', login_required(InventoryBridgeCreditCreateView.as_view()), {}, name="inventory_bridge_credit_create_params"),
     url(r'^credito-puente/borrar/(?P<bridge_credit_id>\w+)/$', login_required(InventoryBridgeCreditDeleteView.as_view()), {}, name="inventory_bridge_credit_delete"),
     url(r'^documentos/orden-entrega/$', login_required(InventoryDeliveryOrderView.as_view()), {}, name='inventory_documents_delivery_order'),
+    url(r'^mapa/$', login_required(InventoryCrappyMapView.as_view()), {}, name='inventory_map_view'),
     # Fallback
     url(r'^$', login_required(InventoryView.as_view()), {}, name="inventory_home"),
 )

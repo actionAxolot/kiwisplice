@@ -1,0 +1,52 @@
+{% extends "inventory/base.html" %}
+{% load credit_percentages %}
+
+{% block sub_content %}
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span10">
+      <div class="widget-box">
+	<div class="widget-title">
+	  <h5>Captura de posición</h5>
+	</div>
+	<div class="widget-content nopadding">
+	  <div id="map-container"></div>
+	</div>
+      </div>
+    </div>
+
+
+    <div class="span2">
+      <div class="widget-box">
+	<div class="widget-title">
+	  <h5>Listado de Filtros</h5>
+	</div>
+	<div class="widget-content">
+	  <ul>
+	    <li><a href="/inventario/mapa/?f=1">Obra a ventas</a></li>
+	    <li><a href="/inventario/mapa/?f=2">Crédito puente</a></li>
+	    <li><a href="/inventario/mapa/?f=3">Avance de obra</a></li>
+	    <li><a href="/inventario/mapa/?f=4">Cliente</a></li>
+	    <li><a href="/inventario/mapa/?f=5">Inventario a ventas</a></li>
+	  </ul>
+	</div>
+      </div>
+      <div class="widget-box">
+	<div class="widget-title">
+	  <h5>Leyenda</h5>
+	</div>
+	<div class="widget-content">
+	  LEYENDA
+	</div>
+      </div>
+      
+    </div>
+
+
+  </div>
+</div>
+{% endblock sub_content %}
+{% block extrascripts %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/client/scripts.js"></script>
+{% endblock extrascripts %}

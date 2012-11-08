@@ -2,6 +2,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
+
 import datetime
 
 # Porcentajes options... this is probably retardedr
@@ -82,7 +83,7 @@ class Inventory(models.Model):
         verbose_name=_(u'Macro lot'), max_length=50)
     lot = models.CharField(blank=False, null=False,
         verbose_name=_(u'Lot'), max_length=50)
-    street = models.CharField(blank=False, null=False,
+    street = models.CharField(blank=True, null=True,
         verbose_name=_(u"Street"), max_length=50)
     number = models.CharField(blank=False, null=False,
         verbose_name=_(u'Realestate number'), max_length=50)
@@ -165,3 +166,6 @@ class BridgeCreditPayment(models.Model):
     class Meta:
         verbose_name = _(u"Bridge Credit Payment")
         verbose_name_plural = _(u"Bridge Credit Payment")
+
+
+
