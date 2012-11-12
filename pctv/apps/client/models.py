@@ -63,19 +63,25 @@ def free_inventory_status(sender, instance, **kwargs):
     """
     Check the status according to whatever we are catching
     """
-    if instance.inventory:
-        # This means it already has an inventory.
-        # Get whatever's in the DB right now
-        client = Client.objects.filter(pk=instance.pk)[0]
-        client.inventory.construction_status = u"Libre"
-        client.inventory.save()
+    try:
+        if instance.inventory:
+            # This means it already has an inventory.
+            # Get whatever's in the DB right now
+            client = Client.objects.filter(pk=instance.pk)[0]
+            client.inventory.construction_status = u"Libre"
+            client.inventory.save()
+    except:
+        pass
 
 
 def set_inventory_status(sender, instance, created, **kwargs):
-    if instance.inventory:
-        # An inventory was set
-        instance.inventory.construction_status = u"Con cliente"
-        instance.inventory.save()
+    try:
+        if instance.inventory:
+            # An inventory was set
+            instance.inventory.construction_status = u"Con cliente"
+            instance.inventory.save()
+    except:
+        pass
 
 
 pre_save.connect(free_inventory_status, sender=Client)
