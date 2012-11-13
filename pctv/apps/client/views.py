@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from models import Client, CLIENT_STATUS
 from forms import ClientPaymentFormSet, ClientForm, ClientPaymentCollectFormSet
 from apps.utils import format_time_span, MONTHS
+from apps.prospection.models import TOTAL_INCOME_BUCKET
 import datetime
 import operator
 
@@ -31,9 +32,16 @@ class ClientDashboardView(TemplateView):
 
         object_dict = sorted(object_dict.iteritems(), key=operator.itemgetter(0))
 
+        new_object_dict = dict()
+        for c in TOTAL_INCOME_BUCKET:
+            new_object_dict[c[1]] = Client.objects.filter(prospection__total_income=c[0])
+
+        new_object_dict = sorted(new_object_dict.iteritems(), key=operator.itemgetter(0))
+
         return self.render_to_response({
             "months": months,
             "object_dict": object_dict,
+            "new_object_dict": new_object_dict
         })
 
 

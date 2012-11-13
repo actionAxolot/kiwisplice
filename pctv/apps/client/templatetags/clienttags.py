@@ -22,14 +22,8 @@ MONTHS = {
 @register.filter()
 def count_by_quincena(obj, date=None):
     # if date:
-    #     # Convert the date param into a normal date
-    #     quincena = date[0]
-    #     month = MONTHS[date[7:]]
-
-    #     # TODO: Dude this fucking sucks. Fix it later or delegate
-    #     if month == 1:
-    #         year = 2013
-    #     else:
-    #         year = 2012
-    #     real_date = datetime.date(year, month, )
+    #     # Get the date into tokents
+    #     new_date = date.split("de")
+        
+        
     return 20
