@@ -37,67 +37,67 @@
 		</tr>
 	      </thead>
 	      <tbody>
-		{% for obj in object_dict %}
-		<tr>
-		  <td>{{ obj.0 }}</td>
-		  <td>{{ obj.1|count_by_quincena:months.0 }}</td>
-		  <td>{{ obj.1|count_by_quincena:months.1 }}</td>
-		  <td>{{ obj.1|count_by_quincena:months.2 }}</td>
-		  <td>{{ obj.1|count_by_quincena:months.3 }}</td>
-		  <td>{{ obj.1|count_by_quincena:months.4 }}</td>
-		  <td>{{ obj.1|count_by_quincena:months.5 }}</td>
-		  <td>{{ obj.1|count_by_quincena:months.6 }}</td>
-		  <td>{{ obj.1|count_by_quincena:months.7 }}</td>
-		  <td>{{ obj.1|count_by_quincena }}</td>
-		</tr>
-		{% endfor %}
-	      </tbody>
-	    </table>
-	  </div>
-	  
-	  <div class="tab-pane" id="tab2">
-	    <table class="table table-bordered">
-	      <thead>
-		<tr>
-		  <th>INGRESO</th>
-		  <th>{{ months.0 }}</th>
-		  <th>{{ months.1 }}</th>
-		  <th>{{ months.2 }}</th>
-		  <th>{{ months.3 }}</th>
-		  <th>{{ months.4 }}</th>
-		  <th>{{ months.5 }}</th>
-		  <th>{{ months.6 }}</th>
-		  <th>{{ months.7 }}</th>
-		  <th>TOTAL</th>
-		</tr>
-	      </thead>
-	      <tbody>
-		{% for obj in new_object_dict %}
-		<tr>
-		  <td>{{ obj.0 }}</td>
-		  <td>{{ obj.1|count_by_quincena:months.0 }}</td>
-		  <td>{{ obj.1|count_by_quincena:months.1 }}</td>
-		  <td>{{ obj.1|count_by_quincena:months.2 }}</td>
-		  <td>{{ obj.1|count_by_quincena:months.3 }}</td>
-		  <td>{{ obj.1|count_by_quincena:months.4 }}</td>
-		  <td>{{ obj.1|count_by_quincena:months.5 }}</td>
-		  <td>{{ obj.1|count_by_quincena:months.6 }}</td>
-		  <td>{{ obj.1|count_by_quincena:months.7 }}</td>
-		  <td>{{ obj.1|count_by_quincena }}</td>
-		</tr>
-		{% endfor %}
-	      </tbody>
-	    </table>
-	  </div>
-	</div>
+		 {% for obj in object_dict %}
+		 <tr>
+		   <td>{{ obj.0 }}</td>
+		   <td><a class="render_table" href="{% url client_ajax %}" data-month="{{ months.0}}" data-status="{{ obj.0 }}">{{ obj.1|count_by_month:months.0 }}</a></td>
+		   <td><a class="render_table" href="{% url client_ajax %}" data-month="{{ months.0}}" data-status="{{ obj.0 }}">{{ obj.1|count_by_month:months.1 }}</a></td>
+		   <td><a class="render_table" href="{% url client_ajax %}" data-month="{{ months.0}}" data-status="{{ obj.0 }}">{{ obj.1|count_by_month:months.2 }}</a></td>
+		   <td><a class="render_table" href="{% url client_ajax %}" data-month="{{ months.0}}" data-status="{{ obj.0 }}">{{ obj.1|count_by_month:months.3 }}</a></td>
+		   <td><a class="render_table" href="{% url client_ajax %}" data-month="{{ months.0}}" data-status="{{ obj.0 }}">{{ obj.1|count_by_month:months.4 }}</a></td>
+		   <td><a class="render_table" href="{% url client_ajax %}" data-month="{{ months.0}}" data-status="{{ obj.0 }}">{{ obj.1|count_by_month:months.5 }}</a></td>
+		   <td><a class="render_table" href="{% url client_ajax %}" data-month="{{ months.0}}" data-status="{{ obj.0 }}">{{ obj.1|count_by_month:months.6 }}</a></td>
+		   <td><a class="render_table" href="{% url client_ajax %}" data-month="{{ months.0}}" data-status="{{ obj.0 }}">{{ obj.1|count_by_month:months.7 }}</a></td>
+		   <td><a class="render_table" href="{% url client_ajax %}" data-month="{{ months.0}}" data-status="{{ obj.0 }}">{{ obj.1|count_by_month }}</a></td>
+		 </tr>
+		 {% endfor %}
+	       </tbody>
+	     </table>
+	   </div>
+
+	   <div class="tab-pane" id="tab2">
+	     <table class="table table-bordered">
+	       <thead>
+		 <tr>
+		   <th>INGRESO</th>
+		   <th>{{ months.0 }}</th>
+		   <th>{{ months.1 }}</th>
+		   <th>{{ months.2 }}</th>
+		   <th>{{ months.3 }}</th>
+		   <th>{{ months.4 }}</th>
+		   <th>{{ months.5 }}</th>
+		   <th>{{ months.6 }}</th>
+		   <th>{{ months.7 }}</th>
+		   <th>TOTAL</th>
+		 </tr>
+	       </thead>
+	       <tbody>
+		 {% for obj in new_object_dict %}
+		 <tr>
+		   <td>{{ obj.0 }}</td>
+		   <td><a class="render_table" href="{% url client_ajax %}" data-month="{{ months.0 }}" data-income="{{ obj.0 }}">{{ obj.1|count_by_month:months.0 }}</a></td>
+		   <td><a class="render_table" href="{% url client_ajax %}" data-month="{{ months.0 }}" data-income="{{ obj.0 }}">{{ obj.1|count_by_month:months.1 }}</a></td>
+		   <td><a class="render_table" href="{% url client_ajax %}" data-month="{{ months.0 }}" data-income="{{ obj.0 }}">{{ obj.1|count_by_month:months.2 }}</a></td>
+		   <td><a class="render_table" href="{% url client_ajax %}" data-month="{{ months.0 }}" data-income="{{ obj.0 }}">{{ obj.1|count_by_month:months.3 }}</a></td>
+		   <td><a class="render_table" href="{% url client_ajax %}" data-month="{{ months.0 }}" data-income="{{ obj.0 }}">{{ obj.1|count_by_month:months.4 }}</a></td>
+		   <td><a class="render_table" href="{% url client_ajax %}" data-month="{{ months.0 }}" data-income="{{ obj.0 }}">{{ obj.1|count_by_month:months.5 }}</a></td>
+		   <td><a class="render_table" href="{% url client_ajax %}" data-month="{{ months.0 }}" data-income="{{ obj.0 }}">{{ obj.1|count_by_month:months.6 }}</a></td>
+		   <td><a class="render_table" href="{% url client_ajax %}" data-month="{{ months.0 }}" data-income="{{ obj.0 }}">{{ obj.1|count_by_month:months.7 }}</a></td>
+		   <td><a class="render_table" href="{% url client_ajax %}" data-income="{{ obj.0 }}">{{ obj.1|count_by_month }}</td>
+		 </tr>
+		 {% endfor %}
+	       </tbody>
+	     </table>
+	   </div>
+	 </div>
       </div>
       
-      <div id="prospection-info" class="modal hide" style="display: none;">
+      <div id="client-info" class="modal hide" style="display: none;">
 	<div class="modal-header">
 	  <button data-dismiss="modal" class="close" type="button">×</button>
-	  <h3>Detalle te prospecciones</h3>
+	  <h3>Detalle de clientes</h3>
 	</div>
-	<div id="prospection-info-table" class="modal-body">
+	<div id="client-info-table" class="modal-body">
 	  <div class="progress progress-striped progress-danger active">
 	    <div style="width: 100%;" class="bar"></div>
 	  </div>
@@ -109,5 +109,5 @@
 {% endblock %}
 
 {% block extrascripts %}
-<script type="text/javascript" src="{{ STATIC_URL }}js/prospection/scripts.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/client/dashboard.js"></script>
 {% endblock extrascripts %}

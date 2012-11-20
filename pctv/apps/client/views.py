@@ -1,12 +1,50 @@
+# -*- coding: utf-8 -*-
 # Create your views here.
 from django.views.generic import TemplateView, ListView
 from django.shortcuts import redirect
+from django.db.models import Q
 from models import Client, CLIENT_STATUS
 from forms import ClientPaymentFormSet, ClientForm, ClientPaymentCollectFormSet
-from apps.utils import format_time_span, MONTHS
+from apps.utils import format_time_span, MONTHS, MONTHS_DICT
 from apps.prospection.models import TOTAL_INCOME_BUCKET
+from apps.utils.views import JSONTemplateRenderMixin
 import datetime
 import operator
+
+
+class ClientAjaxView(JSONTemplateRenderMixin, ListView):
+    template_name = "client/partials/table.html"
+    model = Client
+
+    def get_queryset(self):
+        """
+        Depending on sent filters from request.GET return a relevant
+        queryset. The parameters passed are month (NOVIEMBRE 2012),
+        status and income bracket (De 13,000 a 20,000)
+        
+        Arguments:
+        - `self`: Self reference. Pretty straight forward
+        """
+        month = self.request.GET.get("month", None)
+        income = self.request.GET.get("income", None)
+        status = self.request.GET.get("status", None)
+        query = Q()
+        if month:
+            # Split it up and get year, month
+            month, year = month.split(" ")
+            month = MONTHS_DICT[month]
+            query = query & Q(created_date__month=month, created_date__year=year)
+        if status:
+            # Now search for a relevant status
+            query = query & Q(status=status)
+        if income:
+            # Convert to correct integer representation
+            income_tuple = (x[0] for x in TOTAL_INCOME_BUCKET if x[1] == income )
+            
+            # Now a relevant income bracket
+            query = query & Q(prospection__total_income=income_tuple.next())
+
+        return self.model.objects.filter(query)
 
 
 class ClientView(ListView):
@@ -21,10 +59,9 @@ class ClientDashboardView(TemplateView):
         # Get every client that has a signature date of today 'till 4 months in the future
         today = datetime.date.today()
         months = list()
-        for x in xrange(1, 5):
+        for x in xrange(0, 8):
             then = today + datetime.timedelta(days=31 * x)
-            months.append("1RA de " + MONTHS[then.month - 1])
-            months.append("2DA de " + MONTHS[then.month - 1])
+            months.append(MONTHS[then.month - 1] + " " + str(then.year))
 
         object_dict = dict()
         for c in CLIENT_STATUS:
@@ -167,4 +204,4 @@ class ClientReturnToProspectionView(TemplateView):
             
             return redirect("client_home")
         except Client.DoesNotExist:
-            return redirect("client_home")
+            return redirect("client_home")        

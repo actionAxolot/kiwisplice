@@ -20,10 +20,15 @@ MONTHS = {
 }
 
 @register.filter()
-def count_by_quincena(obj, date=None):
-    # if date:
-    #     # Get the date into tokents
-    #     new_date = date.split("de")
-        
-        
-    return 20
+def count_by_month(obj, date=None):
+    if date:
+        # Get the date into tokents
+        tokens = date.split(" ")
+        month, year = tokens
+
+        month = MONTHS[month]
+
+        # Now count how many are 
+        return len(obj.filter(created_date__month=month, created_date__year=year))
+
+    return len(obj)

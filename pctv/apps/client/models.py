@@ -45,6 +45,9 @@ class Client(models.Model):
     notary = models.CharField(null=True, blank=True, verbose_name=_(u"Notary"), max_length=50)
     delivery_date = models.DateField(null=True, blank=True, verbose_name=_(u"Delivery date"))
 
+    # Store the date in which this Client entry was created
+    created_date = models.DateField(auto_now_add=True)
+
     status = models.CharField(blank=False, null=False, 
         choices=CLIENT_STATUS, max_length=50, default=_(u"Integración"),
         verbose_name=_(u"Status"))
