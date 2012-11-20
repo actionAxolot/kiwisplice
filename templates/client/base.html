@@ -6,14 +6,14 @@ active
 
 {% block content %}
 <div id="content-header">
-	<h1>Clientes</h1>
-	<div class="btn-group">
-		<a class="btn btn-large tip-bottom" href="{% url client_dashboard %}" title="Ver Clientes"><i class="icon-home"></i></a>
-    <a class="btn btn-large tip-bottom" href="{% url client_home %}" title="Ver Clientes"><i class="icon-search"></i></a>
-	</div>
+  <h1>Clientes</h1>
+  <div class="btn-group">
+    <a class="btn btn-large tip-bottom" href="{% url client_dashboard %}" title="Tablero Clientes"><i class="icon-home"></i></a>
+    <a class="btn btn-large tip-bottom" href="{% url client_home %}" title="Listado Clientes"><i class="icon-search"></i></a>
+  </div>
 </div>
-	
-	{% block sub_content %}{% endblock %}
+
+{% block sub_content %}{% endblock %}
 
 {% endblock content %}
 {% block extrascripts %}

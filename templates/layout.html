@@ -1,62 +1,62 @@
 {% extends "base.html" %}
 {% block extrastyles %}
-	{{ block.super }}
+{{ block.super }}
 {% endblock extrastyles %}
 
 {% block layout %}
-	{# Header #}
-	{% block header %}
-		{% include "partials/header.html" %}
-	{% endblock header %}
+{# Header #}
+{% block header %}
+{% include "partials/header.html" %}
+{% endblock header %}
 
-	{# Menu #}
-	{% block sidebar %}
-		<div id="sidebar">
-			<a href="/" class="visible-phone"><i class="icon icon-home"></i> Inicio</a>
-			<ul>
-				<li class="{% block inicio %}{% endblock %}"><a href="/"><i class="icon icon-home"></i> <span>Inicio</span></a></li>
-        <li class="{% block roles %}{% endblock %}"><a href="{% url role_dashboard %}"><i class="icon icon-user"></i> <span>Usuarios</span></a></li>
-				<li class="submenu {% block inventario %}{% endblock %}">
-					<a href="{% url inventory_home %}"><i class="icon icon-th-list"></i> <span>Inventario</span></a>
-					<ul>
-						<li class="{% block listado_inventario %}{% endblock %}"><a href="{% url inventory_home %}">Tablero</a></li>
-						<li class="{% block credito_puente%}{% endblock %}"><a href="{% url inventory_bridge_credit %}">Crédito Puente</a></li>
-<!-- 						<li class="{% block documentacion %}{% endblock %}"><a href="form-validation.html">Documentación</a></li> -->
-						<li class="{% block prototipo %}{% endblock %}"><a href="{% url inventory_prototype %}">Prototipo</a></li>
-						<li class="{% block etapa %}{% endblock %}"><a href="{% url inventory_section %}">Etapa</a></li>
-					</ul>
-				</li>
-				<li class="submenu {% block cliente %}{% endblock %}">
-					<a href="{% url client_home %}"><i class="icon icon-file"></i> <span>Clientes</span></a>
-					<ul>
-						<li class="{% block listado_cliente %}{% endblock %}"><a href="{% url client_dashboard %}">Tablero</a></li>
-						<li class="{% block cobranza %}{% endblock %}"><a href="{% url client_financial_list %}">Cobranza</a></li>
-						<!-- <li class="{% block entrega_vivienda %}{% endblock %}"><a href="calendar.html">Entrega de Vivienda</a></li>
-						<li class="{% block ventas_ubicacion %}{% endblock %}"><a href="{% url client_sales %}">Ventas por Ubicación</a></li>
-						<li class="{% block maduracion_enganches %}{% endblock %}"><a href="{% url client_downpayment %}">Maduración de Enganches</a></li> -->
-					</ul>
-				</li>
-				<li class="{% block prospeccion %}{% endblock %}">
-					<a href="{% url prospection_dashboard %}"><i class="icon icon-signal"></i> <span>Prospección</span></a>
-				</li>
-				<li class="{% block comision %}{% endblock %}">
-					<a href="{% url commission_dashboard %}"><i class="icon icon-inbox"></i> <span>Comisiones</span></a>
-				</li>
-			</ul>
-		</div>
-	{% endblock %}
+{# Menu #}
+{% block sidebar %}
+<div id="sidebar">
+  <a href="/" class="visible-phone"><i class="icon icon-home"></i> Inicio</a>
+  <ul>
+    <li class="{% block inicio %}{% endblock %}"><a href="/"><i class="icon icon-home"></i> <span>Inicio</span></a></li>
+    <li class="{% block roles %}{% endblock %}"><a href="{% url role_dashboard %}"><i class="icon icon-user"></i> <span>Usuarios</span></a></li>
+    <li class="submenu {% block inventario %}{% endblock %}">
+      <a href="{% url inventory_home %}"><i class="icon icon-th-list"></i> <span>Inventario</span></a>
+      <ul>
+	<li class="{% block listado_inventario %}{% endblock %}"><a href="{% url inventory_home %}">Tablero</a></li>
+	<li class="{% block credito_puente%}{% endblock %}"><a href="{% url inventory_bridge_credit %}">Crédito Puente</a></li>
+	<!-- 						<li class="{% block documentacion %}{% endblock %}"><a href="form-validation.html">Documentación</a></li> -->
+	<li class="{% block prototipo %}{% endblock %}"><a href="{% url inventory_prototype %}">Prototipo</a></li>
+	<li class="{% block etapa %}{% endblock %}"><a href="{% url inventory_section %}">Etapa</a></li>
+      </ul>
+    </li>
+    <li class="submenu {% block cliente %}{% endblock %}">
+      <a href="{% url client_home %}"><i class="icon icon-file"></i> <span>Clientes</span></a>
+      <ul>
+	<li class="{% block listado_cliente %}{% endblock %}"><a href="{% url client_dashboard %}">Tablero</a></li>
+	<li class="{% block cobranza %}{% endblock %}"><a href="{% url client_financial_list %}">Cobranza</a></li>
+	<!-- <li class="{% block entrega_vivienda %}{% endblock %}"><a href="calendar.html">Entrega de Vivienda</a></li>
+	     <li class="{% block ventas_ubicacion %}{% endblock %}"><a href="{% url client_sales %}">Ventas por Ubicación</a></li>
+	<li class="{% block maduracion_enganches %}{% endblock %}"><a href="{% url client_downpayment %}">Maduración de Enganches</a></li> -->
+      </ul>
+    </li>
+    <li class="{% block prospeccion %}{% endblock %}">
+      <a href="{% url prospection_dashboard %}"><i class="icon icon-signal"></i> <span>Prospección</span></a>
+    </li>
+    <li class="{% block comision %}{% endblock %}">
+      <a href="{% url commission_dashboard %}"><i class="icon icon-inbox"></i> <span>Comisiones</span></a>
+    </li>
+  </ul>
+</div>
+{% endblock %}
 
-	{# Website #}
-	<div id="content">
-		{% block content %}{% endblock content %}
-		
-		{# Footer #}
-		{% block footer %}
-			{% include "partials/footer.html" %}
-		{% endblock footer %}
-	</div>
+{# Website #}
+<div id="content">
+  {% block content %}{% endblock content %}
+  
+  {# Footer #}
+  {% block footer %}
+  {% include "partials/footer.html" %}
+  {% endblock footer %}
+</div>
 {% endblock layout %}
 
 {% block extrascripts %}
-	{{ block.super }}
+{{ block.super }}
 {% endblock extrascripts %}
