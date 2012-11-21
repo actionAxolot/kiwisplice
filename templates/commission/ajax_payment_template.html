@@ -1,35 +1,37 @@
 {% load commission %}
 
 <div class="widget-box">
-    <div class="widget-title">
-        <h5>Listado de Pagos de Comisión Pendientes</h5>
-    </div>
-    <div class="widget-content nopadding">
-      <table class="table table-bordered data-table">
-						<thead>
-							<tr>
-								<th>ID</th>
-								<th>Porcentaje</th>
-								<th>Fecha de pago</th>
-								<th>Status</th>
-								<th>Cantidad</th>
-								<th>Acciones</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for o in commission_payments %}
-							<tr>
-								<td>{{ o.pk }}</td>
-								<td>{{ o.percentage }}</td>
-								<td>{{ o.payment_date }}</td>
-								<td>{{ o.status }}</td>
-								<td>{{ o|get_commission_payment_total }}</td>
-								<td>
-                  <a href="{% url prospection_delete prospection_id=o.pk %}" class="btn btn-danger">Pagar</a>
-                </td>
-							</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-    </div>
+  <div class="widget-title">
+    <h5>Listado de Pagos de Comisión Pendientes</h5>
+  </div>
+  <div class="widget-content nopadding">
+    <table class="table table-bordered data-table">
+      <thead>
+	<tr>
+	  <th>ID</th>
+	  <th>Vendedor</th>
+	  <th>Porcentaje</th>
+	  <th>Fecha de pago</th>
+	  <th>Status</th>
+	  <th>Cantidad</th>
+	  <th>Acciones</th>
+	</tr>
+      </thead>
+      <tbody>
+	{% for o in commission_payments %}
+	<tr>
+	  <td>{{ o.pk }}</td>
+	  <td><a href="{% url role_create_user_params user_id=o.commission.client.prospection.salesperson.pk %}">{{ o.commission.client.prospection.salesperson.first_name }} {{ o.commission.client.prospection.salesperson.last_name }}</a></td>
+	  <td>{{ o.percentage }}</td>
+	  <td>{{ o.payment_date }}</td>
+	  <td>{{ o.status }}</td>
+	  <td>{{ o|get_commission_payment_total }}</td>
+	  <td>
+            <a href="{% url prospection_delete prospection_id=o.pk %}" class="btn btn-danger">Pagar</a>
+          </td>
+	</tr>
+	{% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>

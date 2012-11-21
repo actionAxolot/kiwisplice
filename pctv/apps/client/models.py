@@ -26,7 +26,7 @@ CLIENT_STATUS = (
 class ClientManager(models.Manager):
     def get_query_set(self, *args, **kwargs):
         # Return the ones that are not canceled
-        return super(ClientManager, self).get_query_set().exclude(status=u"Cancelado")
+        return super(ClientManager, self).get_query_set()
 
 
 # Create your models here.
@@ -87,5 +87,16 @@ def set_inventory_status(sender, instance, created, **kwargs):
         pass
 
 
+def delete_commissions(sender, instance, created, **kwargs):
+    """
+    Delete commissions when client is canceled
+    """
+    if not created:
+        # Editing already existing record
+        if instance.status == u"Cancelado":
+            instance.commission_set.all().delete()
+    
+
 pre_save.connect(free_inventory_status, sender=Client)
 post_save.connect(set_inventory_status, sender=Client)
+post_save.connect(delete_commissions, sender=Client)

@@ -16,11 +16,18 @@ def get_next_payment_date(commission):
 
 @register.filter()
 def get_commission_total(commission):
-    price = commission.client.inventory.get_price()
-    total_to_pay = price * Decimal(str(settings.COMMISSION_PERCENT))
-    return u"%.2f" % total_to_pay
+    try: 
+        price = commission.client.inventory.price
+        total_to_pay = price * Decimal(str(settings.COMMISSION_PERCENT))
+        return u"%.2f" % total_to_pay
+    except:
+        return u"Sin inventario"
+    
 
 @register.filter()
 def get_commission_payment_total(payment):
-    commissionable_total = payment.commission.client.inventory.get_price() * Decimal(str(settings.COMMISSION_PERCENT))
-    return u"%.2f" % (commissionable_total * payment.percentage)
+    try:
+        commissionable_total = payment.commission.client.inventory.get_price() * Decimal(str(settings.COMMISSION_PERCENT))
+        return u"%.2f" % (commissionable_total * payment.percentage)
+    except:
+        return "Sin inventario"
