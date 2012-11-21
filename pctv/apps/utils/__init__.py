@@ -1,3 +1,5 @@
+import datetime
+
 # Utility functions to do crap
 MONTHS = [
     "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO",
@@ -30,3 +32,16 @@ def format_time_span(date):
         day = "2DA"
 
     return u"%s de %s" % (day, month)
+
+
+def get_months_header(*args, **kwargs):
+    """
+    Generate the necessary monthly headers for the dashboard tables
+    """
+    today = datetime.date.today()
+    months = list()
+    for x in xrange(0, 8):
+        then = today + datetime.timedelta(days=31 * x)
+        months.append(MONTHS[then.month - 1] + " " + str(then.year))
+
+    return months

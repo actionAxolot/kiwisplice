@@ -8,6 +8,7 @@ from forms import ClientPaymentFormSet, ClientForm, ClientPaymentCollectFormSet
 from apps.utils import format_time_span, MONTHS, MONTHS_DICT
 from apps.prospection.models import TOTAL_INCOME_BUCKET
 from apps.utils.views import JSONTemplateRenderMixin
+from apps.utils import get_months_header
 import datetime
 import operator
 
@@ -57,11 +58,7 @@ class ClientDashboardView(TemplateView):
 
     def get(self, request):
         # Get every client that has a signature date of today 'till 4 months in the future
-        today = datetime.date.today()
-        months = list()
-        for x in xrange(0, 8):
-            then = today + datetime.timedelta(days=31 * x)
-            months.append(MONTHS[then.month - 1] + " " + str(then.year))
+        months = get_months_header()
 
         object_dict = dict()
         for c in CLIENT_STATUS:
