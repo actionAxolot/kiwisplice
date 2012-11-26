@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block credito_puente %}
+active
+{% endblock credito_puente %}
+
+{% block content %}
+
+
+<div id="content-header">
+  {% block github_buttons %}
+  <h1>Créditos puente</h1>
+  <div class="btn-group">
+    <a class="btn btn-large tip-bottom" href="{% url inventory_bridge_credit %}" title="Ver créditos puente"><i class="icon-search"></i></a>
+    <a class="btn btn-large tip-bottom" href="{% url inventory_bridge_credit_create %}" title="Agregar créditos puente"><i class="icon-plus-sign"></i></a>
+    <a class="btn btn-large tip-bottom" href="{% url inventory_bridge_credit_dashboard %}" title="Dashboard"><i class="icon-home"></i></a>
+  </div>
+  {% endblock %}
+</div>
+
+{% block sub_content %}{% endblock %}
+
+{% endblock content %}
+{% block extrascripts %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/unicorn.tables.js"></script>
+{% endblock extrascripts %}

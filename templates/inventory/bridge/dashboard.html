@@ -1,0 +1,93 @@
+{% extends "inventory/bridge/base.html" %}
+{% load inventorytags %}
+
+{% block sub_content %}
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="alert alert-info">
+	Recuerde los botones mostrados arriba. Con ellos puede navegar al rededor de esta sección
+	<a href="#" data-dismiss="alert" class="close">×</a>
+      </div>
+      
+      <div class="widget-box">
+	<div class="widget-title">
+	  <ul class="nav nav-tabs">
+	    <li class="active"><a data-toggle="tab" href="#tab1">Créditos Puente</a></li>
+	    <li><a data-toggle="tab" href="#tab2">Totales</a></li>
+	  </ul>
+	</div>
+	<div class="widget-content tab-content">
+	  {# Render a table with every item in the object available #}
+	  <div class="tab-pane active" id="tab1">
+	    <table class="table table-bordered">
+	      <thead>
+		<tr>
+		  <th>STATUS CONSTRUCCIÓN</th>
+		  {% for h in special_headers %}
+		  <th>{{ h }}</th>
+		  {% endfor %}
+		</tr>
+	      </thead>
+	      <tbody>
+		 {% for k, v in n_credit.items %}
+		 <tr>
+		   <td>{{ k }}</td>
+		   {% for k1, v1 in v.items %}
+		   <td>
+		     <a class="render_table" href="{% url inventory_bridge_credit_ajax %}" data-const-status="{{ k }}" data-bridge-status="{{ k1 }}">{{ v1 }}</a>
+		   </td>
+		   {% endfor %}
+		 </tr>
+		 {% endfor %}
+	       </tbody>
+	     </table>
+	   </div>
+
+	   <div class="tab-pane" id="tab2">
+	    <table class="table table-bordered">
+	      <thead>
+		<tr>
+		  <th>STATUS CONSTRUCCIÓN</th>
+		  {% for h in special_headers %}
+		  <th>{{ h }}</th>
+		  {% endfor %}
+		</tr>
+	      </thead>
+	      <tbody>
+		 {% for k, v in t_credit.items %}
+		 <tr>
+		   <td>{{ k }}</td>
+		   {% for k1, v1 in v.items %}
+		   <td>
+		     ${{ v1 }}
+		   </td>
+		   {% endfor %}
+		 </tr>
+		 {% endfor %}
+	       </tbody>
+	     </table> 
+	   </div>
+	   
+	 </div>
+      </div>
+      
+      <div id="bridge-info" class="modal hide" style="display: none;">
+	<div class="modal-header">
+	  <button data-dismiss="modal" class="close" type="button">×</button>
+	  <h3>Detalle de créditos</h3>
+	</div>
+	<div id="bridge-info-table" class="modal-body">
+	  <div class="progress progress-striped progress-danger active">
+	    <div style="width: 100%;" class="bar"></div>
+	  </div>
+	</div>
+      </div>				
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extrascripts %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/bridge/dashboard.js"></script>
+{% endblock extrascripts %}

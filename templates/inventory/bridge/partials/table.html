@@ -1,0 +1,34 @@
+<div class="widget-box">
+  <div class="widget-title">
+    <h5>Listado de Créditos</h5>
+  </div>
+  <div class="widget-content nopadding">
+    {# Render a table with every item in the object available #}
+    <table class="table table-bordered data-table">
+      <thead>
+	<tr>
+	  <th>ID</th>
+	  <th>Inventario</th>
+	  <th>Estatus</th>
+	  <th>Cantidad</th>
+	  <th>Cantidad Ministrada</th>
+	  <th>Acciones</th>
+	</tr>
+      </thead>
+      <tbody>
+	{% for o in object_list %}								
+	<tr>
+	  <td><a href="{% url inventory_bridge_credit_create_params bridge_credit_id=o.pk %}">{{ o.pk }}</a></td>
+	  <td><a href="{% url inventory_create_params inventory_id=o.inventory.pk %}">{{ o.inventory }}</a></td>
+	  <td>{{ o.status }}</td>
+	  <td>${{ o.approved_amount }}</td>
+	  <td>${{ o.ministered_amount }}</td>
+	  <td>
+	    <a href="{% url inventory_bridge_credit_delete bridge_credit_id=o.pk %}" class="btn btn-danger">X</a>
+	  </td>
+	</tr>
+	{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>

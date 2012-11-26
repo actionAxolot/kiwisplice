@@ -19,13 +19,20 @@
     <li class="submenu {% block inventario %}{% endblock %}">
       <a href="{% url inventory_home %}"><i class="icon icon-th-list"></i> <span>Inventario</span></a>
       <ul>
-	<li class="{% block listado_inventario %}{% endblock %}"><a href="{% url inventory_home %}">Tablero</a></li>
-	<li class="{% block credito_puente%}{% endblock %}"><a href="{% url inventory_bridge_credit %}">Crédito Puente</a></li>
+	<li class="{% block listado_inventario %}{% endblock %}"><a href="{% url inventory_dashboard %}">Tablero</a></li>
 	<!-- 						<li class="{% block documentacion %}{% endblock %}"><a href="form-validation.html">Documentación</a></li> -->
 	<li class="{% block prototipo %}{% endblock %}"><a href="{% url inventory_prototype %}">Prototipo</a></li>
 	<li class="{% block etapa %}{% endblock %}"><a href="{% url inventory_section %}">Etapa</a></li>
       </ul>
     </li>
+
+    <li class="submenu {% block credito_puente %}{% endblock %}">
+      <a href="{% url inventory_bridge_credit_dashboard %}"><i class="icon icon-th-list"></i> <span>Créditos Puente</span></a>
+      <ul>
+	<li class="{% block listado_credito_puente %}{% endblock %}"><a href="{% url inventory_bridge_credit_dashboard %}">Tablero</a></li>
+      </ul>
+    </li>
+    
     <li class="submenu {% block cliente %}{% endblock %}">
       <a href="{% url client_home %}"><i class="icon icon-file"></i> <span>Clientes</span></a>
       <ul>

@@ -1,12 +1,16 @@
 # Create your views here.
 from django.views.generic import TemplateView, ListView
 from django.shortcuts import redirect
+from django.utils.datastructures import SortedDict
 from models import (Inventory, Section,
-    Prototype, BridgeCredit)
+    Prototype, BridgeCredit, PERCENTAGES_OPTIONS, CONSTRUCTION_STATUS, BRIDGE_CREDIT_STATUSES)
 from forms import (InventoryForm, SectionForm,
     PrototypeForm, BridgeCreditForm, BridgeCreditPaymentsFormset,
     InventoryBridgeCreditFormset)
-
+from django.db.models import Q
+from apps.utils.views import JSONTemplateRenderMixin
+from apps.utils import get_months_header, MONTHS_DICT
+from django.db.models import Sum
 
 # <----- START LANDING PAGE ------>
 class InventoryView(ListView):
@@ -140,12 +144,12 @@ class InventorySectionDeleteView(TemplateView):
 
 # <----- Bridge Credit ----->
 class InventoryBridgeCreditView(ListView):
-    template_name = "inventory/bridge_credit_index.html"
+    template_name = "inventory/bridge/bridge_credit_index.html"
     model = BridgeCredit
 
 
 class InventoryBridgeCreditCreateView(TemplateView):
-    template_name = "inventory/bridge_credit_new_form.html"
+    template_name = "inventory/bridge/bridge_credit_new_form.html"
 
     def get(self, request, bridge_credit_id=None):
         bridge_credit = BridgeCredit()
@@ -209,3 +213,153 @@ class InventoryCrappyMapView(TemplateView):
         Depending on filters return the correct queryset
         """
         return self.render_to_response({})
+
+
+class InventoryDashboardView(TemplateView):
+    template_name = "inventory/dashboard.html"
+
+    def get(self, request, *args, **kwargs):
+        """
+        Create the appropiate datastructures
+        to display in the different dashboard tables
+        """
+        sections = Section.objects.all().order_by("-name")
+        d_section = dict() # Ordered by section, display total and how much $$ earned
+        o_section = dict() # Order by section, display % of completion and when it'll be completed
+        s_section = dict() # Order by status, display
+
+        for s in sections:
+            # How many prototypes?
+            prototypes = Prototype.objects.filter(inventory__section=s).distinct()
+
+            d_section[s.name] = {}
+            for p in prototypes:
+                d_section[s.name][p.name] = p.inventory_set.filter(prototype=p, section=s)
+            
+        for s in sections:
+            o_section[s.name] = {}
+            qs = s.inventory_set.all()
+            blocks = set([x.block for x in qs])
+
+            # Now that you have the necessary info
+            for b in blocks:
+                o_section[s.name][b] = {}
+                for p in PERCENTAGES_OPTIONS:
+                    temp = qs.filter(percent_completed=p[0], section=s, block=b)
+                    if temp:
+                        o_section[s.name][b][p[0]] = temp
+                    else:
+                        continue
+
+        # Create necessary headers
+        special_headers = [x[0] for x in CONSTRUCTION_STATUS]
+        for s in sections:
+            s_section[s.name] = {}
+            prototypes = Prototype.objects.filter(inventory__section=s)
+            for p in prototypes:
+                s_section[s.name][p.name] = s.inventory_set.filter(prototype=p)
+
+        return self.render_to_response({
+                "d_section": d_section,
+                "o_section": o_section,
+                "s_section": s_section,
+                "months": get_months_header,
+                "special_headers": special_headers,
+        })
+
+
+class InventoryAjaxView(JSONTemplateRenderMixin, ListView):
+    template_name = "inventory/partials/table.html"
+    model = Inventory
+
+
+    def get_queryset(self):
+        section = self.request.GET.get("section", None)
+        prototype = self.request.GET.get("prototype", None)
+        block = self.request.GET.get("block", None)
+        date_source_const = self.request.GET.get("date-const", None)
+        status = self.request.GET.get("status", None)
+
+        query = Q()
+
+        if section:
+            query = query & Q(section__name__iexact=section)
+        if prototype:
+            query = query & Q(prototype__name__iexact=prototype)
+        if block:
+            block = block if len(block) > 1 else "0%s" %(block)
+            query = query & Q(block=block)
+        if date_source_const:
+            # Prepare to a readable format
+            month, year = date_source_const.split(" ")
+            month = MONTHS_DICT[month]
+            query = query & Q(construction_end_date__month=month, construction_end_date__year=year)
+        if status:
+            query = query & Q(construction_status=status)
+
+        return self.model.objects.filter(query)
+
+
+class InventoryBridgeCreditDashboard(TemplateView):
+    template_name = "inventory/bridge/dashboard.html"
+
+    def get(self, request, *args, **kwargs):
+        # Build the specialized datastructures you need for those stupid dashboards
+        special_headers = [x[0] for x in BRIDGE_CREDIT_STATUSES]
+        special_headers.append("TOTAL")
+
+        bridges = BridgeCredit.objects.all()
+        n_credit = dict()
+        t_credit = dict()
+
+        for c in CONSTRUCTION_STATUS:
+            qs = bridges.filter(inventory__construction_status=c[0])
+            tmp = SortedDict()
+            n_credit[c[0]] = None
+            for s in special_headers:
+                if s == "TOTAL":
+                    tmp[s] = len(qs)
+                else:
+                    tmp[s] = len(qs.filter(status=s))
+            n_credit[c[0]] = tmp
+
+        for c in CONSTRUCTION_STATUS:
+            qs = bridges.filter(inventory__construction_status=c[0])
+            tmp = SortedDict()
+            t_credit[c[0]] = None
+            for s in special_headers:
+                if s == "TOTAL":
+                    kewlness = qs.aggregate(total=Sum("bridgecreditpayment__amount"))["total"]
+                    if kewlness:
+                        tmp[s] = kewlness
+                    else:
+                        tmp[s] = 0.00
+                else:
+                    kewlness = qs.filter(status=s).aggregate(total=Sum("bridgecreditpayment__amount"))["total"]
+                    if kewlness:
+                        tmp[s] = kewlness
+                    else:
+                        tmp[s] = 0.00
+            t_credit[c[0]] = tmp
+
+        return self.render_to_response({"n_credit": n_credit, "t_credit": t_credit,
+                                        "special_headers": special_headers})
+
+
+class InventoryBridgeCreditAjax(JSONTemplateRenderMixin, ListView):
+    template_name = "inventory/bridge/partials/table.html"
+    model = BridgeCredit
+
+    def get_queryset(self, *args, **kwargs):
+        const_status = self.request.GET.get("const-status", None)
+        bridge_status = self.request.GET.get("bridge-status", None)
+        if bridge_status == "TOTAL":
+            bridge_status = None
+        query = Q()
+
+        if const_status:
+            query = query & Q(inventory__construction_status=const_status)
+        if bridge_status:
+            query = query & Q(status=bridge_status)
+
+        return self.model.objects.filter(query)

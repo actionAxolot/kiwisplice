@@ -1,18 +1,18 @@
 #content-pane {
-	margin-top: 60px;
+    margin-top: 60px;
 }
 
 .filters {
-	margin-bottom: 18px;
+    margin-bottom: 18px;
 }
 
 input {
-	width: 150px;
+    width: 150px;
 }
 
 #login-box {
-	margin-left: 400px;
-	text-align: center;
+    margin-left: 400px;
+    text-align: center;
 }
 
 #map-container {
@@ -23,11 +23,21 @@ input {
 }
 
 ul.time-filters {
-	display: block;
-	list-style: none;
+    display: block;
+    list-style: none;
 }
 
 ul.time-filters li {
-	float: left;
-	margin-right: 18px;
+    float: left;
+    margin-right: 18px;
+}
+
+td.sub-header-separator{
+    background-color: black;
+    color: white;
+}
+
+td.sub-sub-header-separator{
+    background-color: silver;
+    color: white;
 }

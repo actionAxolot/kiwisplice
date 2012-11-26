@@ -8,16 +8,17 @@ active
 
 
 <div id="content-header">
-	{% block github_buttons %}
-		<h1>Inventario</h1>
-		<div class="btn-group">
-			<a class="btn btn-large tip-bottom" href="{% url inventory_home %}" title="Ver Inventario"><i class="icon-search"></i></a>
-			<a class="btn btn-large tip-bottom" href="{% url inventory_create %}" title="Crear Inventario"><i class="icon-plus-sign"></i></a>
-		</div>
-	{% endblock %}
+  {% block github_buttons %}
+  <h1>Inventario</h1>
+  <div class="btn-group">
+    <a class="btn btn-large tip-bottom" href="{% url inventory_home %}" title="Ver Inventario"><i class="icon-search"></i></a>
+    <a class="btn btn-large tip-bottom" href="{% url inventory_create %}" title="Crear Inventario"><i class="icon-plus-sign"></i></a>
+    <a class="btn btn-large tip-bottom" href="{% url inventory_dashboard %}" title="Dashboard"><i class="icon-home"></i></a>
+  </div>
+  {% endblock %}
 </div>
-	
-	{% block sub_content %}{% endblock %}
+
+{% block sub_content %}{% endblock %}
 
 {% endblock content %}
 {% block extrascripts %}

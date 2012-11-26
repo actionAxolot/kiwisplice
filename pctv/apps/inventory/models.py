@@ -149,8 +149,6 @@ class BridgeCredit(models.Model):
         decimal_places=2, verbose_name=_(u"Approved amount"))
     ministered_amount = models.DecimalField(blank=False, null=False, max_digits=20,
         decimal_places=2, verbose_name=_(u"Ministered amount"))
-    payed_amount = models.DecimalField(blank=True, null=False, max_digits=20,
-        decimal_places=2, verbose_name=_(u"Cantidad pagada"))
 
     class Meta:
         verbose_name = _(u"Bridge Credit")

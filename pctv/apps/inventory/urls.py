@@ -1,20 +1,17 @@
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
-from apps.inventory.views import (InventoryView, InventoryCreateView,
-    InventoryDeleteView, InventorySectionView,
-    InventorySectionCreateView, InventorySectionDeleteView,
-    InventoryPrototypeView,
-    InventoryPrototypeCreateView, InventoryPrototypeDeleteView,
-    InventoryBridgeCreditView,
-    InventoryBridgeCreditCreateView, InventoryBridgeCreditDeleteView, InventoryDeliveryOrderView,
-    InventoryCrappyMapView)
+from apps.inventory.views import *
+from apps.utils.views import JSONTemplateRenderMixin
 
 
 urlpatterns = patterns('',
     # Dashboard
+    url(r'^dashboard/$', login_required(InventoryDashboardView.as_view()), {}, name="inventory_dashboard"),
     url(r'^crear/(?P<inventory_id>\w+)/$', login_required(InventoryCreateView.as_view()), {}, name="inventory_create_params"),
     url(r'^crear/$', login_required(InventoryCreateView.as_view()), {}, name="inventory_create"),
     url(r'^borrar/(?P<inventory_id>\w+)/$', login_required(InventoryDeleteView.as_view()), {}, name="inventory_delete"),
+    url(r'^mapa/$', login_required(InventoryCrappyMapView.as_view()), {}, name='inventory_map_view'),
+    url(r'^ajax/$', login_required(InventoryAjaxView.as_view()), {}, name='inventory_ajax'),
 
     # Prototype
     url(r'^prototipo/$', login_required(InventoryPrototypeView.as_view()), {}, name="inventory_prototype"),
@@ -33,8 +30,12 @@ urlpatterns = patterns('',
     url(r'^credito-puente/crear/$', login_required(InventoryBridgeCreditCreateView.as_view()), {}, name="inventory_bridge_credit_create"),
     url(r'^credito-puente/crear/(?P<bridge_credit_id>\w+)/$', login_required(InventoryBridgeCreditCreateView.as_view()), {}, name="inventory_bridge_credit_create_params"),
     url(r'^credito-puente/borrar/(?P<bridge_credit_id>\w+)/$', login_required(InventoryBridgeCreditDeleteView.as_view()), {}, name="inventory_bridge_credit_delete"),
-    url(r'^documentos/orden-entrega/$', login_required(InventoryDeliveryOrderView.as_view()), {}, name='inventory_documents_delivery_order'),
-    url(r'^mapa/$', login_required(InventoryCrappyMapView.as_view()), {}, name='inventory_map_view'),
+    url(r'^credito-puente/dashboard/$', login_required(InventoryBridgeCreditDashboard.as_view()), {}, name="inventory_bridge_credit_dashboard"),
+    url(r'^credito-puente/ajax/$', login_required(InventoryBridgeCreditAjax.as_view()), {}, name="inventory_bridge_credit_ajax"),
+                       
+    # Documentation
+    url(r'^documentos/orden-entrega/$', login_required(InventoryDeliveryOrderView.as_view()), {}, name='inventory_documents_delivery_order'),                      
+
     # Fallback
     url(r'^$', login_required(InventoryView.as_view()), {}, name="inventory_home"),
 )

@@ -1,0 +1,157 @@
+{% extends "inventory/base.html" %}
+{% load inventorytags %}
+
+{% block sub_content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="span12">
+      <div class="alert alert-info">
+	Recuerde los botones mostrados arriba. Con ellos puede navegar al rededor de esta sección
+	<a href="#" data-dismiss="alert" class="close">×</a>
+      </div>
+      
+      <div class="widget-box">
+	<div class="widget-title">
+	  <ul class="nav nav-tabs">
+	    <li class="active"><a data-toggle="tab" href="#tab1">Inventario</a></li>
+	    <li><a data-toggle="tab" href="#tab2">Obra</a></li>
+	    <li><a data-toggle="tab" href="#tab3">Ubicación ventas</a></li>
+	  </ul>
+	</div>
+	<div class="widget-content tab-content">
+	  {# Render a table with every item in the object available #}
+	  <div class="tab-pane active offset3 span6" id="tab1">
+	    <table class="table table-bordered">
+	      <thead>
+		<tr>
+		  <th>PROTOTIPOS</th>
+		  <th>VIVIENDAS</th>
+		  <th>MILES DE PESOS</th>
+		</tr>
+	      </thead>
+	      <tbody>
+		 {% for key, val in d_section.items %}
+		 <tr>
+		   <td colspan="3" class="sub-header-separator">
+		     ETAPA {{ key }}
+		   </td>
+		 </tr>
+                 {% for k, v in val.items %}
+                 <tr>
+                     <td>
+		       {{ k }}
+                     </td>
+		     <td>
+		       <a class="render_table" href="{% url inventory_ajax %}" data-section="{{ key }}" data-prototype="{{ k }}">{{ v|length }}</a>
+		     </td>
+		     <td>
+		       {{ v|get_earned_total }}
+		     </td>
+                 </tr>
+		 {% endfor %}
+		 {% endfor %}
+	       </tbody>
+	     </table>
+	   </div>
+
+	   <div class="tab-pane" id="tab2">
+	     <table class="table table-bordered">
+	       <thead>
+		 <tr>
+		   <th>PORCENTAJE TERMINADO</th>
+		   <th>{{ months.0 }}</th>
+		   <th>{{ months.1 }}</th>
+		   <th>{{ months.2 }}</th>
+		   <th>{{ months.3 }}</th>
+		   <th>{{ months.4 }}</th>
+		   <th>{{ months.5 }}</th>
+		   <th>{{ months.6 }}</th>
+		   <th>{{ months.7 }}</th>
+		   <th>TOTAL</th>
+		 </tr>
+	       </thead>
+	       <tbody>
+		 {% for k, v in o_section.items %}
+		 <tr>
+                   <td colspan="10" class="sub-header-separator">ETAPA {{ k }}</td>
+		 </tr>
+		 {% for k1, v1 in v.items %}
+                 <tr>
+                     <td colspan="10" class="sub-sub-header-separator">MANZANA {{ k1 }}</td>
+                 </tr>
+
+		 {% for k2, v2 in v1.items %}
+		 <tr>
+		   <td>{{ k2 }}%</td>
+                   <td><a class="render_table" href="{% url inventory_ajax %}" data-section="{{ k }}" data-block="{{ k1 }}" data-date-const="{{ months.0 }}" >{{ v2|count_by_month:months.0 }}</a></td>
+		   <td><a class="render_table" href="{% url inventory_ajax %}" data-section="{{ k }}" data-block="{{ k1 }}" data-date-const="{{ months.1 }}" >{{ v2|count_by_month:months.1 }}</a></td>
+		   <td><a class="render_table" href="{% url inventory_ajax %}" data-section="{{ k }}" data-block="{{ k1 }}" data-date-const="{{ months.2 }}" >{{ v2|count_by_month:months.2 }}</a></td>
+		   <td><a class="render_table" href="{% url inventory_ajax %}" data-section="{{ k }}" data-block="{{ k1 }}" data-date-const="{{ months.3 }}" >{{ v2|count_by_month:months.3 }}</a></td>
+		   <td><a class="render_table" href="{% url inventory_ajax %}" data-section="{{ k }}" data-block="{{ k1 }}" data-date-const="{{ months.4 }}" >{{ v2|count_by_month:months.4 }}</a></td>
+		   <td><a class="render_table" href="{% url inventory_ajax %}" data-section="{{ k }}" data-block="{{ k1 }}" data-date-const="{{ months.5 }}" >{{ v2|count_by_month:months.5 }}</a></td>
+		   <td><a class="render_table" href="{% url inventory_ajax %}" data-section="{{ k }}" data-block="{{ k1 }}" data-date-const="{{ months.6 }}" >{{ v2|count_by_month:months.6 }}</a></td>
+		   <td><a class="render_table" href="{% url inventory_ajax %}" data-section="{{ k }}" data-block="{{ k1 }}" data-date-const="{{ months.7 }}" >{{ v2|count_by_month:months.7 }}</a></td>
+		   <td><a class="render_table" href="{% url inventory_ajax %}" data-section="{{ k }}" data-block="{{ k1 }}"> {{ v2|length }}</a> </td>		
+		 </tr>
+		 {% endfor %}
+		 {% endfor %}
+		 {% endfor %}
+	       </tbody>
+	     </table>
+	   </div>
+
+	   <div class="tab-pane" id="tab3">
+	     <table class="table table-bordered">
+	       <thead>
+		 <tr>
+		   <th>PROTOTIPOS</th>
+		   {% for h in special_headers %}
+                   <th>{{ h }}</th>
+		   {% endfor %}
+		   <th>TOTAL</th>
+		 </tr>
+	       </thead>
+	       <tbody>
+		 {% for k, v in s_section.items %}
+		 <tr>
+		   <td class="sub-header-separator" colspan="7">ETAPA {{ k }}</td>
+		 </tr>
+		 {% for k1, v1 in v.items %}
+		 <tr>
+		   <td>{{ k1 }}</td>
+		   <td><a class="render_table" href="{% url inventory_ajax%}" data-section="{{ k }}" data-prototype="{{ k1 }}" data-status="{{ special_headers.0 }}" >{{ v1|count_by_status:special_headers.0 }}</a></td>
+		   <td><a class="render_table" href="{% url inventory_ajax%}" data-section="{{ k }}" data-prototype="{{ k1 }}" data-status="{{ special_headers.1 }}" >{{ v1|count_by_status:special_headers.1 }}</a></td>
+		   <td><a class="render_table" href="{% url inventory_ajax%}" data-section="{{ k }}" data-prototype="{{ k1 }}" data-status="{{ special_headers.2 }}" >{{ v1|count_by_status:special_headers.2 }}</a></td>
+		   <td><a class="render_table" href="{% url inventory_ajax%}" data-section="{{ k }}" data-prototype="{{ k1 }}" data-status="{{ special_headers.3 }}" >{{ v1|count_by_status:special_headers.3 }}</a></td>
+		   <td><a class="render_table" href="{% url inventory_ajax%}" data-section="{{ k }}" data-prototype="{{ k1 }}" data-status="{{ special_headers.4 }}" >{{ v1|count_by_status:special_headers.4 }}</a></td>
+		   <td><a class="render_table" href="{% url inventory_ajax%}" data-section="{{ k }}" data-prototype="{{ k1 }}">{{ v1|count_by_status}}</a></td>
+		 </tr>
+		 {% endfor %}
+		 {% endfor %}
+	       </tbody>
+	     </table>
+	   </div>
+
+
+	 </div>
+      </div>
+      
+      <div id="inventory-info" class="modal hide" style="display: none;">
+	<div class="modal-header">
+	  <button data-dismiss="modal" class="close" type="button">×</button>
+	  <h3>Detalle de inventario</h3>
+	</div>
+	<div id="inventory-info-table" class="modal-body">
+	  <div class="progress progress-striped progress-danger active">
+	    <div style="width: 100%;" class="bar"></div>
+	  </div>
+	</div>
+      </div>				
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extrascripts %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/inventory/dashboard.js"></script>
+{% endblock extrascripts %}
