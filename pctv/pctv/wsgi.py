@@ -17,11 +17,11 @@ import os
 import sys
 import site
 
-PATH = "/home/actionaxolot/webapps/django/pctv"
-VIRTUALENV_HOME = "/home/actionaxolot/.virtualenvs"
+PATH = "/var/www/vhosts/kiwisplice/pctv"
+VIRTUALENV_HOME = "/home/axolote/.virtualenvs"
 os.environ["PYTHON_EGG_CACHE"] = PATH + '/.egg_cache'
 
-site.addsitedir('%s/pctv/lib/python2.7/site-packages' % VIRTUALENV_HOME)
+site.addsitedir('%s/kiwisplice/lib/python2.7/site-packages' % VIRTUALENV_HOME)
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pctv.settings")
 
