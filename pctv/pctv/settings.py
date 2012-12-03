@@ -203,6 +203,7 @@ INSTALLED_APPS = (
     'rosetta',
     'south',
     'debug_toolbar',
+    'gunicorn',
 )
 
 
