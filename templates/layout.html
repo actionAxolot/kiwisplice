@@ -38,11 +38,16 @@
       <ul>
 	<li class="{% block listado_cliente %}{% endblock %}"><a href="{% url client_dashboard %}">Tablero</a></li>
 	<li class="{% block cobranza %}{% endblock %}"><a href="{% url client_financial_list %}">Cobranza</a></li>
-	<!-- <li class="{% block entrega_vivienda %}{% endblock %}"><a href="calendar.html">Entrega de Vivienda</a></li>
-	     <li class="{% block ventas_ubicacion %}{% endblock %}"><a href="{% url client_sales %}">Ventas por Ubicación</a></li>
-	<li class="{% block maduracion_enganches %}{% endblock %}"><a href="{% url client_downpayment %}">Maduración de Enganches</a></li> -->
       </ul>
     </li>
+
+    <li class="submenu {% block enganches %}{% endblock %}">
+      <a href="{% url payment_index %}"><i class="icon icon-file"></i> <span>Maduración de enganches</span></a>
+      <ul>
+	<li class="{% block enganches_dashboard %}{% endblock %}"><a href="{% url payment_dashboard %}">Tablero</a></li>
+      </ul>
+    </li>
+    
     <li class="{% block prospeccion %}{% endblock %}">
       <a href="{% url prospection_dashboard %}"><i class="icon icon-signal"></i> <span>Prospección</span></a>
     </li>

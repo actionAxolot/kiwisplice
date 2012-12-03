@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     (r'^comisiones/', include('apps.commission.urls')),
     (r'^documentos/', include('apps.document.urls')),
     (r'^usuarios/', include('apps.role.urls')),
+    (r'^enganche/', include('apps.payment.urls')),
     (r'^', include('apps.home.urls')),
 )
 

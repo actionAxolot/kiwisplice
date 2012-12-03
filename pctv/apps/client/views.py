@@ -5,10 +5,9 @@ from django.shortcuts import redirect
 from django.db.models import Q
 from models import Client, CLIENT_STATUS
 from forms import ClientPaymentFormSet, ClientForm, ClientPaymentCollectFormSet
-from apps.utils import format_time_span, MONTHS, MONTHS_DICT
+from apps.utils import format_time_span, MONTHS, MONTHS_DICT, get_months_header
 from apps.prospection.models import TOTAL_INCOME_BUCKET
 from apps.utils.views import JSONTemplateRenderMixin
-from apps.utils import get_months_header
 import datetime
 import operator
 
@@ -201,4 +200,4 @@ class ClientReturnToProspectionView(TemplateView):
             
             return redirect("client_home")
         except Client.DoesNotExist:
-            return redirect("client_home")        
+            return redirect("client_home")
