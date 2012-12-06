@@ -1,82 +1,94 @@
 {% extends "inventory/base.html" %}
 
 {% block sub_content %}
-<div class="container-fluid">
-  <div class="row-fluid">
-    <div class="span10">
-      <div class="widget-box">
-	<div class="widget-title">
-	  <h5>Captura de posición</h5>
-	</div>
-	<div class="widget-content nopadding">
-	  <div id="map-container"></div>
-	</div>
-      </div>
-    </div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span10">
+                <div class="widget-box">
+                    <div class="widget-title">
+                        <h5>Captura de posición</h5>
+                    </div>
+                    <div class="widget-content nopadding">
+                        <div id="map-container"></div>
+                    </div>
+                </div>
+            </div>
 
 
-    <div class="span2">
-      <div class="widget-box">
-	<div class="widget-title">
-	  <h5>Listado de Filtros</h5>
-	</div>
-	<div class="widget-content">
-	  <ul>
-	    <li><a class="filter-link" href="{% url inventory_map_ajax_view %}" data-filter="construction_status">Obra a ventas</a></li>
-	    <li><a class="filter-link" href="{% url inventory_map_ajax_view %}" data-filter="bridgecredit_status">Crédito puente</a></li>
-	    <li><a class="filter-link" href="{% url inventory_map_ajax_view %}" data-filter="percent_completed">Avance de obra</a></li>
-	    <li><a class="filter-link" href="{% url inventory_map_ajax_view %}" data-filter="client_status_in">Cliente</a></li>
-	  </ul>
-	</div>
-      </div>
-      <div class="widget-box">
-	<div class="widget-title">
-	  <h5>Leyenda</h5>
-	</div>
-	<div class="widget-content">
-	  <ul id="legend-container">
-	  	
-	  </ul>
-	</div>
-      </div>
+            <div class="span2">
+                <div class="widget-box">
+                    <div class="widget-title">
+                        <h5>Listado de Filtros</h5>
+                    </div>
+                    <div class="widget-content">
+                        <ul>
+                            <li><a class="filter-link" href="{% url inventory_map_ajax_view %}"
+                                   data-filter="construction_status">Obra a ventas</a></li>
+                            <li><a class="filter-link" href="{% url inventory_map_ajax_view %}"
+                                   data-filter="bridgecredit_status">Crédito puente</a></li>
+                            <li><a class="filter-link" href="{% url inventory_map_ajax_view %}"
+                                   data-filter="percent_completed">Avance de obra</a></li>
+                            <li><a class="filter-link" href="{% url inventory_map_ajax_view %}"
+                                   data-filter="client_status_in">Cliente</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="widget-box">
+                    <div class="widget-title">
+                        <h5>Leyenda</h5>
+                    </div>
+                    <div class="widget-content">
+                        <ul id="legend-container">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 {% endblock sub_content %}
 {% block extrascripts %}
-<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-datepicker.js"></script>
-<script type="text/javascript">
-	$(".filter-link").on("click", function(e){
-		e.preventDefault();
-        var dataFilter = $(e.currentTarget).data("filter");
-		var url = $(e.currentTarget).attr("href");
-		$.get(
-			url,
-            {"filter": dataFilter},
-			function(data){
-				console.log(data);
-				var elem = $("#legend-container").html("");
-				for(var key in data.legend){
-					var elem = $("#legend-container");
-					elem.append("<li><img src='/static/img/map/pointer_"+ data.legend[key] +".png'></img> "+ key +"</li>");
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript">
+        $(".filter-link").on("click", function (e) {
+            e.preventDefault();
+            var dataFilter = $(e.currentTarget).data("filter");
+            var url = $(e.currentTarget).attr("href");
+            $.get(
+                    url,
+                    {"filter":dataFilter},
+                    function (data) {
+                        console.log(data);
+                        var elem = $("#legend-container").html("");
+                        var counter = 0
+                        for (var key in data.legend) {
+                            var elem = $("#legend-container");
+                            elem.append("<li><img src='/static/img/map/pointer_" + data.legend[key] + ".png'></img> " + key + "</li>");
 
-                    // Now render the map elements
-                    if(key in data.data) {
-                        var img = "<img class='multi-pointer-thing' src='/static/img/map/pointer_" + data.legend[key] + ".png' />"
-                        var x = parseFloat(data.data[key][0]);
-                        var y = parseFloat(data.data[key][1]);
+                            // Now render the map elements
+                            if (key in data.data.data) {
+                                var subCounter = 0
+                                $.each(data.data.data[key], function (index, value) {
+                                    var img = $("<img id='multi-pointer-thing_" + counter + "_" + subCounter + "' src='/static/img/map/pointer_" + data.legend[key] + ".png' />");
+                                    var x = parseFloat(value[0]);
+                                    var y = parseFloat(value[1]);
 
-                        $("#map-container").html(img);
-                        $(".multi-pointer-thing").css({
-                                                          positon: "absoulute",
-                                                          top: y + 5,
-                                                          left: x - 8,
-                                                          zIndex: 3500
-                                                      });
+                                    if (!(x == 0 && y == 0)) {
+                                        $("#map-container").append(img);
+                                        $(img).css({
+                                                       position:"absolute",
+                                                       top:y + 5,
+                                                       left:x - 8,
+                                                       zIndex:3500
+                                                   });
+                                    }
+                                    subCounter++;
+                                });
+                            }
+                            counter++;
+                        }
                     }
-				}
-			}
-		), "json"
-	});
-</script>
+            ), "json"
+        });
+    </script>
 {% endblock extrascripts %}

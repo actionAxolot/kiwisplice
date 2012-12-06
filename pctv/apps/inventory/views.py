@@ -1,17 +1,15 @@
 # Create your views here.
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView
 from django.shortcuts import redirect
 from django.utils.datastructures import SortedDict
 from models import (Inventory, Section,
-    Prototype, BridgeCredit, PERCENTAGES_OPTIONS, CONSTRUCTION_STATUS, BRIDGE_CREDIT_STATUSES)
+                    Prototype, BridgeCredit, PERCENTAGES_OPTIONS, CONSTRUCTION_STATUS, BRIDGE_CREDIT_STATUSES)
 from forms import (InventoryForm, SectionForm,
-    PrototypeForm, BridgeCreditForm, BridgeCreditPaymentsFormset)
+                   PrototypeForm, BridgeCreditForm, BridgeCreditPaymentsFormset)
 from django.db.models import Q
 from apps.utils.views import JSONTemplateRenderMixin, JSONRenderMixin
 from apps.utils import get_months_header, MONTHS_DICT
 from django.db.models import Sum
-from django import http
-from django.utils import simplejson as json
 
 
 # <----- START LANDING PAGE ------>
@@ -47,7 +45,7 @@ class InventoryCreateView(TemplateView):
         inventory = Inventory()
         if inventory_id:
             inventory = Inventory.objects.get(pk=inventory_id)
-        inventory_form = InventoryForm(request.POST, request.FILES, 
+        inventory_form = InventoryForm(request.POST, request.FILES,
                                        instance=inventory, user=request.user)
         if inventory_form.is_valid():
             inventory_form.save()
@@ -99,7 +97,6 @@ class InventoryPrototypeCreateView(TemplateView):
 class InventoryPrototypeDeleteView(TemplateView):
     def get(self, request, prototype_id=None):
         Prototype.objects.get(pk=prototype_id).delete()
-
 
 
 # <----- START SECTION ------>
@@ -157,7 +154,7 @@ class InventoryBridgeCreditCreateView(TemplateView):
         bridge_credit = BridgeCredit()
         if bridge_credit_id:
             bridge_credit = BridgeCredit.objects.get(pk=bridge_credit_id)
-        
+
         if request.GET.get("inventario", None):
             form = BridgeCreditForm(instance=bridge_credit, initial={"inventory": request.GET.get("inventario")})
         else:
@@ -212,13 +209,13 @@ class InventoryCrappyMapView(TemplateView):
     template_name = "inventory/map.html"
     available_colors = (
         "blue",
-        "green", 
+        "green",
         "orange",
         "pink",
         "red",
         "white",
         "yellow",
-    )
+        )
 
     def get(self, request, **kwargs):
         """
@@ -239,7 +236,7 @@ class InventoryAjaxCrappyMapView(JSONRenderMixin, ListView):
         "red",
         "white",
         "yellow",
-    )
+        )
 
     def get_context_data(self, *args, **kwargs):
         context = dict()
@@ -253,10 +250,19 @@ class InventoryAjaxCrappyMapView(JSONRenderMixin, ListView):
                 i += 1
 
             result["data"] = dict()
-            for inv in self.model.objects.all().values("construction_status"):
-                result["data"][inv["construction_status"]] = list()
             for inv in self.model.objects.all().values("construction_status", "x", "y"):
-                result["data"][inv["construction_status"]].append((float(inv.get("x", 0)), float(inv.get("y", 0))))
+                # Check for null values... not sure how this slipped my mind
+                if not inv["x"]:
+                    inv["x"] = 0.00
+                if not inv["y"]:
+                    inv["y"] = 0.00
+
+                if inv["construction_status"] in result["data"]:
+                    result["data"][inv["construction_status"]].append((float(inv.get("x", 0.00)),
+                                                                       float(inv.get("y", 0.00), )))
+                else:
+                    result["data"][inv["construction_status"]] = [(float(inv.get("x", 0.00)),
+                                                                   float(inv.get("y", 0.00)),)]
 
         if sel_filter == "bridgecredit_status": # By bridge credit status
             i = 0
@@ -320,7 +326,7 @@ class InventoryDashboardView(TemplateView):
             d_section[s.name] = {}
             for p in prototypes:
                 d_section[s.name][p.name] = p.inventory_set.filter(prototype=p, section=s)
-            
+
         for s in sections:
             o_section[s.name] = {}
             qs = s.inventory_set.all()
@@ -345,11 +351,11 @@ class InventoryDashboardView(TemplateView):
                 s_section[s.name][p.name] = s.inventory_set.filter(prototype=p)
 
         return self.render_to_response({
-                "d_section": d_section,
-                "o_section": o_section,
-                "s_section": s_section,
-                "months": get_months_header,
-                "special_headers": special_headers,
+            "d_section": d_section,
+            "o_section": o_section,
+            "s_section": s_section,
+            "months": get_months_header,
+            "special_headers": special_headers,
         })
 
 
@@ -372,7 +378,7 @@ class InventoryAjaxView(JSONTemplateRenderMixin, ListView):
         if prototype:
             query = query & Q(prototype__name__iexact=prototype)
         if block:
-            block = block if len(block) > 1 else "0%s" %(block)
+            block = block if len(block) > 1 else "0%s" % (block)
             query = query & Q(block=block)
         if date_source_const:
             # Prepare to a readable format
