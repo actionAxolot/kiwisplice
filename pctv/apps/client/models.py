@@ -36,7 +36,7 @@ class Client(models.Model):
         verbose_name=_(u"Prospección"), limit_choices_to={"status__in": ("Apartado", "Por cerrar")})
     inventory = models.ForeignKey(Inventory,
                                   limit_choices_to={"construction_status__in": (u"Libre", u"Con cliente")},
-                                  unique=True, verbose_name=_(u"Inmueble"))
+                                  unique=True, verbose_name=_(u"Inmueble"), null=True, blank=True)
     integration_date = models.DateField(null=True, blank=True, verbose_name=_(u"Integration date"))
     signature_date = models.DateField(null=True, blank=True, verbose_name=_(u"Signature date"))
     auth_date = models.DateField(null=True, blank=True, verbose_name=_(u"Authorization date"))

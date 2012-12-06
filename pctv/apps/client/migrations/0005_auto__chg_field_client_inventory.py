@@ -8,28 +8,14 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Client.created_date'
-#        db.add_column('client_client', 'created_date',
-#                      self.gf('django.db.models.fields.DateField')(auto_now_add=True, default=datetime.datetime(2012, 11, 18, 0, 0), blank=True),
-#                      keep_default=False)
-
 
         # Changing field 'Client.inventory'
-        db.alter_column('client_client', 'inventory_id', self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['inventory.Inventory'], unique=True))
-        # Adding unique constraint on 'Client', fields ['inventory']
-        db.create_unique('client_client', ['inventory_id'])
-
+        db.alter_column('client_client', 'inventory_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['inventory.Inventory'], unique=True, null=True))
 
     def backwards(self, orm):
-        # Removing unique constraint on 'Client', fields ['inventory']
-        db.delete_unique('client_client', ['inventory_id'])
-
-        # Deleting field 'Client.created_date'
-        db.delete_column('client_client', 'created_date')
-
 
         # Changing field 'Client.inventory'
-        db.alter_column('client_client', 'inventory_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['inventory.Inventory'], null=True))
+        db.alter_column('client_client', 'inventory_id', self.gf('django.db.models.fields.related.ForeignKey')(default=0, to=orm['inventory.Inventory'], unique=True))
 
     models = {
         'auth.group': {
@@ -68,7 +54,7 @@ class Migration(SchemaMigration):
             'delivery_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'integration_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'inventory': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['inventory.Inventory']", 'unique': 'True'}),
+            'inventory': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['inventory.Inventory']", 'unique': 'True', 'null': 'True', 'blank': 'True'}),
             'notary': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True', 'blank': 'True'}),
             'payment_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'pricing_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),

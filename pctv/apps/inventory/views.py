@@ -1,16 +1,18 @@
 # Create your views here.
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DetailView
 from django.shortcuts import redirect
 from django.utils.datastructures import SortedDict
 from models import (Inventory, Section,
     Prototype, BridgeCredit, PERCENTAGES_OPTIONS, CONSTRUCTION_STATUS, BRIDGE_CREDIT_STATUSES)
 from forms import (InventoryForm, SectionForm,
-    PrototypeForm, BridgeCreditForm, BridgeCreditPaymentsFormset,
-    InventoryBridgeCreditFormset)
+    PrototypeForm, BridgeCreditForm, BridgeCreditPaymentsFormset)
 from django.db.models import Q
-from apps.utils.views import JSONTemplateRenderMixin
+from apps.utils.views import JSONTemplateRenderMixin, JSONRenderMixin
 from apps.utils import get_months_header, MONTHS_DICT
 from django.db.models import Sum
+from django import http
+from django.utils import simplejson as json
+
 
 # <----- START LANDING PAGE ------>
 class InventoryView(ListView):
@@ -208,11 +210,94 @@ class InventoryCrappyMapView(TemplateView):
     Fucking hate these maps that no-one will use
     """
     template_name = "inventory/map.html"
-    def get(self, request):
+    available_colors = (
+        "blue",
+        "green", 
+        "orange",
+        "pink",
+        "red",
+        "white",
+        "yellow",
+    )
+
+    def get(self, request, **kwargs):
         """
         Depending on filters return the correct queryset
         """
         return self.render_to_response({})
+
+
+class InventoryAjaxCrappyMapView(JSONRenderMixin, ListView):
+    template_name = None
+    model = Inventory
+
+    available_colors = (
+        "blue",
+        "green",
+        "orange",
+        "pink",
+        "red",
+        "white",
+        "yellow",
+    )
+
+    def get_context_data(self, *args, **kwargs):
+        context = dict()
+        sel_filter = self.request.GET.get("filter", "construction_status")
+        legend = dict()
+        result = dict()
+        if sel_filter == "construction_status": # By construction status
+            i = 0
+            for e in CONSTRUCTION_STATUS:
+                legend[e[0]] = self.available_colors[i]
+                i += 1
+
+            result["data"] = dict()
+            for inv in self.model.objects.all().values("construction_status"):
+                result["data"][inv["construction_status"]] = list()
+            for inv in self.model.objects.all().values("construction_status", "x", "y"):
+                result["data"][inv["construction_status"]].append((float(inv.get("x", 0)), float(inv.get("y", 0))))
+
+        if sel_filter == "bridgecredit_status": # By bridge credit status
+            i = 0
+            for e in BRIDGE_CREDIT_STATUSES:
+                legend[e[0]] = self.available_colors[i]
+                i += 1
+
+            result["data"] = self.model.objects.values("bridgecredit__status", "x", "y")
+
+        if sel_filter == "percent_complete": # By construction percentage
+            # First get the retarded ranges
+            temp = {"0": list(), "10-30": list(), "40-70": list(), "80-90": list(), "100": list()}
+            for inv in self.model.objects.all():
+                if inv.percent_completed == 0:
+                    temp["0"].append(inv)
+                if inv.percent_completed >= 10 and inv.percent_completed <= 30:
+                    temp["10-30"].append(inv)
+                if inv.percent_completed >= 40 and inv.percent_completed <= 70:
+                    temp["40-70"].append(inv)
+                if inv.percent_completed >= 80 and inv.percent_completed <= 90:
+                    temp["80-90"].append(inv)
+                if inv.percent_completed == 100:
+                    temp["100"].append(inv)
+            i = 0
+            for k, v in temp.items():
+                legend[k] = self.available_colors[i]
+                i += 1
+            result["data"] = temp
+
+        if sel_filter == "client_status_in": # By client status
+            allowed_statuses = ("Cancelado", "Firmado", "Viv. entregada", "Autorizado")
+            result["data"] = self.model.objects.filter(client__status__in=allowed_statuses).values(sel_filter, "x", "y")
+
+            i = 0
+            for s in allowed_statuses:
+                legend[s] = self.available_colors[i]
+                i += 1
+
+        context["legend"] = legend
+        context["data"] = result
+        return context
 
 
 class InventoryDashboardView(TemplateView):

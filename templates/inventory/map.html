@@ -1,5 +1,4 @@
 {% extends "inventory/base.html" %}
-{% load credit_percentages %}
 
 {% block sub_content %}
 <div class="container-fluid">
@@ -23,11 +22,10 @@
 	</div>
 	<div class="widget-content">
 	  <ul>
-	    <li><a href="/inventario/mapa/?f=1">Obra a ventas</a></li>
-	    <li><a href="/inventario/mapa/?f=2">Crédito puente</a></li>
-	    <li><a href="/inventario/mapa/?f=3">Avance de obra</a></li>
-	    <li><a href="/inventario/mapa/?f=4">Cliente</a></li>
-	    <li><a href="/inventario/mapa/?f=5">Inventario a ventas</a></li>
+	    <li><a class="filter-link" href="{% url inventory_map_ajax_view %}" data-filter="construction_status">Obra a ventas</a></li>
+	    <li><a class="filter-link" href="{% url inventory_map_ajax_view %}" data-filter="bridgecredit_status">Crédito puente</a></li>
+	    <li><a class="filter-link" href="{% url inventory_map_ajax_view %}" data-filter="percent_completed">Avance de obra</a></li>
+	    <li><a class="filter-link" href="{% url inventory_map_ajax_view %}" data-filter="client_status_in">Cliente</a></li>
 	  </ul>
 	</div>
       </div>
@@ -36,17 +34,49 @@
 	  <h5>Leyenda</h5>
 	</div>
 	<div class="widget-content">
-	  LEYENDA
+	  <ul id="legend-container">
+	  	
+	  </ul>
 	</div>
       </div>
-      
     </div>
-
-
   </div>
 </div>
 {% endblock sub_content %}
 {% block extrascripts %}
 <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-datepicker.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/client/scripts.js"></script>
+<script type="text/javascript">
+	$(".filter-link").on("click", function(e){
+		e.preventDefault();
+        var dataFilter = $(e.currentTarget).data("filter");
+		var url = $(e.currentTarget).attr("href");
+		$.get(
+			url,
+            {"filter": dataFilter},
+			function(data){
+				console.log(data);
+				var elem = $("#legend-container").html("");
+				for(var key in data.legend){
+					var elem = $("#legend-container");
+					elem.append("<li><img src='/static/img/map/pointer_"+ data.legend[key] +".png'></img> "+ key +"</li>");
+
+                    // Now render the map elements
+                    if(key in data.data) {
+                        var img = "<img class='multi-pointer-thing' src='/static/img/map/pointer_" + data.legend[key] + ".png' />"
+                        var x = parseFloat(data.data[key][0]);
+                        var y = parseFloat(data.data[key][1]);
+
+                        $("#map-container").html(img);
+                        $(".multi-pointer-thing").css({
+                                                          positon: "absoulute",
+                                                          top: y + 5,
+                                                          left: x - 8,
+                                                          zIndex: 3500
+                                                      });
+                    }
+				}
+			}
+		), "json"
+	});
+</script>
 {% endblock extrascripts %}

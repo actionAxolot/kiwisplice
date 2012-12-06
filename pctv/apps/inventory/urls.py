@@ -10,7 +10,8 @@ urlpatterns = patterns('',
     url(r'^crear/(?P<inventory_id>\w+)/$', login_required(InventoryCreateView.as_view()), {}, name="inventory_create_params"),
     url(r'^crear/$', login_required(InventoryCreateView.as_view()), {}, name="inventory_create"),
     url(r'^borrar/(?P<inventory_id>\w+)/$', login_required(InventoryDeleteView.as_view()), {}, name="inventory_delete"),
-    url(r'^mapa/$', login_required(InventoryCrappyMapView.as_view()), {}, name='inventory_map_view'),
+    url(r'^mapa/ajax/$', login_required(InventoryAjaxCrappyMapView.as_view()), {}, name="inventory_map_ajax_view"),
+    url(r'^mapa/$', login_required(InventoryCrappyMapView.as_view()), {}, name="inventory_map_view"),
     url(r'^ajax/$', login_required(InventoryAjaxView.as_view()), {}, name='inventory_ajax'),
 
     # Prototype

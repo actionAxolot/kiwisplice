@@ -24,7 +24,7 @@ class ProspectionView(ListView):
 class ProspectionDashboardView(TemplateView):
     """Show the dashboard with kewl information for prospections"""
     template_name = "prospection/dashboard.html"
-    # prospections = Prospection.objects.all()
+
     @csrf_exempt
     def dispatch(self, *args, **kwargs):
         return super(ProspectionDashboardView, self).dispatch(*args, **kwargs)
