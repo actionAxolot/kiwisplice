@@ -6,11 +6,11 @@ import socket
 # Set up variables used in the configuration file
 
 if socket.gethostname() == "ambystoma":
-    DEBUG = True
-    LOCAL_DEV = True
-else:
     DEBUG = False
     LOCAL_DEV = False
+else:
+    DEBUG = True
+    LOCAL_DEV = True
 
 TEMPLATE_DEBUG = DEBUG
 DIRNAME = os.path.abspath(__file__)
