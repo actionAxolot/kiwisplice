@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 # Django settings for pctv project.
 import os
+import socket
 
 # Set up variables used in the configuration file
 
-if os.getenv("LOGNAME") == "axolote":
+if socket.gethostname() == "ambystoma":
     DEBUG = True
     LOCAL_DEV = True
 else:
