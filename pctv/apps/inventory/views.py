@@ -46,7 +46,7 @@ class InventoryCreateView(TemplateView):
         if inventory_id:
             inventory = Inventory.objects.get(pk=inventory_id)
         inventory_form = InventoryForm(request.POST, request.FILES,
-                                       instance=inventory, user=request.user)
+            instance=inventory, user=request.user)
         if inventory_form.is_valid():
             inventory_form.save()
             return redirect("inventory_home")
@@ -269,12 +269,24 @@ class InventoryAjaxCrappyMapView(JSONRenderMixin, ListView):
             for e in BRIDGE_CREDIT_STATUSES:
                 legend[e[0]] = self.available_colors[i]
                 i += 1
+            result["data"] = dict()
+            for inv in self.model.objects.all().values("bridgecredit__status", "x", "y"):
+                if not inv["x"]:
+                    inv["x"] = 0.00
+                if not inv["y"]:
+                    inv["y"] = 0.00
 
-            result["data"] = self.model.objects.values("bridgecredit__status", "x", "y")
+                if inv["bridgecredit__status"] in result["data"]:
+                    result["data"][inv["bridgecredit__status"]].append((float(inv.get("x", 0.00)),
+                                                                        float(inv.get("y", 0.00)),))
+                else:
+                    result["data"][inv["bridgecredit__status"]] = [(float(inv.get("x", 0.00)),
+                                                                    float(inv.get("y", 0.00)),)]
 
-        if sel_filter == "percent_complete": # By construction percentage
+        if sel_filter == "percent_completed": # By construction percentage
             # First get the retarded ranges
             temp = {"0": list(), "10-30": list(), "40-70": list(), "80-90": list(), "100": list()}
+            result["data"] = dict()
             for inv in self.model.objects.all():
                 if inv.percent_completed == 0:
                     temp["0"].append(inv)
@@ -286,15 +298,43 @@ class InventoryAjaxCrappyMapView(JSONRenderMixin, ListView):
                     temp["80-90"].append(inv)
                 if inv.percent_completed == 100:
                     temp["100"].append(inv)
+
             i = 0
             for k, v in temp.items():
                 legend[k] = self.available_colors[i]
+
+                for inv in v:
+                    values = {"x": inv.x, "y": inv.y}
+                    if not values["x"]:
+                        values["x"] = 0.00
+                    if not values["y"]:
+                        values["y"] = 0.00
+
+                    if k in result["data"]:
+                        result["data"][k].append((float(values.get("x", 0.00)), float(values.get("y", 0.00)),))
+                    else:
+                        result["data"][k] = [(float(values.get("x", 0.00)), float(values.get("y", 0.00)),)]
+
                 i += 1
-            result["data"] = temp
 
         if sel_filter == "client_status_in": # By client status
             allowed_statuses = ("Cancelado", "Firmado", "Viv. entregada", "Autorizado")
-            result["data"] = self.model.objects.filter(client__status__in=allowed_statuses).values(sel_filter, "x", "y")
+            result["data"] = self.model.objects.filter(client__status__in=allowed_statuses).values(
+                "client__status", "x", "y")
+
+            result["data"] = dict()
+            for inv in self.model.objects.filter(
+                client__status__in=allowed_statuses).values("client__status", "x", "y"):
+                if not inv["x"]:
+                    inv["x"] = 0.00
+                if not inv["y"]:
+                    inv["y"] = 0.00
+
+                if inv["client__status"] in result["data"]:
+                    result["data"][inv["client__status"]].append((float(inv.get("x", 0.00)),
+                                                                  float(inv.get("y", 0.00)),))
+                else:
+                    result["data"][inv["client__status"]] = [(float(inv.get("x", 0.00)), float(inv.get("y", 0.00)),)]
 
             i = 0
             for s in allowed_statuses:

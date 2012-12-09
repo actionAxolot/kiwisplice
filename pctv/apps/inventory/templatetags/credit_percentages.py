@@ -2,6 +2,7 @@
 from django import template
 from decimal import Decimal
 import datetime
+from django.db.models import Sum
 
 register = template.Library()
 
@@ -12,8 +13,10 @@ def bridge_credit_left(total, ministered):
 
 
 @register.filter
-def bridge_credit_owed(total, payed):
-    return total - payed
+def bridge_credit_owed(total, bridge_credit):
+    # First get how much has been payed
+    total_payed = bridge_credit.bridgecreditpayment_set.all().aggregate(total=Sum("amount"))["total"]
+    return total - total_payed
 
 
 @register.filter

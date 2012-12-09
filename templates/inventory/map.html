@@ -60,6 +60,7 @@
                     function (data) {
                         console.log(data);
                         var elem = $("#legend-container").html("");
+                        $("#map-container").html("");
                         var counter = 0
                         for (var key in data.legend) {
                             var elem = $("#legend-container");
@@ -76,11 +77,11 @@
                                     if (!(x == 0 && y == 0)) {
                                         $("#map-container").append(img);
                                         $(img).css({
-                                                       position:"absolute",
-                                                       top:y + 5,
-                                                       left:x - 8,
-                                                       zIndex:3500
-                                                   });
+                                            position:"absolute",
+                                            top:y + 5,
+                                            left:x - 8,
+                                            zIndex:3500
+                                        });
                                     }
                                     subCounter++;
                                 });
