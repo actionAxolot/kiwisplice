@@ -8,7 +8,7 @@ if os.getenv("LOGNAME") == "axolote":
     DEBUG = True
     LOCAL_DEV = True
 else:
-    DEBUG = True
+    DEBUG = False
     LOCAL_DEV = False
 
 TEMPLATE_DEBUG = DEBUG
@@ -26,35 +26,22 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-if LOCAL_DEV:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': 'pctv',                      # Or path to database file if using sqlite3.
-            'USER': 'root',                      # Not used with sqlite3.
-            'PASSWORD': '',                  # Not used with sqlite3.
-            'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-            'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'pctv',                      # Or path to database file if using sqlite3.
+        'USER': 'root',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': 'actionaxolot_pc',                      # Or path to database file if using sqlite3.
-            'USER': 'actionaxolot_pc',                      # Not used with sqlite3.
-            'PASSWORD': 'mediaGartorifa21',                  # Not used with sqlite3.
-            'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-            'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-        }
-    }
+}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
 TIME_ZONE = 'America/Mexico_City'
-
 
 SITE_ID = 1
 
@@ -92,7 +79,9 @@ LANGUAGES = (
 if LOCAL_DEV:
     MEDIA_ROOT = os.path.join(PROJECT_DIRNAME, 'assets', 'media')
 else:
-    MEDIA_ROOT = os.path.abspath(os.path.join(PROJECT_DIRNAME, '..', '..', 'staticapp', 'media'))
+    MEDIA_ROOT = os.path.abspath(os.path.join(PROJECT_DIRNAME, "..",
+                                              "static", "kiwisplice",
+                                              "media"))
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -109,7 +98,8 @@ else:
 if LOCAL_DEV:
     STATIC_ROOT = os.path.join(PROJECT_DIRNAME, 'static')
 else:
-    STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_DIRNAME, '..', '..', 'static_pctv'))
+    STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_DIRNAME, "..", "static",
+                                               "kiwisplice"))
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"

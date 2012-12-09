@@ -314,7 +314,6 @@ class InventoryAjaxCrappyMapView(JSONRenderMixin, ListView):
                         result["data"][k].append((float(values.get("x", 0.00)), float(values.get("y", 0.00)),))
                     else:
                         result["data"][k] = [(float(values.get("x", 0.00)), float(values.get("y", 0.00)),)]
-
                 i += 1
 
         if sel_filter == "client_status_in": # By client status
