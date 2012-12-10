@@ -20,7 +20,7 @@ CLIENT_STATUS = (
     (u"Cobrado", _(u"Cobrado")),
     (u"Viv. Entregada", _(u"Viv. Entregada")),
     (u"Cancelado", _(u"Cancelado")),
-)
+    )
 
 
 class ClientManager(models.Manager):
@@ -32,11 +32,10 @@ class ClientManager(models.Manager):
 # Create your models here.
 class Client(models.Model):
     """ Whenever a prospection is aproved a client object is appended """
-    prospection = models.ForeignKey(Prospection, 
+    prospection = models.ForeignKey(Prospection,
         verbose_name=_(u"Prospección"), limit_choices_to={"status__in": ("Apartado", "Por cerrar")})
     inventory = models.ForeignKey(Inventory,
-                                  limit_choices_to={"construction_status__in": (u"Libre", u"Con cliente")},
-                                  unique=True, verbose_name=_(u"Inmueble"), null=True, blank=True)
+        unique=True, verbose_name=_(u"Inmueble"), null=True, blank=True)
     integration_date = models.DateField(null=True, blank=True, verbose_name=_(u"Integration date"))
     signature_date = models.DateField(null=True, blank=True, verbose_name=_(u"Signature date"))
     auth_date = models.DateField(null=True, blank=True, verbose_name=_(u"Authorization date"))
@@ -48,7 +47,7 @@ class Client(models.Model):
     # Store the date in which this Client entry was created
     created_date = models.DateField(auto_now_add=True)
 
-    status = models.CharField(blank=False, null=False, 
+    status = models.CharField(blank=False, null=False,
         choices=CLIENT_STATUS, max_length=50, default=_(u"Integración"),
         verbose_name=_(u"Status"))
 
@@ -95,7 +94,7 @@ def delete_commissions(sender, instance, created, **kwargs):
         # Editing already existing record
         if instance.status == u"Cancelado":
             instance.commission_set.all().delete()
-    
+
 
 pre_save.connect(free_inventory_status, sender=Client)
 post_save.connect(set_inventory_status, sender=Client)

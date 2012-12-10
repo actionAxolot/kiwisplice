@@ -1,11 +1,19 @@
 from django.forms.models import ModelForm
 from django.forms.models import inlineformset_factory
+from django.db.models import Q
 from django.forms.widgets import HiddenInput, DateInput, TextInput
 from models import Client
+from apps.inventory.models import Inventory
 from apps.payment.models import Payment
 
 
 class ClientForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ClientForm, self).__init__(*args, **kwargs)
+        # Set the correct choices thing
+        query = Q(construction_status="libre") | Q(client=self.instance)
+        self.fields["inventory"].queryset = Inventory.objects.filter(query)
+
     class Meta:
         model = Client
         widgets = {
@@ -39,8 +47,8 @@ class PaymentCollectForm(ModelForm):
 
 
 ClientPaymentFormSet = inlineformset_factory(Client, Payment, form=PaymentForm,
-                                             extra=10, can_delete=False)
+    extra=10, can_delete=False)
 
 ClientPaymentCollectFormSet = inlineformset_factory(Client, Payment,
-                                                    form=PaymentCollectForm,
-                                                    extra=10, can_delete=False)
+    form=PaymentCollectForm,
+    extra=10, can_delete=False)
