@@ -13,12 +13,12 @@ $("#map-container").on("click", function(e){
     $("#id_y").val(y.toFixed(5));
 
     // Load and display pointer image
-    var img = "<img id='pointer-thing' src='/static/img/map/pointer_red.png' />";
+    var img = "<img id='pointer-thing' width='6' height='6' src='/static/img/map/pointer_red.png' />";
     $("#map-container").html(img);
     $("#pointer-thing").css({
         position: 'absolute',
-        top: y + 5,
-        left: x - 8,
+        top: y + 32,
+        left: x - 4,
         zIndex: 3500
     });
 
@@ -30,12 +30,12 @@ $(document).ready(function(){
     var x = parseFloat($("#id_x").val());
     var y = parseFloat($("#id_y").val());
 
-    var img = "<img id='pointer-thing' src='/static/img/map/pointer_red.png' />";
+    var img = "<img id='pointer-thing' width='6' height='6' src='/static/img/map/pointer_red.png' />";
     $("#map-container").html(img);
     $("#pointer-thing").css({
       position: 'absolute',
-      top: y + 5,
-      left: x - 8,
+      top: y + 32,
+      left: x - 4,
       zIndex: 3500
     });
 

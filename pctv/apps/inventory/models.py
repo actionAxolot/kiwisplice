@@ -3,8 +3,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
-import datetime
-
 # Porcentajes options... this is probably retardedr
 PERCENTAGES_OPTIONS = tuple([(x, unicode(x) + u"%") for x in xrange(0, 110, 10)])
 
@@ -144,9 +142,9 @@ class BridgeCredit(models.Model):
     inventory = models.ForeignKey(Inventory, verbose_name=_(u"Realestate"))
     status = models.CharField(choices=BRIDGE_CREDIT_STATUSES, verbose_name=_(u"Status"),
         max_length=30, default=0)
-    approved_on = models.DateField(blank=False, null=False, verbose_name=_(u"Approved on"))
+    approved_on = models.DateField(blank=False, null=False, verbose_name=_(u"Aprobado en"))
     approved_amount = models.DecimalField(blank=False, null=False, max_digits=20,
-        decimal_places=2, verbose_name=_(u"Approved amount"))
+        decimal_places=2, verbose_name=_(u"Cantidad aprobada"))
     ministered_amount = models.DecimalField(blank=False, null=False, max_digits=20,
         decimal_places=2, verbose_name=_(u"Ministered amount"))
 

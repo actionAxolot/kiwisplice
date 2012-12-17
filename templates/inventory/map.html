@@ -70,7 +70,7 @@
                             if (key in data.data.data) {
                                 var subCounter = 0
                                 $.each(data.data.data[key], function (index, value) {
-                                    var img = $("<img id='multi-pointer-thing_" + counter + "_" + subCounter + "' src='/static/img/map/pointer_" + data.legend[key] + ".png' />");
+                                    var img = $("<img width='6' height='6' id='multi-pointer-thing_" + counter + "_" + subCounter + "' src='/static/img/map/pointer_" + data.legend[key] + ".png' />");
                                     var x = parseFloat(value[0]);
                                     var y = parseFloat(value[1]);
 
@@ -78,8 +78,8 @@
                                         $("#map-container").append(img);
                                         $(img).css({
                                             position:"absolute",
-                                            top:y + 5,
-                                            left:x - 8,
+                                            top:y + 32,
+                                            left:x - 4,
                                             zIndex:3500
                                         });
                                     }
