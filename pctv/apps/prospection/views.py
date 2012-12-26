@@ -13,6 +13,8 @@ from models import Prospection, PROSPECTION_STATUS_CHOICES, \
     PROSPECTION_CHANNEL_OPTIONS, TOTAL_INCOME_BUCKET
 import datetime
 import operator
+from django.http import Http404, HttpResponseRedirect
+from apps.utils.views import JSONTemplate
 
 
 class ProspectionView(ListView):
@@ -252,3 +254,38 @@ class ProspectionAjaxStatusView(TemplateView):
         data["template"] = t.render(Context(context))
         data["message"] = "success"
         return http.HttpResponse(simplejson.dumps(data, ensure_ascii=False), content_type="application/json")
+
+
+class ProspectionApartarView(TemplateView):
+    """
+    Change the status of a prospection to apartado after the
+    click of a button
+    """
+    def get(self, request):
+        """
+        Receive in the request as a GET parameter the
+        prospections ID and change the status. Then
+        make the appropiate client changes and stuff
+        """
+        try:
+            prospection = Prospection.objects.get(pk=request.GET.get("prospection_id"))
+        except:
+            raise Http404
+        
+        # Change the status to a more relevant 
+        prospection.status = u"Apartado" # LOL This is super retarded
+        prospection.save()
+        if prospection.status in ("Apartado",):
+            try:
+                client = Client.objects.get(prospection=prospection)
+                if client.status == u"Cancelado":
+                    client.status = u"Integración"
+                    client.save()
+            except Client.DoesNotExist:
+                client = Client(prospection=prospection)
+                client.save()
+        
+        if request.user.has_perm("client.create_client"):
+            return HttpResponseRedirect("/clientes-linea-de-produccion/editar/%d/" % client.pk)
+        else:
+            return HttpResponseRedirect("/prospeccion/ver/")

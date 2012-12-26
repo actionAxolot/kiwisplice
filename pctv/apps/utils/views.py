@@ -1,5 +1,5 @@
 # Create your views here.
-from django.utils import simplejson as json, simplejson
+from django.utils import simplejson as json
 from django.template import Context, loader
 from django import http
 
@@ -15,7 +15,7 @@ class JSONTemplate(object):
     def convert_context_to_json(self, context):
         # Render the template
         return json.dumps(context, ensure_ascii=False)
-
+    
 
 class JSONTemplateRenderMixin(JSONTemplate):
     """
