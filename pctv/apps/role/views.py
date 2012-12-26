@@ -1,9 +1,9 @@
-from django.views.generic import ListView, TemplateView
-from django.shortcuts import redirect, get_object_or_404
-from django.contrib.auth.models import User, Group
+from apps.role.forms import UserCreateForm, UserEditForm
+from apps.role.models import Role
+from django.contrib.auth.models import Group, User
 from django.forms.models import model_to_dict
-from models import *
-from forms import *
+from django.shortcuts import redirect, get_object_or_404
+from django.views.generic import ListView, TemplateView
 
 
 class RoleIndexView(TemplateView):
@@ -21,33 +21,6 @@ class RoleIndexView(TemplateView):
             "object_list": object_list,
             "user_list": user_list
         })
-
-
-class RoleCreateView(TemplateView):
-    template_name = "role/create.html"
-
-    def get(self, request, role_id=None):
-        role = Role()
-        if role_id:
-            role = Role.objects.get(pk=role_id)
-
-        form = RoleForm(instance=role)
-
-        return self.render_to_response({"form": form})
-
-
-    def post(self, request, role_id=None):
-        role = Role()
-        if role_id:
-            role = Role.objects.get(pk=role_id)
-
-        form = RoleForm(request.POST, request.FILES, instance=role)
-
-        if form.is_valid():
-            form.save()
-            return redirect("role_dashboard")
-
-        return self.render_to_response({"form": form})
 
 
 class RoleView(TemplateView):

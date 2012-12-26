@@ -4,8 +4,8 @@ from views import *
 
 
 urlpatterns = patterns('',
-	url("^crear-rol/$", login_required(RoleCreateView.as_view()), name="role_create"),
-    url("^crear-rol/(?P<role_id>\w+)/$", login_required(RoleCreateView.as_view()), name="role_create_params"),
+#	url("^crear-rol/$", login_required(RoleCreateView.as_view()), name="role_create"),
+#    url("^crear-rol/(?P<role_id>\w+)/$", login_required(RoleCreateView.as_view()), name="role_create_params"),
     url("^listar-roles/", login_required(RoleView.as_view()), name="role_view"),
     url("^editar-usuario/(?P<user_id>\w+)/$", login_required(RoleUserEditView.as_view()), name="role_create_user_params"),
     url("^crear-usuario/$", login_required(RoleUserCreateView.as_view()), name="role_create_user"),

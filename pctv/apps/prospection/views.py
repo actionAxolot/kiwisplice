@@ -196,7 +196,11 @@ class ProspectionAjaxView(TemplateView):
         else:
             prospections = Prospection.objects.all()
 
-        return self.render_to_response({"object_list": prospections})
+        # Check for permissions here. For some reason they're not passed to the template
+        can_delete = request.user.has_perm("prospection.delete_prospection")
+        can_change = request.user.has_perm("prospection.change_prospection")
+
+        return self.render_to_response({"object_list": prospections, "can_delete": can_delete, "can_change": can_change})
 
     def render_to_response(self, context):
         # Render the template

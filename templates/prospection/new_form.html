@@ -13,6 +13,9 @@
 							{% csrf_token %}
 							{{ formset.management_form }}
 							{% for field in form %}
+								{% if field.is_hidden %}
+									{{ field }}
+								{% else %}
 								<div class="control-group {% if field.errors %}error{% endif %}">
 									<div class="control-label">
 										{{ field.label_tag }}
@@ -24,6 +27,7 @@
 										</span>
 									</div>
 								</div>
+								{% endif %}
 							{% endfor %}
 						</div>
 					</div>

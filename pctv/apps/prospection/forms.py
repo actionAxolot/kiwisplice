@@ -23,6 +23,9 @@ YEARS = ((c, c) for c in xrange(2000, datetime.date.today().year + 1))
 class ProspectionForm(forms.ModelForm):
     class Meta:
         model = Prospection
+        widgets = {
+            "status": forms.HiddenInput()
+        }
 
 
 class PhoneNumberForm(forms.ModelForm):

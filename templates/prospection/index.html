@@ -26,7 +26,8 @@
 								<th>Estatus</th>
 								{% if perms.prospection.delete_prospection %}
 									<th>Borrar</th>
-								{% else %}
+								{% endif %}
+								{% if perms.prospection.change_prospection %}
 									<th>Apartar</th>
 								{% endif %}
 							</tr>
@@ -42,7 +43,8 @@
 								<td>{{ o.status }}</td>
 								{% if perms.prospection.delete_prospection %}
 									<td><a href="{% url prospection_delete prospection_id=o.pk %}" class="btn btn-danger">X</td>
-								{% else %}
+								{% endif %}
+								{% if perms.prospection.change_prospection %}
 									<td><a href="{% url prospection_apartar %}?prospection_id={{ o.pk}}" class="btn btn-danger">Apartar</td>
 								{% endif %}
 							</tr>

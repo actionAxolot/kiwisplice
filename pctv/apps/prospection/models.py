@@ -87,8 +87,8 @@ class Prospection(models.Model):
         verbose_name=_(u"Canal Prospección"), max_length=50,
         choices=PROSPECTION_CHANNEL_OPTIONS, default="Fraccionamiento")
     visitation_date = models.DateField(blank=False, null=False, verbose_name=_(u"Fecha de visita"))
-    status = models.CharField(blank=False, null=False, max_length=50,
-        verbose_name=_(u"Estatus"), choices=PROSPECTION_STATUS_CHOICES)
+    status = models.CharField(blank=True, null=True, max_length=50,
+        verbose_name=_(u"Status"), choices=PROSPECTION_STATUS_CHOICES, default="No perfilado")
 
     # Things to know... just in case...
     first_name = models.CharField(blank=False, null=False,
