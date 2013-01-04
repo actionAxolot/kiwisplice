@@ -1,5 +1,4 @@
 from apps.role.forms import UserCreateForm, UserEditForm
-from apps.role.models import Role
 from django.contrib.auth.models import Group, User
 from django.forms.models import model_to_dict
 from django.shortcuts import redirect, get_object_or_404
