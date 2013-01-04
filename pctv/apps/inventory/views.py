@@ -317,17 +317,29 @@ class InventoryAjaxCrappyMapView(JSONRenderMixin, ListView):
                 i += 1
 
         if sel_filter == "client_status_in": # By client status
-            allowed_statuses = ("Cancelado", "Firmado", "Viv. entregada", "Autorizado")
-            result["data"] = self.model.objects.filter(client__status__in=allowed_statuses).values(
-                "client__status", "x", "y")
+            
+            # TODO: Delete most below this line
+            result["data"] = self.model.objects.all().exclude(client__status="Cancelado").values("client__status", 
+                                                                                                 "x", "y")
+            
+            # Clean the resulting
+            tmp_result = list() 
+            for r in result["data"]:
+                if (r["client__status"] != "Firmado") or (r["client__status"] != "Viv. Entregada"):
+                    r["client__status"] = "Cliente en proceso"
+                    
+                tmp_result.append(r)
 
             result["data"] = dict()
-            for inv in self.model.objects.filter(
-                client__status__in=allowed_statuses).values("client__status", "x", "y"):
+            for inv in self.model.objects.all().values("client__status", "x", "y"):
                 if not inv["x"]:
                     inv["x"] = 0.00
                 if not inv["y"]:
                     inv["y"] = 0.00
+                    
+                # Do the necessary status convertions
+                if (inv["client__status"] != "Firmado") or (inv["client__status"] != "Viv. Entregada"):
+                    inv["client__status"] = "Cliente en proceso"
 
                 if inv["client__status"] in result["data"]:
                     result["data"][inv["client__status"]].append((float(inv.get("x", 0.00)),
@@ -336,7 +348,7 @@ class InventoryAjaxCrappyMapView(JSONRenderMixin, ListView):
                     result["data"][inv["client__status"]] = [(float(inv.get("x", 0.00)), float(inv.get("y", 0.00)),)]
 
             i = 0
-            for s in allowed_statuses:
+            for s in ("Cliente en proceso", "Firmado", "Viv. Entregada"):
                 legend[s] = self.available_colors[i]
                 i += 1
 
