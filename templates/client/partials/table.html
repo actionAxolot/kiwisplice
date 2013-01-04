@@ -13,7 +13,9 @@
 	  <th>Email del cliente</th>
 	  <th>Fecha de entrega</th>
 	  <th>Estatus</th>
-	  <th>Acciones</th>
+	  {% if perms.client.change_client %}
+	   <th>Acciones</th>
+	  {% endif %}
 	</tr>
       </thead>
       <tbody>
@@ -25,7 +27,9 @@
 	  <td>{{ o.prospection.email }}</td>
 	  <td>{{ o.delivery_date }}</td>
 	  <td>{{ o.status }}</td>
+	  {% if perms.client.change_client %}
 	  <td>
+	   
 	    <a href="{% url client_financial_params client_id=o.pk %}" class="btn btn-primary">Cobranza</a>
             {% if o.status == "Cancelado" %}
             <a href="{% url client_to_prospection client_id=o.pk %}" class="btn btn-primary">Reactivar</a>
@@ -33,6 +37,7 @@
             <a href="{% url client_to_prospection client_id=o.pk %}" class="btn btn-danger">Cancelar</a>
             {% endif %}
 	  </td>
+	  {% endif %}
 	</tr>
 	{% endfor %}
       </tbody>

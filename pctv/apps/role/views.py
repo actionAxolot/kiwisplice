@@ -97,10 +97,3 @@ class RoleUserDeleteView(TemplateView):
 class RoleUserView(ListView):
     template_name = "role/user_view.html"
     model = User
-
-
-class RoleDeleteView(TemplateView):
-    def get(self, request, role_id=None):
-        if role_id:
-            Role.objects.get(pk=role_id).delete()
-            return redirect("role_dashboard")

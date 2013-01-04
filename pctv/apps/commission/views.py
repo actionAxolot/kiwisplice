@@ -12,14 +12,24 @@ class CommissionDashboardView(TemplateView):
     template_name = 'commission/index.html'
     def get(self, request):
         # Get all salespeople that have clients... ergo commissions
-        salespeople = User.objects.annotate(Count("prospection__client")) \
-            .filter(prospection__client__count__gt=0).distinct().order_by("-id")
-
-        # Clients
-        clients = Client.objects.all().order_by("-id")
-
-        # Inventory
-        inventory = Inventory.objects.filter(construction_status="Con cliente").order_by("-id")
+        # TODO: Refactor this to use Q objects and such to form dynamic queries
+        if request.user.is_superuser:
+            salespeople = User.objects.annotate(Count("prospection__client")) \
+                .filter(prospection__client__count__gt=0).distinct().order_by("-id")
+    
+            # Clients
+            clients = Client.objects.all().order_by("-id")
+    
+            # Inventory
+            inventory = Inventory.objects.filter(construction_status="Con cliente").order_by("-id")
+        else:
+            salespeople = User.objects.annotate(Count("prospection__client")).filter(prospection__client__count__gt=0) \
+                .filter(pk=request.user.pk)
+                
+            clients = Client.objects.filter(prospection__salesperson=request.user).order_by("-id")
+            
+            inventory = Inventory.objects.filter(client__prospection__salesperson=request.user,
+                                                  construction_status="Con cliente").order_by("-id")
         
         return self.render_to_response(
             {
