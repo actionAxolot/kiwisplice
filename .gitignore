@@ -2,3 +2,6 @@ docs
 *.pyc
 .DS_Store
 .idea
+.project
+.pydevproject
+.settings
