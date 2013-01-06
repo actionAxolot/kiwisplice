@@ -5,7 +5,8 @@ from django.shortcuts import redirect
 from django.db.models import Q
 from models import Client, CLIENT_STATUS
 from forms import ClientPaymentFormSet, ClientForm, ClientPaymentCollectFormSet
-from apps.utils import format_time_span, MONTHS, MONTHS_DICT, get_months_header
+from apps.utils import format_time_span, MONTHS, MONTHS_DICT, get_months_header,\
+    get_reverse_months_header
 from apps.prospection.models import TOTAL_INCOME_BUCKET
 from apps.utils.views import JSONTemplateRenderMixin
 import datetime
@@ -57,7 +58,7 @@ class ClientDashboardView(TemplateView):
 
     def get(self, request):
         # Get every client that has a signature date of today 'till 4 months in the future
-        months = get_months_header()
+        months = get_reverse_months_header()
 
         object_dict = dict()
         for c in CLIENT_STATUS:

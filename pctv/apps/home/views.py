@@ -5,7 +5,7 @@ from django.utils.datastructures import SortedDict
 from django.http import Http404
 from django.db.models import Q
 from apps.client.models import Client
-from apps.utils import get_months_header, MONTHS_DICT
+from apps.utils import get_reverse_months_header, MONTHS_DICT
 from apps.utils.views import JSONTemplateRenderMixin
 
 
@@ -41,7 +41,7 @@ class DashboardView(ListView):
         """
         context = super(ListView, self).get_context_data(*args, **kwargs)
         # Now arrange everything neatly in rows
-        context["months"] = get_months_header()
+        context["months"] = get_reverse_months_header()
         clientes = SortedDict()
         clientes["Apartado"] = Client.objects.filter(prospection__status="Apartado")
         clientes["Por Firmar"] = Client.objects.filter(status="Por firmar")
@@ -72,10 +72,11 @@ class HomeAjaxView(JSONTemplateRenderMixin, ListView):
             month, year = month.split(" ")
             month = MONTHS_DICT[month]
             query = query & Q(created_date__month=month, created_date__year=year)
+            
         if status:
             if status == "Apartado":
                 query = query & Q(prospection__status=status)
             else:
                 query = query & Q(prospection__status=status)
-
+                
         return self.model.objects.filter(query)

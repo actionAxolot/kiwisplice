@@ -19,16 +19,27 @@ MONTHS = {
     "DICIEMBRE": 12,
 }
 
+
+def get_date_data(date):
+    tokens = date.split(" ")
+    month, year = tokens
+    return month, year
+
 @register.filter()
 def count_by_month(obj, date=None):
-    if date:
+    if isinstance(date, str):
         # Get the date into tokents
-        tokens = date.split(" ")
-        month, year = tokens
+        month, year = get_date_data(date)
 
         month = MONTHS[month]
 
         # Now count how many are 
         return len(obj.filter(signature_date__month=month, signature_date__year=year))
-
-    return len(obj)
+    
+    obj_total = 0
+    for m in date:
+        month, year = get_date_data(m)
+        month = MONTHS[month]
+        obj_total += len(obj.filter(signature_date__month=month, signature_date__year=year))
+    
+    return obj_total
