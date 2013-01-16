@@ -30,6 +30,7 @@ class ClientAjaxView(JSONTemplateRenderMixin, ListView):
         income = self.request.GET.get("income", None)
         status = self.request.GET.get("status", None)
         query = Q()
+
         if month:
             # Split it up and get year, month
             month, year = month.split(" ")
@@ -144,6 +145,8 @@ class ClientFinancialView(TemplateView):
             "client": client,
         })
 
+    # What broke this were the disabled fields. Apparently they don't play nice with django forms
+    # TODO: Find a
     def post(self, request, client_id=None):
         client = Client()
         if client_id:

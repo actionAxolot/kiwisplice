@@ -319,25 +319,32 @@ class InventoryAjaxCrappyMapView(JSONRenderMixin, ListView):
         if sel_filter == "client_status_in": # By client status
             
             # TODO: Delete most below this line
-            result["data"] = self.model.objects.all().exclude(client__status="Cancelado").values("client__status", 
-                                                                                                 "x", "y")
+            result["data"] = self.model.objects.all().exclude(client__status="Cancelado", 
+                    client__isnull=True).values("client__status", "x", "y")
             
             # Clean the resulting
             tmp_result = list() 
             for r in result["data"]:
+                # If there is not a client status just continue next iteration
+                if not r["client__status"]:
+                    continue
+
                 if (r["client__status"] != "Firmado") or (r["client__status"] != "Viv. Entregada"):
                     r["client__status"] = "Cliente en proceso"
                     
                 tmp_result.append(r)
 
             result["data"] = dict()
-            for inv in self.model.objects.all().values("client__status", "x", "y"):
+            # TODO: Refactor line below. A call to the DB for data already in memory
+            for inv in self.model.objects.all().exclude(client__status="Cancelado", client__isnull=True).values("client__status", "x", "y"):
                 if not inv["x"]:
                     inv["x"] = 0.00
                 if not inv["y"]:
                     inv["y"] = 0.00
                     
-                # Do the necessary status convertions
+                # If there is not a client status just continue next iteration
+                if not inv["client__status"]:
+                    continue
                 if (inv["client__status"] != "Firmado") or (inv["client__status"] != "Viv. Entregada"):
                     inv["client__status"] = "Cliente en proceso"
 

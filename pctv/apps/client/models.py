@@ -20,7 +20,7 @@ CLIENT_STATUS = (
     (u"Cobrado", _(u"Cobrado")),
     (u"Viv. Entregada", _(u"Viv. Entregada")),
     (u"Cancelado", _(u"Cancelado")),
-    )
+)
 
 
 class ClientManager(models.Manager):

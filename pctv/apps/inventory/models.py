@@ -75,7 +75,7 @@ class Inventory(models.Model):
 
     # TODO: This one should be filled automatically
     unique_id = models.CharField(max_length=50, blank=True, null=True,
-        verbose_name=_(u"Identificador único"))
+        verbose_name=_(u"Identificador único"), unique=True)
     block = models.CharField(max_length=50, blank=False, null=False, verbose_name=_(u'Block'))
     macro_lot = models.CharField(blank=False, null=False,
         verbose_name=_(u'Macro lot'), max_length=50)

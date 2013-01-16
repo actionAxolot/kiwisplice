@@ -39,13 +39,13 @@
 		 <tr>
 		   <td>{{ key }}</td>
 		   <td><a class="render_table" href="{% url home_ajax %}" data-month="{{ months.0 }}" data-status="{{ key }}">{{ obj|count_by_month:months.0 }}</a></td>
-		   <td><a class="render_table" href="{% url home_ajax %}" data-month="{{ months.0 }}" data-status="{{ key }}">{{ obj|count_by_month:months.1 }}</a></td>
-		   <td><a class="render_table" href="{% url home_ajax %}" data-month="{{ months.0 }}" data-status="{{ key }}">{{ obj|count_by_month:months.2 }}</a></td>
-		   <td><a class="render_table" href="{% url home_ajax %}" data-month="{{ months.0 }}" data-status="{{ key }}">{{ obj|count_by_month:months.3 }}</a></td>
-		   <td><a class="render_table" href="{% url home_ajax %}" data-month="{{ months.0 }}" data-status="{{ key }}">{{ obj|count_by_month:months.4 }}</a></td>
-		   <td><a class="render_table" href="{% url home_ajax %}" data-month="{{ months.0 }}" data-status="{{ key }}">{{ obj|count_by_month:months.5 }}</a></td>
-		   <td><a class="render_table" href="{% url home_ajax %}" data-month="{{ months.0 }}" data-status="{{ key }}">{{ obj|count_by_month:months.6 }}</a></td>
-		   <td><a class="render_table" href="{% url home_ajax %}" data-month="{{ months.0 }}" data-status="{{ key }}">{{ obj|count_by_month:months.7 }}</a></td>
+		   <td><a class="render_table" href="{% url home_ajax %}" data-month="{{ months.1 }}" data-status="{{ key }}">{{ obj|count_by_month:months.1 }}</a></td>
+		   <td><a class="render_table" href="{% url home_ajax %}" data-month="{{ months.2 }}" data-status="{{ key }}">{{ obj|count_by_month:months.2 }}</a></td>
+		   <td><a class="render_table" href="{% url home_ajax %}" data-month="{{ months.3 }}" data-status="{{ key }}">{{ obj|count_by_month:months.3 }}</a></td>
+		   <td><a class="render_table" href="{% url home_ajax %}" data-month="{{ months.4 }}" data-status="{{ key }}">{{ obj|count_by_month:months.4 }}</a></td>
+		   <td><a class="render_table" href="{% url home_ajax %}" data-month="{{ months.5 }}" data-status="{{ key }}">{{ obj|count_by_month:months.5 }}</a></td>
+		   <td><a class="render_table" href="{% url home_ajax %}" data-month="{{ months.6 }}" data-status="{{ key }}">{{ obj|count_by_month:months.6 }}</a></td>
+		   <td><a class="render_table" href="{% url home_ajax %}" data-month="{{ months.7 }}" data-status="{{ key }}">{{ obj|count_by_month:months.7 }}</a></td>
 		   <td><a class="render_table" href="{% url home_ajax %}" data-status="{{ key }}">{{ obj|count_by_month:months }}</td>
 		 </tr>
 		 {% endfor %}

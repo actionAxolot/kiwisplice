@@ -30,7 +30,6 @@ def count_by_month(obj, date=None):
     if isinstance(date, str):
         # Get the date into tokents
         month, year = get_date_data(date)
-
         month = MONTHS[month]
 
         # Now count how many are 
