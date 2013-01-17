@@ -22,7 +22,7 @@
 		<th>Vendedor</th>
 		<th>Nombre del cliente</th>
 		<th>Email del cliente</th>
-		<th>Fecha de entrega</th>
+		<th>Inventario</th>
 		<th>Estatus</th>
 		<th>Acciones</th>
 	      </tr>
@@ -34,7 +34,13 @@
 		<td>{{ o.prospection.salesperson.first_name }} {{ o.prospection.salesperson.last_name }}</td>
 		<td>{{ o.prospection.get_full_name }}</td>
 		<td>{{ o.prospection.email }}</td>
-		<td>{{ o.delivery_date }}</td>
+		<td>
+			{% if o.inventory %}
+				<a href="{% url inventory_create_params o.inventory.pk %}">{{ o.inventory.unique_id }}</a>
+			{% else %}
+				Sin inventario
+			{% endif %}
+		</td>
 		<td>{{ o.status }}</td>
 		<td>
 		  <a href="{% url client_financial_params client_id=o.pk %}" class="btn btn-primary">Cobranza</a>

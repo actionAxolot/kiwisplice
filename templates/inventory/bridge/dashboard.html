@@ -57,7 +57,7 @@
 	      <tbody>
 		 {% for k, v in t_credit.items %}
 		 <tr>
-		   <td>{{ k }}</td>
+		   <td>{{ k.inventory__construction_status }}</td>
 		   {% for k1, v1 in v.items %}
 		   <td>
 		     ${{ v1 }}

@@ -9,7 +9,7 @@ from forms import (InventoryForm, SectionForm,
 from django.db.models import Q
 from apps.utils.views import JSONTemplateRenderMixin, JSONRenderMixin
 from apps.utils import get_months_header, MONTHS_DICT
-from django.db.models import Sum
+from django.db.models import Sum, F
 
 
 # <----- START LANDING PAGE ------>

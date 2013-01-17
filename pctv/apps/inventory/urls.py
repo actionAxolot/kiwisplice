@@ -1,7 +1,6 @@
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
 from apps.inventory.views import *
-from apps.utils.views import JSONTemplateRenderMixin
 
 
 urlpatterns = patterns('',
@@ -33,9 +32,9 @@ urlpatterns = patterns('',
     url(r'^credito-puente/borrar/(?P<bridge_credit_id>\w+)/$', login_required(InventoryBridgeCreditDeleteView.as_view()), {}, name="inventory_bridge_credit_delete"),
     url(r'^credito-puente/dashboard/$', login_required(InventoryBridgeCreditDashboard.as_view()), {}, name="inventory_bridge_credit_dashboard"),
     url(r'^credito-puente/ajax/$', login_required(InventoryBridgeCreditAjax.as_view()), {}, name="inventory_bridge_credit_ajax"),
-                       
+
     # Documentation
-    url(r'^documentos/orden-entrega/$', login_required(InventoryDeliveryOrderView.as_view()), {}, name='inventory_documents_delivery_order'),                      
+    url(r'^documentos/orden-entrega/$', login_required(InventoryDeliveryOrderView.as_view()), {}, name='inventory_documents_delivery_order'),
 
     # Fallback
     url(r'^$', login_required(InventoryView.as_view()), {}, name="inventory_home"),

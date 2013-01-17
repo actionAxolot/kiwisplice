@@ -80,7 +80,10 @@ class RoleUserEditView(TemplateView):
 
             if form.cleaned_data["group"] == "Administrador":
                 user.is_superuser = True
-            
+
+            # We'll add this because some users might have more than one
+            for g in user.groups.all():
+                user.groups.remove(g)
             user.groups.add(group)
             user.save()
             return redirect("role_dashboard")

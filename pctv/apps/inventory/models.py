@@ -10,7 +10,7 @@ PERCENTAGES_OPTIONS = tuple([(x, unicode(x) + u"%") for x in xrange(0, 110, 10)]
 # How's the brige credit going?
 BRIDGE_CREDIT_STATUSES = (
     (u"Liberado", _(u"Liberado")),
-    (u"No liberado", _(u"No Liberado")),
+    (u"No liberado", _(u"No liberado")),
 )
 
 

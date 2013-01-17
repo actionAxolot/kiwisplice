@@ -3,13 +3,12 @@
 from django.views.generic import TemplateView, ListView
 from django.shortcuts import redirect
 from django.db.models import Q
+
 from models import Client, CLIENT_STATUS
 from forms import ClientPaymentFormSet, ClientForm, ClientPaymentCollectFormSet
-from apps.utils import format_time_span, MONTHS, MONTHS_DICT, get_months_header,\
-    get_reverse_months_header
+from apps.utils import MONTHS_DICT, get_reverse_months_header
 from apps.prospection.models import TOTAL_INCOME_BUCKET
 from apps.utils.views import JSONTemplateRenderMixin
-import datetime
 import operator
 
 
@@ -22,7 +21,7 @@ class ClientAjaxView(JSONTemplateRenderMixin, ListView):
         Depending on sent filters from request.GET return a relevant
         queryset. The parameters passed are month (NOVIEMBRE 2012),
         status and income bracket (De 13,000 a 20,000)
-        
+
         Arguments:
         - `self`: Self reference. Pretty straight forward
         """
@@ -41,8 +40,8 @@ class ClientAjaxView(JSONTemplateRenderMixin, ListView):
             query = query & Q(status=status)
         if income:
             # Convert to correct integer representation
-            income_tuple = (x[0] for x in TOTAL_INCOME_BUCKET if x[1] == income )
-            
+            income_tuple = (x[0] for x in TOTAL_INCOME_BUCKET if x[1] == income)
+
             # Now a relevant income bracket
             query = query & Q(prospection__total_income=income_tuple.next())
 
@@ -146,7 +145,7 @@ class ClientFinancialView(TemplateView):
         })
 
     # What broke this were the disabled fields. Apparently they don't play nice with django forms
-    # TODO: Find a
+    # TODO: Find a way to just display data since perhaps allowing editions of certain fields is not a good idea
     def post(self, request, client_id=None):
         client = Client()
         if client_id:
@@ -195,13 +194,13 @@ class ClientReturnToProspectionView(TemplateView):
             else:
                 client.prospection.status = u"Cancelado"
             client.prospection.save()
-            
+
             if client.status == u"Cancelado":
                 client.status = u"Autorizado"
             else:
                 client.status = u"Cancelado"
             client.save()
-            
+
             return redirect("client_home")
         except Client.DoesNotExist:
             return redirect("client_home")
