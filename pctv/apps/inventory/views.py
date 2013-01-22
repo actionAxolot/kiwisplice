@@ -373,9 +373,9 @@ class InventoryDashboardView(TemplateView):
         to display in the different dashboard tables
         """
         sections = Section.objects.all().order_by("-name")
-        d_section = dict() # Ordered by section, display total and how much $$ earned
-        o_section = dict() # Order by section, display % of completion and when it'll be completed
-        s_section = dict() # Order by status, display
+        d_section = dict()  # Ordered by section, display total and how much $$ earned
+        o_section = dict()  # Order by section, display % of completion and when it'll be completed
+        s_section = dict()  # Order by status, display
 
         for s in sections:
             # How many prototypes?
@@ -420,7 +420,6 @@ class InventoryDashboardView(TemplateView):
 class InventoryAjaxView(JSONTemplateRenderMixin, ListView):
     template_name = "inventory/partials/table.html"
     model = Inventory
-
 
     def get_queryset(self):
         section = self.request.GET.get("section", None)

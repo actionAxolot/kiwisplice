@@ -5,10 +5,8 @@ from django.utils.datastructures import SortedDict
 from django.views.generic import TemplateView, ListView
 from apps.utils import get_months_header, MONTHS_DICT
 from apps.client.models import Client
-
-
-# Create your views here.
 from apps.utils.views import JSONTemplateRenderMixin
+
 
 class PaymentDashboard(TemplateView):
     template_name = "payment/dashboard.html"

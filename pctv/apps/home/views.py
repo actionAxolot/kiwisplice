@@ -49,9 +49,8 @@ class DashboardView(ListView):
         clientes["Viv. Entregada"] = Client.objects.filter(status="Viv. Entregada")
         clientes["Cancelado"] = Client.objects.filter(status="Cancelado")
         context["object_list"] = clientes
-        
         return context
-    
+
 
 class HomeAjaxView(JSONTemplateRenderMixin, ListView):
     """
@@ -64,7 +63,7 @@ class HomeAjaxView(JSONTemplateRenderMixin, ListView):
 
     def split_date_tokens(self, date_string):
         """Split the systems date tokens into something nicer to handle in Django"""
-        # TODO: This is repeated a trillion times throught the code. Find a place to put it 
+        # TODO: This is repeated a trillion times throught the code. Find a place to put it
         # and call it done. This is not nice in case something needs updating
         month, year = date_string.split(" ")
         month = MONTHS_DICT[month]
@@ -84,7 +83,6 @@ class HomeAjaxView(JSONTemplateRenderMixin, ListView):
             return self.get_date_query(date_list, query=query)
         print "Query before returning %s" % query
         return query
-
 
     def get_queryset(self, *args, **kwargs):
         """
@@ -111,4 +109,3 @@ class HomeAjaxView(JSONTemplateRenderMixin, ListView):
                 query = query & Q(status=status)
 
         return self.model.objects.filter(query)
-

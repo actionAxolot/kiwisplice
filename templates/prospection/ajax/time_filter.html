@@ -12,7 +12,13 @@
 	<tbody>
 		{% for o in obj_this_month %}
 		<tr>
-			<td><a href="{% url prospection_create_params prospection_id=o.pk %}">{{ o.pk }}</a></td>
+			<td>
+				{% if perms.prospection.change_prospection %}
+					<a href="{% url prospection_create_params prospection_id=o.pk %}">{{ o.pk }}</a>
+				{% else %}
+					{{ o.pk }}
+				{% endif %}
+			</td>
 			<td>{{ o.salesperson }}</td>
 			<td>{{ o }}</td>
 			<td>{{ o.email }}</td>

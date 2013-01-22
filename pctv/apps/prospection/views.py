@@ -14,7 +14,6 @@ from models import Prospection, PROSPECTION_STATUS_CHOICES, \
 import datetime
 import operator
 from django.http import Http404, HttpResponseRedirect
-from apps.utils.views import JSONTemplate
 
 
 class ProspectionView(ListView):
@@ -65,15 +64,12 @@ class ProspectionDashboardView(TemplateView):
 
         for x in TOTAL_INCOME_BUCKET:
             total_status_list[x[0]] = len(Prospection.objects.filter(total_income=x[0]))
-
         obj_status_list = sorted(obj_status_list.iteritems(), key=operator.itemgetter(0))
-        
         # Now get the prospections that have been caught this month
         month = datetime.date.today().month
         year = datetime.date.today().year
         obj_this_month = Prospection.objects.filter(visitation_date__month=month,
                                                     visitation_date__year=year)
-        
         # Now create the new form
         time_filters = FilterForm()
 
@@ -87,16 +83,16 @@ class ProspectionDashboardView(TemplateView):
             'total_status_list': total_status_list,
             'time_filters': time_filters,
         })
-        
+
     def post(self, request):
         # Ugh.. just do it here
         month = request.POST.get("month", datetime.date.today().month)
         year = request.POST.get("year", datetime.date.today().year)
-        
+
         self.template_name = "prospection/ajax/time_filter.html"
         obj_this_month = Prospection.objects.filter(visitation_date__month=month,
                                                     visitation_date__year=year)
-        
+
         return self.render_to_response({"obj_this_month": obj_this_month})
 
 
@@ -162,17 +158,17 @@ class ProspectionDeleteView(TemplateView):
     def get(self, request, prospection_id=None):
         Prospection.objects.get(pk=prospection_id).delete()
         return redirect("prospection_home")
-    
-    
+
+
 class ProspectionByMonthView(TemplateView):
     template_name = "prospection/view_by_month.html"
+
     def get(self, request):
         month = request.GET.get("month", "1")
         year = request.GET.get("year", datetime.date.today().year)
         prospections = Prospection.objects.filter(visitation_date__month=month, visitation_date__year=year)
-        
+
         return self.render_to_response({"prospections": prospections})
-        
 
 
 class ProspectionAjaxView(TemplateView):
@@ -275,9 +271,9 @@ class ProspectionApartarView(TemplateView):
             prospection = Prospection.objects.get(pk=request.GET.get("prospection_id"))
         except:
             raise Http404
-        
-        # Change the status to a more relevant 
-        prospection.status = u"Apartado" # LOL This is super retarded
+
+        # Change the status to a more relevant
+        prospection.status = u"Apartado"  # LOL This is super retarded
         prospection.save()
         if prospection.status in ("Apartado",):
             try:
@@ -288,7 +284,7 @@ class ProspectionApartarView(TemplateView):
             except Client.DoesNotExist:
                 client = Client(prospection=prospection)
                 client.save()
-        
+
         if request.user.has_perm("client.create_client"):
             return HttpResponseRedirect("/clientes-linea-de-produccion/editar/%d/" % client.pk)
         else:

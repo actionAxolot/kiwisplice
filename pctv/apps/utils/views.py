@@ -1,6 +1,6 @@
 # Create your views here.
 from django.utils import simplejson as json
-from django.template import Context, loader
+from django.template import RequestContext, loader
 from django import http
 
 
@@ -15,7 +15,7 @@ class JSONTemplate(object):
     def convert_context_to_json(self, context):
         # Render the template
         return json.dumps(context, ensure_ascii=False)
-    
+
 
 class JSONTemplateRenderMixin(JSONTemplate):
     """
@@ -24,7 +24,7 @@ class JSONTemplateRenderMixin(JSONTemplate):
     def convert_context_to_json(self, context):
         t = loader.get_template(self.template_name)
         data = {}
-        data["template"] = t.render(Context(context))
+        data["template"] = t.render(RequestContext(self.request, context))
         data["message"] = "success"
         return json.dumps(data, ensure_ascii=False)
 
@@ -34,4 +34,3 @@ class JSONRenderMixin(JSONTemplate):
     Just return plain old JSON to be consumed by the browser
     """
     pass
-
