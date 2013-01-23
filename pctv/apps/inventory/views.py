@@ -477,13 +477,13 @@ class InventoryBridgeCreditDashboard(TemplateView):
             t_credit[c[0]] = None
             for s in special_headers:
                 if s == "TOTAL":
-                    kewlness = qs.aggregate(total=Sum("bridgecreditpayment__amount"))["total"]
+                    kewlness = qs.aggregate(total=Sum("approved_amount"))["total"]
                     if kewlness:
                         tmp[s] = kewlness
                     else:
                         tmp[s] = 0.00
                 else:
-                    kewlness = qs.filter(status=s).aggregate(total=Sum("bridgecreditpayment__amount"))["total"]
+                    kewlness = qs.filter(status=s).aggregate(total=Sum("approved_amount"))["total"]
                     if kewlness:
                         tmp[s] = kewlness
                     else:

@@ -1,5 +1,6 @@
 {% extends "inventory/bridge/base.html" %}
 {% load inventorytags %}
+{% load humanize %}
 
 {% block sub_content %}
 <div class="container-fluid">
@@ -57,10 +58,10 @@
 	      <tbody>
 		 {% for k, v in t_credit.items %}
 		 <tr>
-		   <td>{{ k.inventory__construction_status }}</td>
+		   <td>{{ k }}</td>
 		   {% for k1, v1 in v.items %}
 		   <td>
-		     ${{ v1 }}
+		     ${{ v1|floatformat:2|intcomma }}
 		   </td>
 		   {% endfor %}
 		 </tr>
