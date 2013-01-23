@@ -16,6 +16,7 @@ DIRNAME = os.path.abspath(__file__)
 PROJECT_DIRNAME = os.path.abspath(os.path.join(DIRNAME, '..', '..', '..'))
 
 LOGIN_REDIRECT_URL = '/'
+LOGOUT_URL = '/'
 
 # Configuration about commission percentage
 COMMISSION_PERCENT = 0.10

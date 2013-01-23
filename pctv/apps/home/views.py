@@ -74,14 +74,9 @@ class HomeAjaxView(JSONTemplateRenderMixin, ListView):
         Return a Q object with a correct range of dates according to it"""
         # Is recursion really it?
         if len(date_list):
-            print "recursion"
             month, year = self.split_date_tokens(date_list.pop())
-            print "year: %s" % year
-            print "month: %s" % month
             query = query | Q(signature_date__month=month, signature_date__year=year)
-            print "query %s" % query
             return self.get_date_query(date_list, query=query)
-        print "Query before returning %s" % query
         return query
 
     def get_queryset(self, *args, **kwargs):
@@ -102,7 +97,6 @@ class HomeAjaxView(JSONTemplateRenderMixin, ListView):
             if not date:
                 months_to_check = get_reverse_months_header()
                 query = query & self.get_date_query(months_to_check)
-                print "Resulting query %s" % query
             if status == "Apartado":
                 query = query & Q(prospection__status=status)
             elif status:

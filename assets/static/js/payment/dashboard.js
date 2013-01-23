@@ -5,10 +5,12 @@ $(".render_table").on("click", function (e) {
 
     // Now fetch data and whatever
     var link = $(e.currentTarget);
+
     var data = {
-        "date":$(e.currentTarget).data("month"),
-        "status":$(e.currentTarget).data("income"),
-    }
+        "date":$(e.currentTarget).data("date"),
+        "status":$(e.currentTarget).data("status")
+    };
+
 
     // Send request
     $.get(

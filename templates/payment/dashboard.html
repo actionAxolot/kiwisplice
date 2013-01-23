@@ -70,7 +70,7 @@
                                                data-date="{{ months.7 }}"
                                                data-status="{{ key }}">{{ val|get_by_month:months.7 }}</a></td>
                                         <td><a class="render_table" href="{% url payment_ajax %}"
-                                               data-status="{{ key }}">{{ val|get_by_month }}</a></td>
+                                               data-status="{{ key }}">{{ val|get_by_month:months }}</a></td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
