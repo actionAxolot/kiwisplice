@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 from django import template
-import datetime
-
 register = template.Library()
 
 MONTHS = {
@@ -34,12 +32,12 @@ def count_by_month(obj, date=None):
         month = MONTHS[month]
 
         # Now count how many are
-        return len(obj.filter(signature_date__month=month, signature_date__year=year))
+        return len(obj.filter(created_date__month=month, created_date__year=year))
 
     obj_total = 0
     for m in date:
         month, year = get_date_data(m)
         month = MONTHS[month]
-        obj_total += len(obj.filter(signature_date__month=month, signature_date__year=year))
+        obj_total += len(obj.filter(created_date__month=month, created_date__year=year))
 
     return obj_total

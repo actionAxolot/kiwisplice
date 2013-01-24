@@ -20,10 +20,11 @@ class PaymentDashboard(TemplateView):
 
         # Now separate by it's needed parameters
         statuses = ("Actual", "Pagado", "Vencido")
+        clients_by_status = clients.filter(payment__status__in=statuses).distinct()
 
         object_list = SortedDict()
         for s in statuses:
-            object_list[s] = clients.filter(payment__status=s).distinct()
+            object_list[s] = clients_by_status.filter(payment__status=s).distinct()
 
         ctx = {
             "months": months,
@@ -66,7 +67,6 @@ class PaymentAjaxView(JSONTemplateRenderMixin, ListView):
                 months_to_check = get_months_header()
                 query = query & self.get_date_query(months_to_check)
             query = query & Q(payment__status=status)
-
         return self.model.objects.filter(query).distinct()
 
 
