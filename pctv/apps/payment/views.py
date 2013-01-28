@@ -19,16 +19,23 @@ class PaymentDashboard(TemplateView):
         clients = Client.objects.all()
 
         # Now separate by it's needed parameters
-        statuses = ("Actual", "Pagado", "Vencido")
-        clients_by_status = clients.filter(payment__status__in=statuses).distinct()
+        clients_by_status = clients.filter(payment__status="Actual").exclude(payment__status__in=("Pagado", "Vencido")).distinct()
+
+        # Now get the totals
+        total_pagados = clients.filter(payment__status="Pagado").distinct()
+        total_vencido = clients.filter(payment__status="Vencido").distinct()
+
+        print "total_pagados %d" % len(total_pagados)
+        print "total_vencido %d" % len(total_vencido)
 
         object_list = SortedDict()
-        for s in statuses:
-            object_list[s] = clients_by_status.filter(payment__status=s).distinct()
+        object_list["Actual"] = clients_by_status
 
         ctx = {
             "months": months,
-            "object_list": object_list
+            "object_list": object_list,
+            "total_pagados": total_pagados,
+            "total_vencido": total_vencido,
         }
 
         return self.render_to_response(ctx)
@@ -58,12 +65,12 @@ class PaymentAjaxView(JSONTemplateRenderMixin, ListView):
         status = self.request.GET.get("status", None)
         query = Q()
 
-        if date:
+        if date and date != "NONE":
             month, year = date.split(" ")
             query = query & Q(payment__date_due__month=MONTHS_DICT[month], payment__date_due__year=year)
 
         if status:
-            if not date:
+            if not date and date != "NONE":
                 months_to_check = get_months_header()
                 query = query & self.get_date_query(months_to_check)
             query = query & Q(payment__status=status)

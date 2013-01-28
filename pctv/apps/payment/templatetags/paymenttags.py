@@ -44,3 +44,7 @@ def get_quantity_by_month(qs, date=None):
             return total
         else:
             return 0.00
+
+@register.filter()
+def get_quantity_by_total(qs):
+    return qs.aggregate(total=Sum("payment__amount"))["total"]

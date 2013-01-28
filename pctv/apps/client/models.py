@@ -23,7 +23,6 @@ CLIENT_STATUS = (
     (u"Cancelado", _(u"Cancelado")),
 )
 
-
 class ClientManager(models.Manager):
     def get_query_set(self, *args, **kwargs):
         # Return the ones that are not canceled

@@ -75,6 +75,25 @@
                                 {% endfor %}
                                 </tbody>
                             </table>
+
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                  <th>Concepto</th>
+                                  <th>Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>Pagados</td>
+                                    <td><a class="render_table" href="{% url payment_ajax %}" data-status="Pagado" data-date="NONE">{{ total_pagados|length }}</a></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Vencidos</td>
+                                    <td><a class="render_table" href="{% url payment_ajax %}" data-status="Vencido" data-date="NONE">{{ total_vencido|length }}</a></td>
+                                  </tr>
+                                </tbody>
+                            </table>
                         </div>
 
                         <div class="tab-pane" id="tab2">
@@ -110,6 +129,26 @@
                                 {% endfor %}
                                 </tbody>
                             </table>
+
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                  <th>Concepto</th>
+                                  <th>Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>Pagados</td>
+                                    <td>{{ total_pagados|get_quantity_by_total|floatformat:2|intcomma }}</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Vencidos</td>
+                                    <td>{{ total_vencido|get_quantity_by_total|floatformat:2|intcomma }}</td>
+                                  </tr>
+                                </tbody>
+                            </table>
+
                         </div>
                     </div>
                 </div>
