@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 from apps.comment.models import Comment
 from django.db.models.signals import pre_save, post_save
+import datetime
 
 
 CLIENT_STATUS = (
@@ -45,13 +46,19 @@ class Client(models.Model):
     delivery_date = models.DateField(null=True, blank=True, verbose_name=_(u"Delivery date"))
 
     # Store the date in which this Client entry was created
-    created_date = models.DateField(auto_now_add=True)
+    created_date = models.DateField(verbose_name=u'Fecha de creación')
 
     status = models.CharField(blank=False, null=False,
         choices=CLIENT_STATUS, max_length=50, default=_(u"Integración"),
         verbose_name=_(u"Status"))
 
     comments = generic.GenericRelation(Comment)
+
+    def save(self, *args, **kwargs):
+        """ On save update timestamps """
+        if not self.id:
+            self.created_date = datetime.date.today()
+        super(Client, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return u"%s" % self.prospection.get_full_name()

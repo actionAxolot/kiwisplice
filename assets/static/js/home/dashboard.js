@@ -7,7 +7,7 @@ $(".render_table").on("click", function(e){
     var link = $(e.currentTarget);
     var data = {
 	"month": $(e.currentTarget).data("month"),
-	"status": $(e.currentTarget).data("status"),
+	"type": $(e.currentTarget).data("type"),
     }
 
     // Send request

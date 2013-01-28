@@ -5,6 +5,7 @@ from django.utils.datastructures import SortedDict
 from django.http import Http404
 from django.db.models import Q
 from apps.client.models import Client
+from apps.prospection.models import Prospection
 from apps.utils import get_reverse_months_header, get_months_header, MONTHS_DICT
 from apps.utils.views import JSONTemplateRenderMixin
 
@@ -37,17 +38,15 @@ class DashboardView(ListView):
 
     def get_context_data(self, *args, **kwargs):
         """
-        Render the necessary table and shit. Pretty nice huh?
+        Render a table with two rows, one containing prospections and one containing new clients
         """
         context = super(ListView, self).get_context_data(*args, **kwargs)
         # Now arrange everything neatly in rows
         context["months"] = get_reverse_months_header()
         clientes = SortedDict()
-        clientes["Apartado"] = Client.objects.filter(prospection__status="Apartado")
-        clientes["Por Firmar"] = Client.objects.filter(status="Por firmar")
-        clientes["Firmado"] = Client.objects.filter(status="Firmado")
-        clientes["Viv. Entregada"] = Client.objects.filter(status="Viv. Entregada")
-        clientes["Cancelado"] = Client.objects.filter(status="Cancelado")
+        clientes["prospecciones"] = Prospection.objects.all().exclude(client__isnull=False)
+        clientes["clientes"] = Client.objects.all().exclude(status="Firmado")
+
         context["object_list"] = clientes
         return context
 
@@ -69,14 +68,17 @@ class HomeAjaxView(JSONTemplateRenderMixin, ListView):
         month = MONTHS_DICT[month]
         return month, year
 
-    def get_date_query(self, date_list, query=Q()):
+    def get_date_query(self, date_list, query=Q(), resource_type="prospection"):
         """date_dict is a set of dates formatted according to program specs.
         Return a Q object with a correct range of dates according to it"""
         # Is recursion really it?
         if len(date_list):
             month, year = self.split_date_tokens(date_list.pop())
-            query = query | Q(signature_date__month=month, signature_date__year=year)
-            return self.get_date_query(date_list, query=query)
+            if resource_type == "prospection":
+                query = query | Q(visitation_date__month=month, visitation_date__year=year)
+            else:
+                query = query | Q(created_date__month=month, created_date__year=year)
+            return self.get_date_query(date_list, query=query, resource_type=resource_type)
         return query
 
     def get_queryset(self, *args, **kwargs):
@@ -84,22 +86,25 @@ class HomeAjaxView(JSONTemplateRenderMixin, ListView):
         Pretty much like the one in apps.client.views
         """
         date = self.request.GET.get("month", None)
-        status = self.request.GET.get("status", None)
+        resource_type = self.request.GET.get("type", None)
 
         query = Q()
 
         # Split and get year and month
         if date:
             month, year = self.split_date_tokens(date)
-            query = query & Q(signature_date__month=month, signature_date__year=year)
-
-        if status:
-            if not date:
-                months_to_check = get_reverse_months_header()
-                query = query & self.get_date_query(months_to_check)
-            if status == "Apartado":
-                query = query & Q(prospection__status=status)
-            elif status:
-                query = query & Q(status=status)
-
-        return self.model.objects.filter(query)
+            if resource_type == "prospection":
+                query = query & Q(visitation_date__month=month, visitation_date__year=year)
+            else:
+                query = query & Q(created_date__month=month, created_date__year=year)
+        else:
+            months_to_check = get_reverse_months_header()
+            query = query & self.get_date_query(months_to_check, resource_type=resource_type)
+            
+        # This is a bit patchy 
+        # TODO: Fix it up a little. Perhaps break it up into another function?
+        if resource_type == "prospection":
+            self.template_name = "prospection/ajax/prospection_detail_table.html"
+            return Prospection.objects.filter(query)
+        else:
+            return self.model.objects.filter(query)

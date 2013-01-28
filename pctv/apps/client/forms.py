@@ -24,6 +24,7 @@ class ClientForm(ModelForm):
             'pricing_date': DateInput(format='%d/%m/%Y', attrs={"class": "date-picker"}),
             'payment_date': DateInput(format='%d/%m/%Y', attrs={"class": "date-picker"}),
             'delivery_date': DateInput(format='%d/%m/%Y', attrs={"class": "date-picker"}),
+            'created_date': DateInput(format='%d/%m/%Y', attrs={"class": "date-picker"}),
         }
 
 
