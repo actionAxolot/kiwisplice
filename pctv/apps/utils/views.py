@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 """
 This has so much potential. We could create a Parent mixin that could be inherited 
 that way we could render a lot of different formats.
 """
 # Create your views here.
 from django.utils import simplejson as json
+from django.utils.encoding import smart_unicode
 from django.template import RequestContext, loader, defaultfilters
 from django import http
 from django.http import HttpResponse
@@ -56,12 +58,23 @@ class CSVRenderMixin(object):
         response = http.HttpResponse(mimetype="text/csv")
         response["Content-Disposition"] = "attachment; filename=%s" % self.csv_filename
         writer = csv.writer(response)
-        writer.writerow(self.get_row_titles(objects))
+        keys = self.get_row_titles(objects)
+
+        writer.writerow(keys)
         for o in objects:
             row = list()
-            for k, v in objects.items():
-                row.append(v)
-            writer.writerow(row)
+            for key in keys:
+                if isinstance(o[key], unicode):
+                    print "We actually got here"
+                    data = o[key].encode("utf8")
+                else:
+                    data = o[key]
+                row.append(data)
+            try:
+                writer.writerow(row)
+            except UnicodeEncodeError:
+                print "PROBLEM"
+                continue
         return response
 
     def get_row_titles(self, objects):

@@ -11,16 +11,23 @@ from django.views.decorators.csrf import csrf_exempt
 from forms import ProspectionForm, ProspectionPhoneNumberFormset
 from models import Prospection, PROSPECTION_STATUS_CHOICES, \
     PROSPECTION_CHANNEL_OPTIONS, TOTAL_INCOME_BUCKET
+from apps.utils.views import CSVRenderMixin
 import datetime
 import operator
 from django.http import Http404, HttpResponseRedirect
 
-
-class ProspectionView(ListView):
+class ProspectionView(CSVRenderMixin, ListView):
     model = Prospection
     queryset = Prospection.objects.all().exclude(status__in=("Apartado",))
     template_name = "prospection/index.html"
-
+    csv_filename = "prospecciones.csv"
+    
+    def get(self, request, *args, **kwargs):
+        """ Allow CSV file generation """
+        if request.GET.get("format", None):
+            return self.render_csv_to_response(self.queryset)
+        else:
+            return super(ProspectionView, self).get(request, *args, **kwargs)
 
 class ProspectionDashboardView(TemplateView):
     """Show the dashboard with kewl information for prospections"""
