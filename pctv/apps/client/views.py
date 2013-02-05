@@ -59,16 +59,24 @@ class ClientDashboardView(TemplateView):
     def get(self, request):
         # Get every client that has a signature date of today 'till 4 months in the future
         months = get_reverse_months_header()
+        
+        # Check if the user is a Vendedor. If the user is a vendedor only
+        # show this user the clients that belong to him
+        if request.user.groups.filter(name="Ventas").count():
+            clients = Client.objects.filter(prospection__salesperson__pk=request.user.pk)
+        else:
+            clients = Client.objects.all()
+        
 
         object_dict = dict()
         for c in CLIENT_STATUS:
-            object_dict[c[0]] = Client.objects.filter(status=unicode(c[1]))
+            object_dict[c[0]] = clients.filter(status=unicode(c[1]))
 
         object_dict = sorted(object_dict.iteritems(), key=operator.itemgetter(0))
 
         new_object_dict = dict()
         for c in TOTAL_INCOME_BUCKET:
-            new_object_dict[c[1]] = Client.objects.filter(prospection__total_income=c[0])
+            new_object_dict[c[1]] = clients.filter(prospection__total_income=c[0])
 
         new_object_dict = sorted(new_object_dict.iteritems(), key=operator.itemgetter(0))
 
