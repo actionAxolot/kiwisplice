@@ -41,6 +41,7 @@ PROSPECTION_FINANCIAL_OPTIONS = (
 
 TOTAL_INCOME_BUCKET = (
     (1, u"Hasta 12 Mil"),
+    
     (2, u"Entre 12 y 18 Mil"),
     (3, u"Entre 18 y 25 Mil"),
     (4, u"Entre 25 y 35 Mil"),
