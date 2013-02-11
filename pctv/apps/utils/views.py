@@ -52,31 +52,41 @@ class CSVRenderMixin(object):
     """
     csv_filename = "really_awesome_csv.csv"
 
-    def render_csv_to_response(self, object_list):
-        """docstring for render_to_response"""
-        objects = object_list.values()
-        response = http.HttpResponse(mimetype="text/csv")
-        response["Content-Disposition"] = "attachment; filename=%s" % self.csv_filename
-        writer = csv.writer(response)
-        keys = self.get_row_titles(objects)
+    def prepare_data(self, queryset):
+        """docstring for prepare_data"""
+        prepared_data = list()
+        values = queryset.values()
+        keys = values[0].keys()
+        prepared_data.append(keys)
 
-        writer.writerow(keys)
-        for o in objects:
+        for v in values:
             row = list()
             for key in keys:
-                if isinstance(o[key], unicode):
-                    print "We actually got here"
-                    data = o[key].encode("utf8")
+                if isinstance(v[key], unicode):
+                    data = v[key].encode("utf8")
                 else:
-                    data = o[key]
+                    data = v[key]
                 row.append(data)
             try:
-                writer.writerow(row)
+                prepared_data.append(row)
             except UnicodeEncodeError:
                 print "PROBLEM"
                 continue
+
+        return prepared_data
+
+    def generate_file_download(self, data_list):
+        """docstring for self.generate_file_download"""
+        response = http.HttpResponse(mimetype="text/csv")
+        response["Content-Disposition"] = "attachment; filename=%s" % self.csv_filename
+        writer = csv.writer(response)
+
+        for d in data_list:
+            writer.writerow(d)
+
         return response
 
-    def get_row_titles(self, objects):
-        """Get the row headers from the keys of an element in the object_list list"""
-        return objects[0].keys()
+    def render_csv_to_response(self, queryset):
+        """docstring for render_to_response"""
+        return self.generate_file_download(self.prepare_data(queryset))
+

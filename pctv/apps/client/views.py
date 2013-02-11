@@ -8,9 +8,49 @@ from models import Client, CLIENT_STATUS
 from forms import ClientPaymentFormSet, ClientForm, ClientPaymentCollectFormSet
 from apps.utils import MONTHS_DICT, get_reverse_months_header
 from apps.prospection.models import TOTAL_INCOME_BUCKET
-from apps.utils.views import JSONTemplateRenderMixin
+from apps.utils.views import JSONTemplateRenderMixin, CSVRenderMixin
 import operator
 
+
+class ClientView(CSVRenderMixin, ListView):
+    """ TODO: This is the one we are gonna modify so that it returns EVERYTHING """
+    model = Client
+    template_name = 'client/index.html'
+    queryset = Client.objects.exclude(status=u"Cancelado")
+    csv_filename = "clientes.csv"
+
+    def prepare_data(self, queryset):
+        """ Really long string of data that needs be rendered """
+        prepared_data = list()
+        values = queryset.values()
+        keys = values[0].keys()
+        prepared_data.append(keys)
+
+        for v in values:
+            row = list()
+            for key in keys:
+                if isinstance(v[key], unicode):
+                    data = v[key].encode("utf8")
+                else:
+                    data = v[key]
+                row.append(data)
+            try:
+                prepared_data.append(row)
+            except UnicodeEncodeError:
+                print "PROBLEM"
+                continue
+        return prepared_data
+
+    def generate_file_download(self, data_list):
+        """Overriding stuff on the CSV mixin"""
+        return super(ClientView, self).generate_file_download(data_list)
+
+    def get(self, request, *args, **kwargs):
+        """Meh"""
+        if request.GET.get("format", None):
+            return self.render_csv_to_response(self.queryset)
+        else:
+            return super(ClientView, self).get(request, *args, **kwargs)
 
 class ClientAjaxView(JSONTemplateRenderMixin, ListView):
     template_name = "client/partials/table.html"
@@ -46,11 +86,6 @@ class ClientAjaxView(JSONTemplateRenderMixin, ListView):
             query = query & Q(prospection__total_income=income_tuple.next())
 
         return self.model.objects.filter(query)
-
-
-class ClientView(ListView):
-    template_name = 'client/index.html'
-    queryset = Client.objects.exclude(status=u"Cancelado")
 
 
 class ClientDashboardView(TemplateView):

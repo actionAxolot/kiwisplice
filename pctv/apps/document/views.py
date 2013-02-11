@@ -10,9 +10,9 @@ from apps.inventory.models import Inventory
 
 class DocsView(TemplateView):
     """
-    Just a small placeholder view shit thing to create the HTML documents necessary to render
-    pdf ones for print and shit
+    Just a small placeholder view shit thing to create the HTML documents necessary.
     """
+
     available_templates = {
         "entrega": "document/entrega.html",
         "escrituracion": "document/escrituracion.html",
