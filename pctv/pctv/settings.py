@@ -19,7 +19,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_URL = '/'
 
 # Configuration about commission percentage
-COMMISSION_PERCENT = 0.10
+# COMMISSION_PERCENT = 0.10
 
 ADMINS = (
     ('Mario R. Vallejo', 'mario.r.vallejo@gmail.com'),
@@ -195,6 +195,7 @@ INSTALLED_APPS = (
     'south',
     'debug_toolbar',
     'gunicorn',
+    'apps.account',
 )
 
 

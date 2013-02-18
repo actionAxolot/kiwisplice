@@ -22,8 +22,27 @@ class ClientView(CSVRenderMixin, ListView):
     def prepare_data(self, queryset):
         """ Really long string of data that needs be rendered """
         prepared_data = list()
-        values = queryset.values()
-        keys = values[0].keys()
+        # Get a nicely ordered set of keys
+        keys = [
+            "id",
+            "prospection__father_lastname",
+            "prospection__mother_lastname",
+            "prospection__first_name",
+            "prospection__middle_name",
+            "inventory__unique_id",
+            "integration_date",
+            "signature_date",
+            "auth_date",
+            "pricing_date",
+            "payment_date",
+            "notary",
+            "delivery_date",
+            "created_date",
+            "status"
+        ]
+        
+        values = queryset.values(*keys)
+
         prepared_data.append(keys)
 
         for v in values:

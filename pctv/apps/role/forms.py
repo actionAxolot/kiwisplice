@@ -38,6 +38,7 @@ class UserEditForm(forms.Form):
 	first_name = forms.CharField(max_length=50, label=u"Nombres", required=True)
 	last_name = forms.CharField(max_length=50, label=u"Apellidos", required=True)
 	group = forms.ModelChoiceField(queryset=Group.objects.all(), label=u"Grupo", required=True, empty_label=None)
+        commission_percentage = forms.DecimalField(label=u"Porcentaje de comisión", max_digits=5, decimal_places=2, required=False)
 
 	def clean_username(self):
 		username = self.cleaned_data["username"]

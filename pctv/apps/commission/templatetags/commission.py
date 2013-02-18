@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from django import template
-from django.conf import settings
 from decimal import Decimal
 
 register = template.Library()
@@ -14,20 +13,22 @@ def get_next_payment_date(commission):
     except:
         return "En proceso"
 
+
 @register.filter()
 def get_commission_total(commission):
-    try: 
+    try:
         price = commission.client.inventory.price
-        total_to_pay = price * Decimal(str(settings.COMMISSION_PERCENT))
+        total_to_pay = price * Decimal(str(commission.client.prospection.salesperson.account.commission_percentage * Decimal(".01")))
         return u"%.2f" % total_to_pay
-    except:
-        return u"Sin inventario"
-    
+    except AttributeError:
+        return "Sin inventario"
+
 
 @register.filter()
 def get_commission_payment_total(payment):
     try:
-        commissionable_total = payment.commission.client.inventory.get_price() * Decimal(str(settings.COMMISSION_PERCENT))
+        commissionable_total = payment.commission.client.inventory.get_price() * Decimal(str(payment.commission.client.prospection.salesperson.account.commission_percentage * Decimal(".01")))
         return u"%.2f" % (commissionable_total * payment.percentage)
-    except:
+    except AttributeError:
         return "Sin inventario"
+
