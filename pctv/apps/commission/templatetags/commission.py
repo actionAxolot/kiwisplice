@@ -18,7 +18,7 @@ def get_next_payment_date(commission):
 def get_commission_total(commission):
     try:
         price = commission.client.inventory.price
-        total_to_pay = price * Decimal(str(commission.client.prospection.salesperson.account.commission_percentage * Decimal(".01")))
+        total_to_pay = price * Decimal(str(commission.client.inventory.commission_percentage * Decimal(".01")))
         return u"%.2f" % total_to_pay
     except AttributeError:
         return "Sin inventario"
@@ -27,8 +27,7 @@ def get_commission_total(commission):
 @register.filter()
 def get_commission_payment_total(payment):
     try:
-        commissionable_total = payment.commission.client.inventory.get_price() * Decimal(str(payment.commission.client.prospection.salesperson.account.commission_percentage * Decimal(".01")))
+        commissionable_total = payment.commission.client.inventory.get_price() * Decimal(str(payment.commission.client.inventory.commission_percentage * Decimal(".01")))
         return u"%.2f" % (commissionable_total * payment.percentage)
     except AttributeError:
         return "Sin inventario"
-

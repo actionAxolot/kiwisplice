@@ -65,7 +65,6 @@ class RoleUserEditView(TemplateView):
     def get(self, request, user_id=None):
         user = get_object_or_404(User, pk=user_id)
         user_dict = model_to_dict(user)
-        user_dict["commission_percentage"] = user.account.commission_percentage
         form = UserEditForm(initial=user_dict)
 
         return self.render_to_response({"form": form})
@@ -87,8 +86,6 @@ class RoleUserEditView(TemplateView):
             for g in user.groups.all():
                 user.groups.remove(g)
             user.groups.add(group)
-            user.account.commission_percentage = form.cleaned_data["commission_percentage"]
-            user.account.save()
             user.save()
             return redirect("role_dashboard")
 
