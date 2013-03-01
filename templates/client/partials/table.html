@@ -15,7 +15,7 @@
 	  <th>Email del cliente</th>
 	  <th>Fecha de entrega</th>
 	  <th>Estatus</th>
-	  {% if perms.client.change_client %}
+	  {% if perms.client.change_client or perms.payment.change_payment %}
 	   <th>Acciones</th>
 	  {% endif %}
 	</tr>
@@ -24,7 +24,7 @@
 	{% for o in object_list %}								
 	<tr>
 	  <td>
-	  	{% if perms.client.change_client %}
+	  	{% if perms.client.change_client or perms.client.view_client %}
 	  		<a href="{% url client_edit client_id=o.pk %}">{{ o.pk }}</a>
 	  	{% else %}
 	  		{{ o.pk }}
@@ -35,14 +35,19 @@
 	  <td>{{ o.prospection.email }}</td>
 	  <td>{{ o.delivery_date }}</td>
 	  <td>{{ o.status }}</td>
-	  {% if perms.client.change_client %}
+	  
+	  {% if perms.client.change_client or perms.payment.change_payment %}
 	  <td>
+	   {% if perms.payment.change_payment %}
 	    <a href="{% url client_financial_params client_id=o.pk %}" class="btn btn-primary">Cobranza</a>
+	   {% endif %}
+	    
             {% if o.status == "Cancelado" %}
             	<a href="{% url client_to_prospection client_id=o.pk %}" class="btn btn-primary">Reactivar</a>
             {% else %}
             	<a href="{% url client_to_prospection client_id=o.pk %}" class="btn btn-danger">Cancelar</a>
             {% endif %}
+            
 	  </td>
 	  {% endif %}
 	</tr>

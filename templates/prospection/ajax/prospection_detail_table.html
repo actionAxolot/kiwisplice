@@ -36,10 +36,10 @@
                     <td>{{ o.email }}</td>
                     <td>{{ o.visitation_date }}</td>
                     <td>{{ o.status }}</td>
-                    {% if can_delete %}
+                    {% if perms.prospection.delete_prospection %}
                     	<td><a href="{% url prospection_delete prospection_id=o.pk %}" class="btn btn-danger">X</td>
                 	{% endif %}
-                	{% if can_change %}
+                	{% if perms.client.add_client %}
                 		<td><a href="{% url prospection_apartar %}?prospection_id={{ o.pk }}" class="btn btn-danger">Apartar</td>
                 	{% endif %}
                 </tr>

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Create your views here.
 from django.views.generic import TemplateView, ListView
 from django.shortcuts import redirect
@@ -30,15 +31,23 @@ class InventoryCreateView(TemplateView):
 
     def get(self, request, inventory_id=None):
         inventory = Inventory()
+        change_commission = False
         if inventory_id:
             inventory = Inventory.objects.get(pk=inventory_id)
 
         inventory_form = InventoryForm(instance=inventory, user=request.user)
+        
+        # TODO: ACtually add this as a permission... but whatever
+        # Make sure this user can edit the commissions
+        if (request.user.is_superuser or 
+            request.user.groups.filter(name=u"Contraloría")):
+            change_commission = True
 
         return self.render_to_response({
             "form": inventory_form,
             'inventory': inventory,
             'inventory_id': inventory_id,
+            'change_commission': change_commission,
         })
 
     def post(self, request, inventory_id=None):

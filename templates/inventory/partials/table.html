@@ -14,8 +14,8 @@
           <th>Estatus de construcción</th>
           <th>Calle</th>
           <th>Número</th>
-          {% if perms.inventory.change_inventory %}
-          <th>Acciones</th>
+          {% if perms.inventory.change_inventory or perms.inventory.delete_inventory or perms.brigecreditpayment.add_bridgecreditpayment %}
+            <th>Acciones</th>
           {% endif %}
       </tr>
   </thead>
@@ -35,10 +35,15 @@
     <td>{{ o.construction_status }}</td>
     <td>{{ o.street }}</td>
     <td>{{ o.number }}</td>
-    {% if perms.inventory.change_inventory %}
+    {% if perms.inventory.change_inventory or perms.inventory.delete_inventory or perms.bridgecreditpayment.add_bridgecreditpayment %}
     <td>
-        <a href="{% url inventory_bridge_credit_create %}?inventario={{ o.pk }}" class="btn btn-success">Crédito Puente</a>
-        <a href="{% url inventory_delete inventory_id=o.pk %}" class="btn btn-danger">X</a>
+        {% if perms.bridgecreditpayment.add_bridgecreditpayment %}
+            <a href="{% url inventory_bridge_credit_create %}?inventario={{ o.pk }}" class="btn btn-success">Crédito Puente</a>
+        {% endif %}
+        
+        {% if perms.inventory.delete_inventory %}
+            <a href="{% url inventory_delete inventory_id=o.pk %}" class="btn btn-danger">X</a>
+        {% endif %}
     </td> 
     {% endif %}
 </tr>

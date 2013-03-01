@@ -2,6 +2,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
+import decimal
 
 # Porcentajes options... this is probably retardedr
 PERCENTAGES_OPTIONS = tuple([(x, unicode(x) + u"%") for x in xrange(0, 110, 10)])
@@ -106,7 +107,9 @@ class Inventory(models.Model):
     price = models.DecimalField(null=True, blank=True, max_digits=20, decimal_places=2, verbose_name=_(u"Price"))
     x = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=6)
     y = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=6)
-    commission_percentage = models.DecimalField(max_digits=5, decimal_places=2, verbose_name=u"Porcentaje de comisión")
+    commission_percentage = models.DecimalField(max_digits=5, decimal_places=2, 
+                                                verbose_name=u"Porcentaje de comisión", 
+                                                default=decimal.Decimal("1.00"), blank=True, null=True)
 
     # TODO: Add a get_price method that returns the correct price. Either the one in the prototype or
     # the one in the Inventory entry

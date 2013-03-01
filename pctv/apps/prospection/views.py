@@ -15,6 +15,7 @@ from apps.utils.views import CSVRenderMixin
 import datetime
 import operator
 from django.http import Http404, HttpResponseRedirect
+from apps.utils.views import JSONTemplateRenderMixin
 
 class ProspectionView(CSVRenderMixin, ListView):
     model = Prospection
@@ -178,11 +179,14 @@ class ProspectionByMonthView(TemplateView):
         return self.render_to_response({"prospections": prospections})
 
 
-class ProspectionAjaxView(TemplateView):
-    def get(self, request):
+class ProspectionAjaxView(JSONTemplateRenderMixin, ListView):
+    template_name = "prospection/ajax/prospection_detail_table.html"
+    model = Prospection
+    
+    def get_queryset(self):
         # Get items out of the requestn
-        date = request.GET.get("date", None)
-        status = request.GET.get("status", None)
+        date = self.request.GET.get("date", None)
+        status = self.request.GET.get("status", None)
         # Get the correct objects
         prospections = list()
         if status and date:
@@ -198,26 +202,17 @@ class ProspectionAjaxView(TemplateView):
             prospections = Prospection.objects.get_by_weeks_old(weeks_old=int(date))
         else:
             prospections = Prospection.objects.all()
-
-        # Check for permissions here. For some reason they're not passed to the template
-        can_delete = request.user.has_perm("prospection.delete_prospection")
-        can_change = request.user.has_perm("prospection.change_prospection")
-
-        return self.render_to_response({"object_list": prospections, "can_delete": can_delete, "can_change": can_change})
-
-    def render_to_response(self, context):
-        # Render the template
-        t = loader.get_template("prospection/ajax/prospection_detail_table.html")
-        data = {}
-        data["template"] = t.render(Context(context))
-        data["message"] = "success"
-        return http.HttpResponse(simplejson.dumps(data, ensure_ascii=False), content_type="application/json")
+            
+        return prospections
 
 
-class ProspectionAjaxChannelView(TemplateView):
-    def get(self, request):
-        income = request.GET.get("income", None)
-        channel = request.GET.get("channel", None)
+class ProspectionAjaxChannelView(JSONTemplateRenderMixin, ListView):
+    template_name = "prospection/ajax/prospection_detail_table.html"
+    model = Prospection
+    
+    def get_queryset(self):
+        income = self.request.GET.get("income", None)
+        channel = self.request.GET.get("channel", None)
 
         prospections = list()
         if income and channel:
@@ -229,21 +224,17 @@ class ProspectionAjaxChannelView(TemplateView):
         else:
             prospections = Prospection.objects.all()
 
-        return self.render_to_response({"object_list": prospections})
-
-    def render_to_response(self, context):
-        t = loader.get_template("prospection/ajax/prospection_detail_table.html")
-        data = {}
-        data["template"] = t.render(Context(context))
-        data["message"] = "success"
-        return http.HttpResponse(simplejson.dumps(data, ensure_ascii=False), content_type="application/json")
+        return prospections
 
 
-class ProspectionAjaxStatusView(TemplateView):
-    def get(self, request):
-        income = request.GET.get("income", None)
-        status = request.GET.get("channel", None)
-
+class ProspectionAjaxStatusView(JSONTemplateRenderMixin, ListView):
+    template_name = "prospection/ajax/prospection_detail_table.html"
+    model = Prospection
+    
+    def get_queryset(self):
+        income = self.request.GET.get("income", None)
+        status = self.request.GET.get("status", None)
+        
         if income and status:
             prospections = Prospection.objects.filter(total_income=int(income), status=status)
         elif income:
@@ -253,14 +244,7 @@ class ProspectionAjaxStatusView(TemplateView):
         else:
             prospections = Prospection.objects.all()
 
-        return self.render_to_response({"object_list": prospections})
-
-    def render_to_response(self, context):
-        t = loader.get_template("prospection/ajax/prospection_detail_table.html")
-        data = {}
-        data["template"] = t.render(Context(context))
-        data["message"] = "success"
-        return http.HttpResponse(simplejson.dumps(data, ensure_ascii=False), content_type="application/json")
+        return prospections
 
 
 class ProspectionApartarView(TemplateView):

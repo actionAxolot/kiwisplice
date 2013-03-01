@@ -13,7 +13,6 @@ import operator
 
 
 class ClientView(CSVRenderMixin, ListView):
-    """ TODO: This is the one we are gonna modify so that it returns EVERYTHING """
     model = Client
     template_name = 'client/index.html'
     queryset = Client.objects.exclude(status=u"Cancelado")

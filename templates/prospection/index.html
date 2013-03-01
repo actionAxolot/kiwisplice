@@ -27,7 +27,7 @@
 								{% if perms.prospection.delete_prospection %}
 									<th>Borrar</th>
 								{% endif %}
-								{% if perms.prospection.change_prospection %}
+								{% if perms.prospection.add_client %}
 									<th>Apartar</th>
 								{% endif %}
 							</tr>
@@ -44,7 +44,7 @@
 								{% if perms.prospection.delete_prospection %}
 									<td><a href="{% url prospection_delete prospection_id=o.pk %}" class="btn btn-danger">X</td>
 								{% endif %}
-								{% if perms.prospection.change_prospection %}
+								{% if perms.prospection.add_client %}
 									<td><a href="{% url prospection_apartar %}?prospection_id={{ o.pk}}" class="btn btn-danger">Apartar</td>
 								{% endif %}
 							</tr>

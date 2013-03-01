@@ -2,135 +2,144 @@
 
 {% block sub_content %}
 <div class="container-fluid">
-  <div class="row-fluid">
-    <div class="span6">
-      <div class="widget-box">
-	<div class="widget-title">
-	  <h5>Datos del prospecto</h5>
-	</div>
-	<div class="widget-content nopadding">
-	  <table class="table table-bordered table-striped">
-	    <tbody>
-	      <tr>
-		<td>Consecutivo</td>
-		<td><a href="{% url prospection_create_params prospection_id=client.prospection.pk %}">{{ client.prospection.pk }}</a></td>
-	      </tr>
-	      <tr>
-		<td>Vendedor</td>
-		<td>{{ client.prospection.salesperson }}</td>
-	      </tr>
-	      <tr>
-		<td>Canal financiero</td>
-		<td>{{ client.prospection.financial_channel }}</td>
-	      </tr>
-	      <tr>
-		<td>Canal prospección</td>
-		<td>{{ client.prospection.prospection_channel }}</td>
-	      </tr>
-	      <tr>
-		<td>Fecha de visita</td>
-		<td>{{ client.prospection.visitation_date }}</td>
-	      </tr>
-	      <tr>
-		<td>Estatus</td>
-		<td>{{ client.prospection.status }}</td>
-	      </tr>
-	      <tr>
-		<td>Nombre completo</td>
-		<td>
-		  {{ client.prospection.first_name }} {{ client.prospection.middle_name }} {{ client.prospection.father_lastname }} {{ client.prospection.mother_lastname }}
-		</td>
-	      </tr>
-	      <tr>
-		<td>Email</td>
-		<td>{{ client.prospection.email }}</td>
-	      </tr>
-	      <tr>
-		<td>Ingreso total</td>
-		<td>{{ client.prospection.total_income }}</td>
-	      </tr>
-	      <tr>
-		<td>Inmueble seleccionado (Identificador)</td>
-		<td>{{ client.inventory }}</td>
-	      </tr>
-	    </tbody>
-	  </table>
-	</div>
-      </div>
-      
-      
-      <form action="." method="post">
-	{% csrf_token %}
-	<div class="widget-box">
-	  <div class="widget-title">
-	    <h5>Datos de cliente</h5>
-	  </div>
-	  <div class="widget-content nopadding form-horizontal">
-	    {% for field in form %}
-	    {% if field.is_hidden %}
-	    {{ field }}
-	    {% else %}
-	    <div class="control-group {% if field.errors %}error{% endif %}">
-	      <div class="control-label">
-		{{ field.label_tag }}
-	      </div>
-	      <div class="controls">
-		{{ field }}
-		<span class="help-block">
-		  {{ field.errors }}
-		</span>
-	      </div>
-	    </div>
-	    {% endif %}
-	    {% endfor %}
-	  </div>
-	</div>
-	<div class="widget-box">
-	  <div class="widget-title">
-	    <h5>Acciones</h5>
-	  </div>
-	  <div class="widget-content no-padding form-horizontal">
-	    <div class="form-actions">
-	      <input type="submit" class="btn btn-success" value="Guardar" />
-	    </div>
-	  </div>
-	</div>	
-    </div>
-    <div class="span6">
-      {{ formset.management_form }}
-      {% for form in formset %}
-      <div class="widget-box">
-	<div class="widget-title">
-	  <h5>Pagos de enganche #{{ forloop.counter }}</h5>
-	</div>
-	<div class="widget-content nopadding form-horizontal">
-          {{ form.id }}
-	  {% for field in form %}
-	  {% if field.is_hidden %}
-	  {{ field }}
-	  {% else %}
-          <div class="control-group {% if field.errors %}error{% endif %}">
-	    <div class="control-label">
-	      {{ field.label_tag }}
-	    </div>
-	    <div class="controls">
-	      {{ field }}
-	      <span class="help-block">
-		{{ field.errors }}
-	      </span>
-	    </div>
-            {% endif %}
-	  </div>
-	  {% endfor %}
-	  <!--   </div> -->
-	  <!-- </div> -->
-	  {% endfor %}
-	</div>
-    </form>
-    </div>
-    </div>
-    {% endblock sub_content %}
-    {% block extrascripts %}
-    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-datepicker.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/client/scripts.js"></script>
-    {% endblock extrascripts %}
+    <div class="row-fluid">
+        <div class="span6">
+            <div class="widget-box">
+                <div class="widget-title">
+                    <h5>Datos del prospecto</h5>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                            <tr>
+                                <td>Consecutivo</td>
+                                <td>
+                                    {% if perms.prospection.change_prospection %}
+                                    <a href="{% url prospection_create_params prospection_id=client.prospection.pk %}">{{ client.prospection.pk }}</a>
+                                    {% else %}
+                                    {{ client.prospection.pk }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Vendedor</td>
+                                <td>{{ client.prospection.salesperson }}</td>
+                            </tr>
+                            <tr>
+                                <td>Canal financiero</td>
+                                <td>{{ client.prospection.financial_channel }}</td>
+                            </tr>
+                            <tr>
+                                <td>Canal prospección</td>
+                                <td>{{ client.prospection.prospection_channel }}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha de visita</td>
+                                <td>{{ client.prospection.visitation_date }}</td>
+                            </tr>
+                            <tr>
+                                <td>Estatus</td>
+                                <td>{{ client.prospection.status }}</td>
+                            </tr>
+                            <tr>
+                                <td>Nombre completo</td>
+                                <td> {{ client.prospection.first_name }} {{ client.prospection.middle_name }} {{ client.prospection.father_lastname }} {{ client.prospection.mother_lastname }} </td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td>{{ client.prospection.email }}</td>
+                            </tr>
+                            <tr>
+                                <td>Ingreso total</td>
+                                <td>{{ client.prospection.total_income }}</td>
+                            </tr>
+                            <tr>
+                                <td>Inmueble seleccionado (Identificador)</td>
+                                <td>{{ client.inventory }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <form action="." method="post">
+                {% csrf_token %}
+                <div class="widget-box">
+                    <div class="widget-title">
+                        <h5>Datos de cliente</h5>
+                    </div>
+                    <div class="widget-content nopadding form-horizontal">
+                        {% for field in form %}
+                        {% if field.is_hidden %}
+                        {{ field }}
+                        {% else %}
+                        <div class="control-group {% if field.errors %}error{% endif %}">
+                            <div class="control-label">
+                                {{ field.label_tag }}
+                            </div>
+                            <div class="controls">
+                                {% if perms.client.change_client %}
+                                {{ field }}
+                                {% else %}
+                                {{ field.value }}
+                                {% endif %}
+                                <span class="help-block"> {{ field.errors }} </span>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {% if perms.client.change_client %}
+                <div class="widget-box">
+                    <div class="widget-title">
+                        <h5>Acciones</h5>
+                    </div>
+                    <div class="widget-content no-padding form-horizontal">
+                        <div class="form-actions">
+                            <input type="submit" class="btn btn-success" value="Guardar" />
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+        </div>
+
+        {% if perms.payment.add_payment %}
+        <div class="span6">
+            {{ formset.management_form }}
+            {% for form in formset %}
+            <div class="widget-box">
+                <div class="widget-title">
+                    <h5>Pagos de enganche #{{ forloop.counter }}</h5>
+                </div>
+                <div class="widget-content nopadding form-horizontal">
+                    {{ form.id }}
+                    {% for field in form %}
+                    {% if field.is_hidden %}
+                    {{ field }}
+                    {% else %}
+                    <div class="control-group {% if field.errors %}error{% endif %}">
+                        <div class="control-label">
+                            {{ field.label_tag }}
+                        </div>
+                        <div class="controls">
+                            {{ field }}
+                            <span class="help-block"> {{ field.errors }} </span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    <!--   </div> -->
+                    <!-- </div> -->
+                    {% endfor %}
+                </div>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+        {% endblock sub_content %}
+        {% block extrascripts %}
+        <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-datepicker.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/client/scripts.js"></script>
+        {% endblock extrascripts %}
