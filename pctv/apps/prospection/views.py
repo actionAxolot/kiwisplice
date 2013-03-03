@@ -117,15 +117,15 @@ class ProspectionCreateView(TemplateView):
 
         if prospection_form.is_valid():
             created_prospection = prospection_form.save()
-            if created_prospection.status in ("Apartado",):
-                try:
-                    client = Client.objects.get(prospection=created_prospection)
-                    if client.status == u"Cancelado":
-                        client.status = u"Integración"
-                        client.save()
-                except Client.DoesNotExist:
-                    client = Client(prospection=prospection)
-                    client.save()
+            #if created_prospection.status in ("Apartado",):
+                #try:
+                    #client = Client.objects.get(prospection=created_prospection)
+                    #if client.status == u"Cancelado":
+                        #client.status = u"Integración"
+                        #client.save()
+                #except Client.DoesNotExist:
+                    #client = Client(prospection=prospection)
+                    #client.save()
 
             inline_formset = ProspectionPhoneNumberFormset(request.POST,
                                                              instance=created_prospection)
