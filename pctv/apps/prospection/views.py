@@ -111,12 +111,15 @@ class ProspectionCreateView(TemplateView):
         prospection = Prospection()
         if prospection_id:
             prospection = Prospection.objects.get(pk=prospection_id)
-
-        prospection_form = ProspectionForm(request.POST, request.FILES, instance=prospection)
-        inline_formset = ProspectionPhoneNumberFormset(request.POST, instance=prospection)
+            prospection_form = ProspectionForm(request.POST, request.FILES, instance=prospection)
+            inlinephone_formset = ProspectionPhoneNumberFormset(request.POST, instance=prospection)
+        else:
+            prospection_form = ProspectionForm(request.POST, request.FILES)
+            inlinephone_formset = ProspectionPhoneNumberFormset(request.POST, request.FILES)
 
         if prospection_form.is_valid():
             created_prospection = prospection_form.save()
+            
             #if created_prospection.status in ("Apartado",):
                 #try:
                     #client = Client.objects.get(prospection=created_prospection)
@@ -127,20 +130,16 @@ class ProspectionCreateView(TemplateView):
                     #client = Client(prospection=prospection)
                     #client.save()
 
-            inline_formset = ProspectionPhoneNumberFormset(request.POST,
+            inlinephone_formset = ProspectionPhoneNumberFormset(request.POST,
                                                              instance=created_prospection)
 
-            if inline_formset.is_valid():
-                inline_formset.save()
-
-                if created_prospection.status in ("Apartado",):
-                    return redirect("client_edit", client_id=created_prospection.client_set.all()[0].pk)
-
+            if inlinephone_formset.is_valid():
+                inlinephone_formset.save()
                 return redirect("prospection_home")
 
         return self.render_to_response({
             "form": prospection_form,
-            "formset": inline_formset
+            "formset": inlinephone_formset
         })
 
     def get(self, request, prospection_id=None):

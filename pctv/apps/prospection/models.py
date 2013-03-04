@@ -118,9 +118,6 @@ class Prospection(models.Model):
         return "Vendedor: %s - Prospecto: %s" % (self.salesperson.first_name + " " + self.salesperson.last_name,
             self.get_full_name())
         
-    def save(self):
-        pass
-
     class Meta:
         verbose_name = _(u"Prospección")
         verbose_name_plural = _(u"Prospecciones")
