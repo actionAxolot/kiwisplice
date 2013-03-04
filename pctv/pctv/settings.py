@@ -5,7 +5,7 @@ import socket
 
 # Set up variables used in the configuration file
 if socket.gethostname() == "ambystoma":
-    DEBUG = True
+    DEBUG = False
     LOCAL_DEV = False
 else:
     DEBUG = True
