@@ -40,7 +40,7 @@
 								<td>{{ o|get_commission_payment_total }}</td>
 								    {% if perms.commissionpayment.create_commissionpayment %}
 								    <td>
-								        <a href="{% url prospection_delete prospection_id=o.pk %}" class="btn btn-danger">Pagar</a>
+								        <a href="{% url commission_payment_pay o.pk %}" class="btn btn-danger">Pagar</a>
 								    </td>
 								    {% endif %}
 							</tr>

@@ -6,6 +6,8 @@ from django.contrib.contenttypes.models import ContentType
 from models import Commission, CommissionPayment
 from apps.client.models import Client
 from apps.inventory.models import Inventory
+from apps.utils.views import JSONRenderMixin
+from django.shortcuts import redirect
 
 
 class CommissionDashboardView(TemplateView):
@@ -44,6 +46,19 @@ class CommissionPaymentView(ListView):
 
     def get_queryset(self):
         return CommissionPayment.objects.filter(commission__pk=self.args[0])
+
+
+class CommissionPaymentPayView(TemplateView):
+    def get(self, request, payment_id):
+        # Commission to change
+        try:
+            comm = CommissionPayment.objects.get(pk=payment_id)
+            comm.status = u"Pagado"
+            comm.save()
+        except CommissionPayment.DoesNotExist:
+            raise Http404
+        return redirect("commission_payment", comm.commission.pk)
+
     
 
 class CommissionAjaxView(TemplateView):
@@ -80,4 +95,3 @@ class CommissionAjaxView(TemplateView):
             }
 
         return self.render_to_response(ctx)
-
