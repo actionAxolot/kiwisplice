@@ -264,18 +264,29 @@ class ProspectionApartarView(TemplateView):
 
         # Change the status to a more relevant
         prospection.status = u"Apartado"  # LOL This is super retarded
-        prospection.save()
-        if prospection.status in ("Apartado",):
+        # prospection.save()
+        if prospection.status in (u"Apartado",):
             try:
                 client = Client.objects.get(prospection=prospection)
                 if client.status == u"Cancelado":
                     client.status = u"Integración"
                     client.save()
             except Client.DoesNotExist:
-                client = Client(prospection=prospection)
-                client.save()
+                client = Client()
 
         if request.user.has_perm("client.create_client"):
-            return HttpResponseRedirect("/clientes-linea-de-produccion/editar/%d/" % client.pk)
+            if client.pk:
+                return HttpResponseRedirect("/clientes-linea-de-produccion/editar/%s/%d/" % ("client", client.pk))
+            else:
+                return HttpResponseRedirect("/clientes-linea-de-produccion/editar/%s/%d/" % ("prospection", prospection.pk))
         else:
             return HttpResponseRedirect("/prospeccion/ver/")
+
+
+class ProspectionAuthorizeListView(ListView):
+    """ List every prospect in need of authorization """
+    template_name = "prospection/index.html"
+    model = Prospection
+
+    def get_queryset(self, *args, **kwargs):
+        return Prospection.objects.all().exclude(status="Apartado")

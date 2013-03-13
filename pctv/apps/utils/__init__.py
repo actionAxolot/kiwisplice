@@ -19,8 +19,7 @@ MONTHS_DICT = {
     "OCTUBRE": 10,
     "NOVIEMBRE": 11,
     "DICIEMBRE": 12,
-}
-
+}   
 
 def format_time_span(date):
     month = MONTHS[date.month - 1]

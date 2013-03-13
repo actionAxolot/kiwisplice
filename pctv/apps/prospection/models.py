@@ -112,6 +112,17 @@ class Prospection(models.Model):
     objects = ProspectionManager()
 
     def get_full_name(self):
+        # Sometimes names are.. not there
+        if not self.first_name:
+            self.first_name = " "
+
+        if not self.father_lastname:
+            self.father_lastname = " "
+
+        if not self.mother_lastname:
+            self.mother_lastname = " "
+
+        
         return u"%s %s %s" % (self.first_name, self.father_lastname, self.mother_lastname)
 
     def __unicode__(self):

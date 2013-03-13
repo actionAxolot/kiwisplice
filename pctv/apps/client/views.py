@@ -7,7 +7,7 @@ from django.db.models import Q
 from models import Client, CLIENT_STATUS
 from forms import ClientPaymentFormSet, ClientForm, ClientPaymentCollectFormSet
 from apps.utils import MONTHS_DICT, get_reverse_months_header
-from apps.prospection.models import TOTAL_INCOME_BUCKET
+from apps.prospection.models import TOTAL_INCOME_BUCKET, Prospection
 from apps.utils.views import JSONTemplateRenderMixin, CSVRenderMixin
 import operator
 
@@ -143,12 +143,16 @@ class ClientDashboardView(TemplateView):
 class ClientEditView(TemplateView):
     template_name = 'client/new_form.html'
 
-    def get(self, request, client_id=None):
+    def get(self, request, ct="client", resource_id=None):
         """
         Render the forms and whatnot
         """
-        if client_id:
-            client = Client.objects.get(pk=client_id)
+        if resource_id:
+            # There must be a simpler way... have no idea though
+            if ct == "prospection":
+                client = Client(prospection=Prospection.objects.get(pk=resource_id))
+            else:
+                client = Client.objects.get(pk=resource_id)
             client_form = ClientForm(instance=client)
         else:
             client = Client()
@@ -162,18 +166,26 @@ class ClientEditView(TemplateView):
             "client": client
         })
 
-    def post(self, request, client_id=None):
+    def post(self, request, ct="client", resource_id=None):
         """
         Save the form and create relevant records
         """
         client = Client()
-        if client_id:
-            client = Client.objects.get(pk=client_id)
+
+        if resource_id:
+            if ct == "prospection":
+                try:
+                    client = Client.objects.get(prospection__pk=resource_id)
+                except Client.DoesNotExist:
+                    client = Client()
+            else:
+                client = Client.objects.get(pk=resource_id)
 
         client_form = ClientForm(request.POST, request.FILES, instance=client)
 
         if client_form.is_valid():
             created_client = client_form.save()
+            created_client.prospection.status = u"Apartado"
             inline_formset = ClientPaymentFormSet(request.POST,
                 request.FILES, instance=created_client)
             if inline_formset.is_valid():
