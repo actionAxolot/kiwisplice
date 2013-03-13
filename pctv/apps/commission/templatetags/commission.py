@@ -20,7 +20,7 @@ def get_commission_total(commission):
         price = commission.client.inventory.price
         total_to_pay = price * Decimal(str(commission.client.inventory.commission_percentage * Decimal(".01")))
         return u"%.2f" % total_to_pay
-    except AttributeError:
+    except:
         return "Sin inventario"
 
 

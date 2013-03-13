@@ -25,7 +25,7 @@
 	<tr>
 	  <td>
 	  	{% if perms.client.change_client or perms.client.view_client %}
-	  		<a href="{% url client_edit client_id=o.pk %}">{{ o.pk }}</a>
+	  		<a href="{% url client_edit ct='client' resource_id=o.pk %}">{{ o.pk }}</a>
 	  	{% else %}
 	  		{{ o.pk }}
 	  	{% endif %}

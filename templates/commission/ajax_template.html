@@ -27,7 +27,7 @@
           <tbody>
             {% for c in pending %}
             <tr>
-              <td><a href="{% url client_edit client_id=c.client.pk %}">{{ c.client.pk }}</a></td>
+              <td><a href="{% url client_edit ct='client' resource_id=c.client.pk %}">{{ c.client.pk }}</a></td>
               <td>{{ c.client }}</td>
               <td>{{ c.client.prospection.salesperson }}</td>
               <td>{{ c.created_date }}</td>
@@ -62,7 +62,7 @@
           <tbody>
             {% for c in payed %}
             <tr>
-              <td><a href="{% url client_edit client_id=c.client.pk %}">{{ c.client.pk }}</a></td>
+              <td><a href="{% url client_edit ct='client' resource_id=c.client.pk %}">{{ c.client.pk }}</a></td>
               <td>{{ c.client }}</td>
               <td>{{ c.client.prospection.salesperson }}</td>
               <td>{{ c.created_date }}</td>
@@ -97,7 +97,7 @@
           <tbody>
             {% for c in canceled %}
             <tr>
-              <td><a href="{% url client_edit client_id=c.client.pk %}">{{ c.client.pk }}</a></td>
+              <td><a href="{% url client_edit ct='client' resource_id=c.client.pk %}">{{ c.client.pk }}</a></td>
               <td>{{ c.client }}</td>
               <td>{{ c.client.prospection.salesperson }}</td>
               <td>{{ c.created_date }}</td>
