@@ -49,14 +49,19 @@
                                 <td>Email</td>
                                 <td>{{ client.prospection.email }}</td>
                             </tr>
+                            {% comment %}
                             <tr>
                                 <td>Ingreso total</td>
                                 <td>{{ client.prospection.total_income }}</td>
                             </tr>
+                            {% endcomment %}
+                            {% if client.inventory %}
                             <tr>
                                 <td>Inmueble seleccionado (Identificador)</td>
                                 <td>{{ client.inventory }}</td>
                             </tr>
+                            {% endif %}
+                            {% if client.pk %}
                             <tr>
                                 <td>Documentos</td>
                                 <td>
@@ -65,6 +70,7 @@
                                     <a href="{% url documentacion %}?op=contrato&pk={{ client.pk }}" class="btn btn-success">Contrato</a>
                                 </td>
                             </tr>
+                            {% endif %}
                         </tbody>
                     </table>
                 </div>
