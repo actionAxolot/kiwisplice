@@ -49,6 +49,15 @@ class DocsView(TemplateView):
         credit_info = dict()
         credit_info["total"] = prospection.client_set.all()[0].payment_set.all().aggregate(total=Sum("amount"))
         credit_info["payed"] = prospection.client_set.all()[0].payment_set.all().filter(status="Pagado").aggregate(total=Sum("amount"))
+
+        # We should kind of safeguard this here because I have no clue on how this will work.
+        # If 0 just.. probably... render with 0's and shit
+        if not credit_info["total"]["total"]:
+            credit_info["total"]["total"] = 0
+
+        if not credit_info["payed"]["total"]:
+            credit_info["payed"]["total"] = 0
+
         credit_info["difference"] = credit_info["total"]["total"] - credit_info["payed"]["total"]
         self.template_name = self.available_templates.get(reason)
         return {"p": prospection, "credit": credit_info}

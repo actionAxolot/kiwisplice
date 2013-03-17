@@ -12,7 +12,7 @@
                     <table class="table table-bordered table-striped">
                         <tbody>
                             <tr>
-                                <td>Consecutivo</td>
+                                <td>Número de prospecto</td>
                                 <td>
                                     {% if perms.prospection.change_prospection %}
                                     <a href="{% url prospection_create_params prospection_id=client.prospection.pk %}">{{ client.prospection.pk }}</a>
@@ -56,6 +56,14 @@
                             <tr>
                                 <td>Inmueble seleccionado (Identificador)</td>
                                 <td>{{ client.inventory }}</td>
+                            </tr>
+                            <tr>
+                                <td>Documentos</td>
+                                <td>
+                                    <a href="{% url documentacion %}?op=entrega&pk={{ client.prospection.pk }}" class="btn btn-success">Entrega</a>
+                                    <a href="{% url documentacion %}?op=escrituracion&pk={{ client.prospection.pk }}" class="btn btn-success">Escrituración</a>
+                                    <a href="{% url documentacion %}?op=contrato&pk={{ client.pk }}" class="btn btn-success">Contrato</a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
