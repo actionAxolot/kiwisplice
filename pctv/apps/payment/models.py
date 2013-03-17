@@ -25,4 +25,4 @@ class Payment(models.Model):
 
     class Meta:
         verbose_name = _("Payment")
-    verbose_name_plural = _("Payments")
+        verbose_name_plural = _("Payments")

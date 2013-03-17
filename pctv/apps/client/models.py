@@ -33,7 +33,7 @@ class ClientManager(models.Manager):
 class Client(models.Model):
     """ Whenever a prospection is aproved a client object is appended """
     prospection = models.ForeignKey(Prospection,
-        verbose_name=_(u"Prospección"), limit_choices_to={"status__in": ("Apartado", "Por cerrar")})
+        verbose_name=_(u"Prospección"))
     inventory = models.ForeignKey(Inventory,
         unique=True, verbose_name=_(u"Inmueble"), null=True, blank=True)
     integration_date = models.DateField(null=True, blank=True, verbose_name=_(u"Integration date"))
@@ -59,8 +59,8 @@ class Client(models.Model):
             self.created_date = datetime.date.today()
         super(Client, self).save(*args, **kwargs)
 
-    def __unicode__(self):
-        return u"%s" % self.prospection.get_full_name()
+    # def __unicode__(self):
+    #     return u"%s" % self.prospection.get_full_name()
 
     class Meta:
         verbose_name = _(u"Client")

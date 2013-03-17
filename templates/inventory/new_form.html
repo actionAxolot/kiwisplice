@@ -34,13 +34,13 @@
                                         </div>
                                         
                                         {% if field.name == "commission_percentage" %}
-                                            {% if change_commission %}
+                                            {% if perms.commission.change_commission %}
                                                 <div class="controls">
                                                     {{ field }}
                                                     <span class="help-block"> {{ field.errors }} </span>
                                                 </div>
                                             {% else %}
-                                                <div class="controls"></div>  
+                                                <div class="controls"></div>
                                             {% endif %}
                                         {% else %}
                                             <div class="controls">

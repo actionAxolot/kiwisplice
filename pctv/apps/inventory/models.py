@@ -109,7 +109,7 @@ class Inventory(models.Model):
     y = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=6)
     commission_percentage = models.DecimalField(max_digits=5, decimal_places=2, 
                                                 verbose_name=u"Porcentaje de comisión", 
-                                                default=decimal.Decimal("1.00"), blank=True, null=True)
+                                                default=decimal.Decimal("0.00"), blank=True, null=True)
 
     # TODO: Add a get_price method that returns the correct price. Either the one in the prototype or
     # the one in the Inventory entry

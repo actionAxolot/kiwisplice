@@ -175,19 +175,23 @@ class ClientEditView(TemplateView):
         if resource_id:
             if ct == "prospection":
                 try:
-                    client = Client.objects.get(prospection__pk=resource_id)
+                    client = Client.objects.get(prospection__pk=int(resource_id))
                 except Client.DoesNotExist:
-                    client = Client()
+                    client = Client(prospection=Prospection.objects.get(pk=int(resource_id)))
             else:
-                client = Client.objects.get(pk=resource_id)
+                client = Client.objects.get(pk=int(resource_id))
 
         client_form = ClientForm(request.POST, request.FILES, instance=client)
 
         if client_form.is_valid():
             created_client = client_form.save()
+
+            print created_client.pk
+
             created_client.prospection.status = u"Apartado"
             inline_formset = ClientPaymentFormSet(request.POST,
                 request.FILES, instance=created_client)
+
             if inline_formset.is_valid():
                 inline_formset.save()
                 return redirect("client_home")
