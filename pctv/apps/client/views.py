@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Create your views here.
 from django.views.generic import TemplateView, ListView
+from django.http import Http404
 from django.shortcuts import redirect
 from django.db.models import Q
 
@@ -266,18 +267,12 @@ class ClientReturnToProspectionView(TemplateView):
         """
         try:
             client = Client.objects.get(pk=client_id)
-            if client.prospection.status == u"Cancelado":
-                client.prospection.status = u"Apartado"
-            else:
-                client.prospection.status = u"Cancelado"
-            client.prospection.save()
+            client.inventory.construction_status = u"Libre"
+            client.inventory.save()
 
-            if client.status == u"Cancelado":
-                client.status = u"Autorizado"
-            else:
-                client.status = u"Cancelado"
-            client.save()
-
+            # Delete everything else
+            client.prospection.delete()
+            client.delete()
             return redirect("client_home")
         except Client.DoesNotExist:
-            return redirect("client_home")
+            raise Http404

@@ -67,31 +67,6 @@ class Client(models.Model):
         verbose_name_plural = _(u"Clients")
 
 
-def free_inventory_status(sender, instance, **kwargs):
-    """
-    Check the status according to whatever we are catching
-    """
-    try:
-        if instance.inventory:
-            # This means it already has an inventory.
-            # Get whatever's in the DB right now
-            client = Client.objects.filter(pk=instance.pk)[0]
-            client.inventory.construction_status = u"Libre"
-            client.inventory.save()
-    except:
-        pass
-
-
-def set_inventory_status(sender, instance, created, **kwargs):
-    try:
-        if instance.inventory:
-            # An inventory was set
-            instance.inventory.construction_status = u"Con cliente"
-            instance.inventory.save()
-    except:
-        pass
-
-
 def delete_commissions(sender, instance, created, **kwargs):
     """
     Delete commissions when client is canceled
@@ -102,6 +77,4 @@ def delete_commissions(sender, instance, created, **kwargs):
             instance.commission_set.all().delete()
 
 
-pre_save.connect(free_inventory_status, sender=Client)
-post_save.connect(set_inventory_status, sender=Client)
 post_save.connect(delete_commissions, sender=Client)
