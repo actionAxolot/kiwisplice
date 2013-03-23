@@ -14,7 +14,9 @@
 	  <th>Fecha de pago</th>
 	  <th>Status</th>
 	  <th>Cantidad</th>
+	  {% if perms.commissionpayment.create_commissionpayment %}
 	  <th>Acciones</th>
+	  {% endif %}
 	</tr>
       </thead>
       <tbody>
@@ -26,9 +28,11 @@
 	  <td>{{ o.payment_date }}</td>
 	  <td>{{ o.status }}</td>
 	  <td>{{ o|get_commission_payment_total }}</td>
+	  {% if perms.commissionpayment.create_commissionpayment %}
 	  <td>
             <a href="{% url prospection_delete prospection_id=o.pk %}" class="btn btn-danger">Pagar</a>
           </td>
+      {% endif %}
 	</tr>
 	{% endfor %}
       </tbody>

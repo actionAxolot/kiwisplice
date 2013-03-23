@@ -19,8 +19,7 @@ MONTHS_DICT = {
     "OCTUBRE": 10,
     "NOVIEMBRE": 11,
     "DICIEMBRE": 12,
-}
-
+}   
 
 def format_time_span(date):
     month = MONTHS[date.month - 1]
@@ -42,6 +41,18 @@ def get_months_header(*args, **kwargs):
     months = list()
     for x in xrange(0, 8):
         then = today + datetime.timedelta(days=31 * x)
+        months.append(MONTHS[then.month - 1] + " " + str(then.year))
+
+    return months
+
+def get_reverse_months_header(*args, **kwargs):
+    """
+    Generate the necessary monthly headers for the dashboard tables
+    """
+    today = datetime.date.today()
+    months = list()
+    for x in xrange(0, 8):
+        then = today - datetime.timedelta(days=31 * x)
         months.append(MONTHS[then.month - 1] + " " + str(then.year))
 
     return months

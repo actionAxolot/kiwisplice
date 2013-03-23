@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import User
 from apps.client.models import Client
+from django.shortcuts import redirect
 
 # We are gonna use signals... not sure why
 from django.db.models.signals import post_save

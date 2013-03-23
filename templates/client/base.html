@@ -10,12 +10,14 @@ active
   <div class="btn-group">
     <a class="btn btn-large tip-bottom" href="{% url client_dashboard %}" title="Tablero Clientes"><i class="icon-home"></i></a>
     <a class="btn btn-large tip-bottom" href="{% url client_home %}" title="Listado Clientes"><i class="icon-search"></i></a>
+    <a class="btn btn-large tip-bottom" href="{% url client_home %}?format=csv" title="Exportar CSV"><i class="icon-file"></i></a>
   </div>
 </div>
 
 {% block sub_content %}{% endblock %}
-
 {% endblock content %}
+
 {% block extrascripts %}
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/unicorn.tables.js"></script>
 {% endblock extrascripts %}

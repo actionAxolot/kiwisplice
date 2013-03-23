@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 from apps.comment.models import Comment
 from django.db.models.signals import pre_save, post_save
+import datetime
 
 
 CLIENT_STATUS = (
@@ -20,8 +21,7 @@ CLIENT_STATUS = (
     (u"Cobrado", _(u"Cobrado")),
     (u"Viv. Entregada", _(u"Viv. Entregada")),
     (u"Cancelado", _(u"Cancelado")),
-    )
-
+)
 
 class ClientManager(models.Manager):
     def get_query_set(self, *args, **kwargs):
@@ -33,7 +33,7 @@ class ClientManager(models.Manager):
 class Client(models.Model):
     """ Whenever a prospection is aproved a client object is appended """
     prospection = models.ForeignKey(Prospection,
-        verbose_name=_(u"Prospección"), limit_choices_to={"status__in": ("Apartado", "Por cerrar")})
+        verbose_name=_(u"Prospección"))
     inventory = models.ForeignKey(Inventory,
         unique=True, verbose_name=_(u"Inmueble"), null=True, blank=True)
     integration_date = models.DateField(null=True, blank=True, verbose_name=_(u"Integration date"))
@@ -45,7 +45,7 @@ class Client(models.Model):
     delivery_date = models.DateField(null=True, blank=True, verbose_name=_(u"Delivery date"))
 
     # Store the date in which this Client entry was created
-    created_date = models.DateField(auto_now_add=True)
+    created_date = models.DateField(verbose_name=u'Fecha de creación')
 
     status = models.CharField(blank=False, null=False,
         choices=CLIENT_STATUS, max_length=50, default=_(u"Integración"),
@@ -53,37 +53,18 @@ class Client(models.Model):
 
     comments = generic.GenericRelation(Comment)
 
-    def __unicode__(self):
-        return u"%s" % self.prospection.get_full_name()
+    def save(self, *args, **kwargs):
+        """ On save update timestamps """
+        if not self.id:
+            self.created_date = datetime.date.today()
+        super(Client, self).save(*args, **kwargs)
+
+    # def __unicode__(self):
+    #     return u"%s" % self.prospection.get_full_name()
 
     class Meta:
         verbose_name = _(u"Client")
         verbose_name_plural = _(u"Clients")
-
-
-def free_inventory_status(sender, instance, **kwargs):
-    """
-    Check the status according to whatever we are catching
-    """
-    try:
-        if instance.inventory:
-            # This means it already has an inventory.
-            # Get whatever's in the DB right now
-            client = Client.objects.filter(pk=instance.pk)[0]
-            client.inventory.construction_status = u"Libre"
-            client.inventory.save()
-    except:
-        pass
-
-
-def set_inventory_status(sender, instance, created, **kwargs):
-    try:
-        if instance.inventory:
-            # An inventory was set
-            instance.inventory.construction_status = u"Con cliente"
-            instance.inventory.save()
-    except:
-        pass
 
 
 def delete_commissions(sender, instance, created, **kwargs):
@@ -96,6 +77,4 @@ def delete_commissions(sender, instance, created, **kwargs):
             instance.commission_set.all().delete()
 
 
-pre_save.connect(free_inventory_status, sender=Client)
-post_save.connect(set_inventory_status, sender=Client)
 post_save.connect(delete_commissions, sender=Client)

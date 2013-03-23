@@ -1,5 +1,4 @@
 from apps.role.forms import UserCreateForm, UserEditForm
-from apps.role.models import Role
 from django.contrib.auth.models import Group, User
 from django.forms.models import model_to_dict
 from django.shortcuts import redirect, get_object_or_404
@@ -65,7 +64,8 @@ class RoleUserEditView(TemplateView):
 
     def get(self, request, user_id=None):
         user = get_object_or_404(User, pk=user_id)
-        form = UserEditForm(initial=model_to_dict(user))
+        user_dict = model_to_dict(user)
+        form = UserEditForm(initial=user_dict)
 
         return self.render_to_response({"form": form})
 
@@ -81,7 +81,10 @@ class RoleUserEditView(TemplateView):
 
             if form.cleaned_data["group"] == "Administrador":
                 user.is_superuser = True
-            
+
+            # We'll add this because some users might have more than one
+            for g in user.groups.all():
+                user.groups.remove(g)
             user.groups.add(group)
             user.save()
             return redirect("role_dashboard")
@@ -98,10 +101,3 @@ class RoleUserDeleteView(TemplateView):
 class RoleUserView(ListView):
     template_name = "role/user_view.html"
     model = User
-
-
-class RoleDeleteView(TemplateView):
-    def get(self, request, role_id=None):
-        if role_id:
-            Role.objects.get(pk=role_id).delete()
-            return redirect("role_dashboard")

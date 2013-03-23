@@ -11,17 +11,24 @@ from django.views.decorators.csrf import csrf_exempt
 from forms import ProspectionForm, ProspectionPhoneNumberFormset
 from models import Prospection, PROSPECTION_STATUS_CHOICES, \
     PROSPECTION_CHANNEL_OPTIONS, TOTAL_INCOME_BUCKET
+from apps.utils.views import CSVRenderMixin
 import datetime
 import operator
 from django.http import Http404, HttpResponseRedirect
-from apps.utils.views import JSONTemplate
+from apps.utils.views import JSONTemplateRenderMixin
 
-
-class ProspectionView(ListView):
+class ProspectionView(CSVRenderMixin, ListView):
     model = Prospection
     queryset = Prospection.objects.all().exclude(status__in=("Apartado",))
     template_name = "prospection/index.html"
-
+    csv_filename = "prospecciones.csv"
+    
+    def get(self, request, *args, **kwargs):
+        """ Allow CSV file generation """
+        if request.GET.get("format", None):
+            return self.render_csv_to_response(self.queryset)
+        else:
+            return super(ProspectionView, self).get(request, *args, **kwargs)
 
 class ProspectionDashboardView(TemplateView):
     """Show the dashboard with kewl information for prospections"""
@@ -65,15 +72,12 @@ class ProspectionDashboardView(TemplateView):
 
         for x in TOTAL_INCOME_BUCKET:
             total_status_list[x[0]] = len(Prospection.objects.filter(total_income=x[0]))
-
         obj_status_list = sorted(obj_status_list.iteritems(), key=operator.itemgetter(0))
-        
         # Now get the prospections that have been caught this month
         month = datetime.date.today().month
         year = datetime.date.today().year
         obj_this_month = Prospection.objects.filter(visitation_date__month=month,
                                                     visitation_date__year=year)
-        
         # Now create the new form
         time_filters = FilterForm()
 
@@ -87,16 +91,16 @@ class ProspectionDashboardView(TemplateView):
             'total_status_list': total_status_list,
             'time_filters': time_filters,
         })
-        
+
     def post(self, request):
         # Ugh.. just do it here
         month = request.POST.get("month", datetime.date.today().month)
         year = request.POST.get("year", datetime.date.today().year)
-        
+
         self.template_name = "prospection/ajax/time_filter.html"
         obj_this_month = Prospection.objects.filter(visitation_date__month=month,
                                                     visitation_date__year=year)
-        
+
         return self.render_to_response({"obj_this_month": obj_this_month})
 
 
@@ -107,36 +111,35 @@ class ProspectionCreateView(TemplateView):
         prospection = Prospection()
         if prospection_id:
             prospection = Prospection.objects.get(pk=prospection_id)
-
-        prospection_form = ProspectionForm(request.POST, request.FILES, instance=prospection)
-        inline_formset = ProspectionPhoneNumberFormset(request.POST, instance=prospection)
+            prospection_form = ProspectionForm(request.POST, request.FILES, instance=prospection)
+            inlinephone_formset = ProspectionPhoneNumberFormset(request.POST, instance=prospection)
+        else:
+            prospection_form = ProspectionForm(request.POST, request.FILES)
+            inlinephone_formset = ProspectionPhoneNumberFormset(request.POST, request.FILES)
 
         if prospection_form.is_valid():
             created_prospection = prospection_form.save()
-            if created_prospection.status in ("Apartado",):
-                try:
-                    client = Client.objects.get(prospection=created_prospection)
-                    if client.status == u"Cancelado":
-                        client.status = u"Integración"
-                        client.save()
-                except Client.DoesNotExist:
-                    client = Client(prospection=prospection)
-                    client.save()
+            
+            #if created_prospection.status in ("Apartado",):
+                #try:
+                    #client = Client.objects.get(prospection=created_prospection)
+                    #if client.status == u"Cancelado":
+                        #client.status = u"Integración"
+                        #client.save()
+                #except Client.DoesNotExist:
+                    #client = Client(prospection=prospection)
+                    #client.save()
 
-            inline_formset = ProspectionPhoneNumberFormset(request.POST,
+            inlinephone_formset = ProspectionPhoneNumberFormset(request.POST,
                                                              instance=created_prospection)
 
-            if inline_formset.is_valid():
-                inline_formset.save()
-
-                if created_prospection.status in ("Apartado",):
-                    return redirect("client_edit", client_id=created_prospection.client_set.all()[0].pk)
-
+            if inlinephone_formset.is_valid():
+                inlinephone_formset.save()
                 return redirect("prospection_home")
 
         return self.render_to_response({
             "form": prospection_form,
-            "formset": inline_formset
+            "formset": inlinephone_formset
         })
 
     def get(self, request, prospection_id=None):
@@ -162,24 +165,27 @@ class ProspectionDeleteView(TemplateView):
     def get(self, request, prospection_id=None):
         Prospection.objects.get(pk=prospection_id).delete()
         return redirect("prospection_home")
-    
-    
+
+
 class ProspectionByMonthView(TemplateView):
     template_name = "prospection/view_by_month.html"
+
     def get(self, request):
         month = request.GET.get("month", "1")
         year = request.GET.get("year", datetime.date.today().year)
         prospections = Prospection.objects.filter(visitation_date__month=month, visitation_date__year=year)
-        
+
         return self.render_to_response({"prospections": prospections})
-        
 
 
-class ProspectionAjaxView(TemplateView):
-    def get(self, request):
+class ProspectionAjaxView(JSONTemplateRenderMixin, ListView):
+    template_name = "prospection/ajax/prospection_detail_table.html"
+    model = Prospection
+    
+    def get_queryset(self):
         # Get items out of the requestn
-        date = request.GET.get("date", None)
-        status = request.GET.get("status", None)
+        date = self.request.GET.get("date", None)
+        status = self.request.GET.get("status", None)
         # Get the correct objects
         prospections = list()
         if status and date:
@@ -195,26 +201,17 @@ class ProspectionAjaxView(TemplateView):
             prospections = Prospection.objects.get_by_weeks_old(weeks_old=int(date))
         else:
             prospections = Prospection.objects.all()
-
-        # Check for permissions here. For some reason they're not passed to the template
-        can_delete = request.user.has_perm("prospection.delete_prospection")
-        can_change = request.user.has_perm("prospection.change_prospection")
-
-        return self.render_to_response({"object_list": prospections, "can_delete": can_delete, "can_change": can_change})
-
-    def render_to_response(self, context):
-        # Render the template
-        t = loader.get_template("prospection/ajax/prospection_detail_table.html")
-        data = {}
-        data["template"] = t.render(Context(context))
-        data["message"] = "success"
-        return http.HttpResponse(simplejson.dumps(data, ensure_ascii=False), content_type="application/json")
+            
+        return prospections
 
 
-class ProspectionAjaxChannelView(TemplateView):
-    def get(self, request):
-        income = request.GET.get("income", None)
-        channel = request.GET.get("channel", None)
+class ProspectionAjaxChannelView(JSONTemplateRenderMixin, ListView):
+    template_name = "prospection/ajax/prospection_detail_table.html"
+    model = Prospection
+    
+    def get_queryset(self):
+        income = self.request.GET.get("income", None)
+        channel = self.request.GET.get("channel", None)
 
         prospections = list()
         if income and channel:
@@ -226,21 +223,17 @@ class ProspectionAjaxChannelView(TemplateView):
         else:
             prospections = Prospection.objects.all()
 
-        return self.render_to_response({"object_list": prospections})
-
-    def render_to_response(self, context):
-        t = loader.get_template("prospection/ajax/prospection_detail_table.html")
-        data = {}
-        data["template"] = t.render(Context(context))
-        data["message"] = "success"
-        return http.HttpResponse(simplejson.dumps(data, ensure_ascii=False), content_type="application/json")
+        return prospections
 
 
-class ProspectionAjaxStatusView(TemplateView):
-    def get(self, request):
-        income = request.GET.get("income", None)
-        status = request.GET.get("channel", None)
-
+class ProspectionAjaxStatusView(JSONTemplateRenderMixin, ListView):
+    template_name = "prospection/ajax/prospection_detail_table.html"
+    model = Prospection
+    
+    def get_queryset(self):
+        income = self.request.GET.get("income", None)
+        status = self.request.GET.get("status", None)
+        
         if income and status:
             prospections = Prospection.objects.filter(total_income=int(income), status=status)
         elif income:
@@ -250,14 +243,7 @@ class ProspectionAjaxStatusView(TemplateView):
         else:
             prospections = Prospection.objects.all()
 
-        return self.render_to_response({"object_list": prospections})
-
-    def render_to_response(self, context):
-        t = loader.get_template("prospection/ajax/prospection_detail_table.html")
-        data = {}
-        data["template"] = t.render(Context(context))
-        data["message"] = "success"
-        return http.HttpResponse(simplejson.dumps(data, ensure_ascii=False), content_type="application/json")
+        return prospections
 
 
 class ProspectionApartarView(TemplateView):
@@ -275,21 +261,32 @@ class ProspectionApartarView(TemplateView):
             prospection = Prospection.objects.get(pk=request.GET.get("prospection_id"))
         except:
             raise Http404
-        
-        # Change the status to a more relevant 
-        prospection.status = u"Apartado" # LOL This is super retarded
-        prospection.save()
-        if prospection.status in ("Apartado",):
+
+        # Change the status to a more relevant
+        prospection.status = u"Apartado"  # LOL This is super retarded
+        # prospection.save()
+        if prospection.status in (u"Apartado",):
             try:
                 client = Client.objects.get(prospection=prospection)
                 if client.status == u"Cancelado":
                     client.status = u"Integración"
                     client.save()
             except Client.DoesNotExist:
-                client = Client(prospection=prospection)
-                client.save()
-        
+                client = Client()
+
         if request.user.has_perm("client.create_client"):
-            return HttpResponseRedirect("/clientes-linea-de-produccion/editar/%d/" % client.pk)
+            if client.pk:
+                return HttpResponseRedirect("/clientes-linea-de-produccion/editar/%s/%d/" % ("client", client.pk))
+            else:
+                return HttpResponseRedirect("/clientes-linea-de-produccion/editar/%s/%d/" % ("prospection", prospection.pk))
         else:
             return HttpResponseRedirect("/prospeccion/ver/")
+
+
+class ProspectionAuthorizeListView(ListView):
+    """ List every prospect in need of authorization """
+    template_name = "prospection/index.html"
+    model = Prospection
+
+    def get_queryset(self, *args, **kwargs):
+        return Prospection.objects.all().exclude(status="Apartado")

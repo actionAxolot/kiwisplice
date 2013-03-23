@@ -6,28 +6,44 @@
     {# Render a table with every item in the object available #}
     <table class="table table-bordered data-table">
       <thead>
-	<tr>
-	  <th>ID</th>
-	  <th>Inventario</th>
-	  <th>Estatus</th>
-	  <th>Cantidad</th>
-	  <th>Cantidad Ministrada</th>
-	  <th>Acciones</th>
-	</tr>
+    <tr>
+      <th>ID</th>
+      <th>Inventario</th>
+      <th>Estatus</th>
+      <th>Cantidad</th>
+      <th>Cantidad Ministrada</th>
+      {% if perms.inventory.change_bridgecredit %}
+        <th>Acciones</th>
+      {% endif %}
+    </tr>
       </thead>
       <tbody>
-	{% for o in object_list %}								
-	<tr>
-	  <td><a href="{% url inventory_bridge_credit_create_params bridge_credit_id=o.pk %}">{{ o.pk }}</a></td>
-	  <td><a href="{% url inventory_create_params inventory_id=o.inventory.pk %}">{{ o.inventory }}</a></td>
-	  <td>{{ o.status }}</td>
-	  <td>${{ o.approved_amount }}</td>
-	  <td>${{ o.ministered_amount }}</td>
-	  <td>
-	    <a href="{% url inventory_bridge_credit_delete bridge_credit_id=o.pk %}" class="btn btn-danger">X</a>
-	  </td>
-	</tr>
-	{% endfor %}
+    {% for o in object_list %}                              
+    <tr>
+      <td>
+        {% if perms.inventory.change_bridgecredit %}
+        <a href="{% url inventory_bridge_credit_create_params bridge_credit_id=o.pk %}">{{ o.pk }}</a>
+        {% else %}
+        {{ o.pk }}
+        {% endif %}
+      </td>
+      <td>
+        {% if perms.inventory.change_inventory %}
+        <a href="{% url inventory_create_params inventory_id=o.inventory.pk %}">{{ o.inventory }}</a>
+        {% else %}
+            {{ o.inventory }}
+        {% endif %}
+      </td>
+      <td>{{ o.status }}</td>
+      <td>${{ o.approved_amount }}</td>
+      <td>${{ o.ministered_amount }}</td>
+      {% if perms.inventory.change_bridgecredit %}
+          <td>
+            <a href="{% url inventory_bridge_credit_delete bridge_credit_id=o.pk %}" class="btn btn-danger">X</a>
+          </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
       </tbody>
     </table>
   </div>

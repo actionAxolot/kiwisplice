@@ -12,7 +12,9 @@ active
   <h1>Inventario</h1>
   <div class="btn-group">
     <a class="btn btn-large tip-bottom" href="{% url inventory_home %}" title="Ver Inventario"><i class="icon-search"></i></a>
-    <a class="btn btn-large tip-bottom" href="{% url inventory_create %}" title="Crear Inventario"><i class="icon-plus-sign"></i></a>
+    {% if perms.inventory.create_inventory %}
+        <a class="btn btn-large tip-bottom" href="{% url inventory_create %}" title="Crear Inventario"><i class="icon-plus-sign"></i></a>
+    {% endif %}
     <a class="btn btn-large tip-bottom" href="{% url inventory_dashboard %}" title="Dashboard"><i class="icon-home"></i></a>
     <a class="btn btn-large tip-bottom" href="{% url inventory_map_view %}" title="Mapa"><i class="icon-map-marker"></i></a>
   </div>

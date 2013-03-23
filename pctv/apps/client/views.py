@@ -1,16 +1,75 @@
 # -*- coding: utf-8 -*-
 # Create your views here.
 from django.views.generic import TemplateView, ListView
+from django.http import Http404
 from django.shortcuts import redirect
 from django.db.models import Q
+
 from models import Client, CLIENT_STATUS
 from forms import ClientPaymentFormSet, ClientForm, ClientPaymentCollectFormSet
-from apps.utils import format_time_span, MONTHS, MONTHS_DICT, get_months_header
-from apps.prospection.models import TOTAL_INCOME_BUCKET
-from apps.utils.views import JSONTemplateRenderMixin
-import datetime
+from apps.utils import MONTHS_DICT, get_reverse_months_header
+from apps.prospection.models import TOTAL_INCOME_BUCKET, Prospection
+from apps.utils.views import JSONTemplateRenderMixin, CSVRenderMixin
 import operator
 
+
+class ClientView(CSVRenderMixin, ListView):
+    model = Client
+    template_name = 'client/index.html'
+    queryset = Client.objects.exclude(status=u"Cancelado")
+    csv_filename = "clientes.csv"
+
+    def prepare_data(self, queryset):
+        """ Really long string of data that needs be rendered """
+        prepared_data = list()
+        # Get a nicely ordered set of keys
+        keys = [
+            "id",
+            "prospection__father_lastname",
+            "prospection__mother_lastname",
+            "prospection__first_name",
+            "prospection__middle_name",
+            "inventory__unique_id",
+            "integration_date",
+            "signature_date",
+            "auth_date",
+            "pricing_date",
+            "payment_date",
+            "notary",
+            "delivery_date",
+            "created_date",
+            "status"
+        ]
+        
+        values = queryset.values(*keys)
+
+        prepared_data.append(keys)
+
+        for v in values:
+            row = list()
+            for key in keys:
+                if isinstance(v[key], unicode):
+                    data = v[key].encode("utf8")
+                else:
+                    data = v[key]
+                row.append(data)
+            try:
+                prepared_data.append(row)
+            except UnicodeEncodeError:
+                print "PROBLEM"
+                continue
+        return prepared_data
+
+    def generate_file_download(self, data_list):
+        """Overriding stuff on the CSV mixin"""
+        return super(ClientView, self).generate_file_download(data_list)
+
+    def get(self, request, *args, **kwargs):
+        """Meh"""
+        if request.GET.get("format", None):
+            return self.render_csv_to_response(self.queryset)
+        else:
+            return super(ClientView, self).get(request, *args, **kwargs)
 
 class ClientAjaxView(JSONTemplateRenderMixin, ListView):
     template_name = "client/partials/table.html"
@@ -21,7 +80,7 @@ class ClientAjaxView(JSONTemplateRenderMixin, ListView):
         Depending on sent filters from request.GET return a relevant
         queryset. The parameters passed are month (NOVIEMBRE 2012),
         status and income bracket (De 13,000 a 20,000)
-        
+
         Arguments:
         - `self`: Self reference. Pretty straight forward
         """
@@ -29,6 +88,7 @@ class ClientAjaxView(JSONTemplateRenderMixin, ListView):
         income = self.request.GET.get("income", None)
         status = self.request.GET.get("status", None)
         query = Q()
+
         if month:
             # Split it up and get year, month
             month, year = month.split(" ")
@@ -39,17 +99,12 @@ class ClientAjaxView(JSONTemplateRenderMixin, ListView):
             query = query & Q(status=status)
         if income:
             # Convert to correct integer representation
-            income_tuple = (x[0] for x in TOTAL_INCOME_BUCKET if x[1] == income )
-            
+            income_tuple = (x[0] for x in TOTAL_INCOME_BUCKET if x[1] == income)
+
             # Now a relevant income bracket
             query = query & Q(prospection__total_income=income_tuple.next())
 
         return self.model.objects.filter(query)
-
-
-class ClientView(ListView):
-    template_name = 'client/index.html'
-    queryset = Client.objects.exclude(status=u"Cancelado")
 
 
 class ClientDashboardView(TemplateView):
@@ -57,17 +112,25 @@ class ClientDashboardView(TemplateView):
 
     def get(self, request):
         # Get every client that has a signature date of today 'till 4 months in the future
-        months = get_months_header()
+        months = get_reverse_months_header()
+        
+        # Check if the user is a Vendedor. If the user is a vendedor only
+        # show this user the clients that belong to him
+        if request.user.groups.filter(name="Ventas").count():
+            clients = Client.objects.filter(prospection__salesperson__pk=request.user.pk)
+        else:
+            clients = Client.objects.all()
+        
 
         object_dict = dict()
         for c in CLIENT_STATUS:
-            object_dict[c[0]] = Client.objects.filter(status=unicode(c[1]))
+            object_dict[c[0]] = clients.filter(status=unicode(c[1]))
 
         object_dict = sorted(object_dict.iteritems(), key=operator.itemgetter(0))
 
         new_object_dict = dict()
         for c in TOTAL_INCOME_BUCKET:
-            new_object_dict[c[1]] = Client.objects.filter(prospection__total_income=c[0])
+            new_object_dict[c[1]] = clients.filter(prospection__total_income=c[0])
 
         new_object_dict = sorted(new_object_dict.iteritems(), key=operator.itemgetter(0))
 
@@ -81,12 +144,16 @@ class ClientDashboardView(TemplateView):
 class ClientEditView(TemplateView):
     template_name = 'client/new_form.html'
 
-    def get(self, request, client_id=None):
+    def get(self, request, ct="client", resource_id=None):
         """
         Render the forms and whatnot
         """
-        if client_id:
-            client = Client.objects.get(pk=client_id)
+        if resource_id:
+            # There must be a simpler way... have no idea though
+            if ct == "prospection":
+                client = Client(prospection=Prospection.objects.get(pk=resource_id))
+            else:
+                client = Client.objects.get(pk=resource_id)
             client_form = ClientForm(instance=client)
         else:
             client = Client()
@@ -100,20 +167,32 @@ class ClientEditView(TemplateView):
             "client": client
         })
 
-    def post(self, request, client_id=None):
+    def post(self, request, ct="client", resource_id=None):
         """
         Save the form and create relevant records
         """
         client = Client()
-        if client_id:
-            client = Client.objects.get(pk=client_id)
+
+        if resource_id:
+            if ct == "prospection":
+                try:
+                    client = Client.objects.get(prospection__pk=int(resource_id))
+                except Client.DoesNotExist:
+                    client = Client(prospection=Prospection.objects.get(pk=int(resource_id)))
+            else:
+                client = Client.objects.get(pk=int(resource_id))
 
         client_form = ClientForm(request.POST, request.FILES, instance=client)
 
         if client_form.is_valid():
             created_client = client_form.save()
+
+            print created_client.pk
+
+            created_client.prospection.status = u"Apartado"
             inline_formset = ClientPaymentFormSet(request.POST,
                 request.FILES, instance=created_client)
+
             if inline_formset.is_valid():
                 inline_formset.save()
                 return redirect("client_home")
@@ -143,6 +222,8 @@ class ClientFinancialView(TemplateView):
             "client": client,
         })
 
+    # What broke this were the disabled fields. Apparently they don't play nice with django forms
+    # TODO: Find a way to just display data since perhaps allowing editions of certain fields is not a good idea
     def post(self, request, client_id=None):
         client = Client()
         if client_id:
@@ -186,18 +267,12 @@ class ClientReturnToProspectionView(TemplateView):
         """
         try:
             client = Client.objects.get(pk=client_id)
-            if client.prospection.status == u"Cancelado":
-                client.prospection.status = u"Apartado"
-            else:
-                client.prospection.status = u"Cancelado"
-            client.prospection.save()
-            
-            if client.status == u"Cancelado":
-                client.status = u"Autorizado"
-            else:
-                client.status = u"Cancelado"
-            client.save()
-            
+            client.inventory.construction_status = u"Libre"
+            client.inventory.save()
+
+            # Delete everything else
+            client.prospection.delete()
+            client.delete()
             return redirect("client_home")
         except Client.DoesNotExist:
-            return redirect("client_home")
+            raise Http404

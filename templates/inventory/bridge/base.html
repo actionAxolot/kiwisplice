@@ -12,7 +12,9 @@ active
   <h1>Créditos puente</h1>
   <div class="btn-group">
     <a class="btn btn-large tip-bottom" href="{% url inventory_bridge_credit %}" title="Ver créditos puente"><i class="icon-search"></i></a>
-    <a class="btn btn-large tip-bottom" href="{% url inventory_bridge_credit_create %}" title="Agregar créditos puente"><i class="icon-plus-sign"></i></a>
+    {% if perms.bridgecredit.create_bridgecredit %}
+    	<a class="btn btn-large tip-bottom" href="{% url inventory_bridge_credit_create %}" title="Agregar créditos puente"><i class="icon-plus-sign"></i></a>
+    {% endif %}
     <a class="btn btn-large tip-bottom" href="{% url inventory_bridge_credit_dashboard %}" title="Dashboard"><i class="icon-home"></i></a>
   </div>
   {% endblock %}

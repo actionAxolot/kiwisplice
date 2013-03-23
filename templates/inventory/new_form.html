@@ -32,10 +32,22 @@
                                         <div class="control-label">
                                             {{ field.label_tag }}
                                         </div>
-                                        <div class="controls">
-                                            {{ field }}
-                                            <span class="help-block"> {{ field.errors }} </span>
-                                        </div>
+                                        
+                                        {% if field.name == "commission_percentage" %}
+                                            {% if perms.commission.change_commission %}
+                                                <div class="controls">
+                                                    {{ field }}
+                                                    <span class="help-block"> {{ field.errors }} </span>
+                                                </div>
+                                            {% else %}
+                                                <div class="controls"></div>
+                                            {% endif %}
+                                        {% else %}
+                                            <div class="controls">
+                                                {{ field }}
+                                                <span class="help-block"> {{ field.errors }} </span>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 {% endif %}
                             {% endfor %}

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django import forms
 from django.forms.models import inlineformset_factory
 from models import Prospection, PhoneNumber
@@ -18,14 +19,12 @@ MONTHS = (
     (12, "Diciembre"), 
 )
 
+
 YEARS = ((c, c) for c in xrange(2000, datetime.date.today().year + 1))
 
 class ProspectionForm(forms.ModelForm):
     class Meta:
         model = Prospection
-        widgets = {
-            "status": forms.HiddenInput()
-        }
 
 
 class PhoneNumberForm(forms.ModelForm):

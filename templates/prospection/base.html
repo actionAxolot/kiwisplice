@@ -10,7 +10,10 @@ active
   <div class="btn-group">
     <a class="btn btn-large tip-bottom" href="{% url prospection_dashboard %}" title="Dashboard"><i class="icon-home"></i></a>
     <a class="btn btn-large tip-bottom" href="{% url prospection_home %}" title="Ver Prospecciones"><i class="icon-search"></i></a>
-    <a class="btn btn-large tip-bottom" href="{% url prospection_create %}" title="Crear Prospección"><i class="icon-plus-sign"></i></a>
+    {% if perms.prospection.add_prospection %}
+        <a class="btn btn-large tip-bottom" href="{% url prospection_create %}" title="Crear Prospección"><i class="icon-plus-sign"></i></a>
+    {% endif %}
+    <a class="btn btn-large tip-bottom" href="{% url prospection_home %}?format=csv" title="Exportar CSV"><i class="icon-file"></i></a>
   </div>
 </div>
 

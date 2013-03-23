@@ -2,6 +2,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
+import decimal
 
 # Porcentajes options... this is probably retardedr
 PERCENTAGES_OPTIONS = tuple([(x, unicode(x) + u"%") for x in xrange(0, 110, 10)])
@@ -10,7 +11,7 @@ PERCENTAGES_OPTIONS = tuple([(x, unicode(x) + u"%") for x in xrange(0, 110, 10)]
 # How's the brige credit going?
 BRIDGE_CREDIT_STATUSES = (
     (u"Liberado", _(u"Liberado")),
-    (u"No liberado", _(u"No Liberado")),
+    (u"No liberado", _(u"No liberado")),
 )
 
 
@@ -75,7 +76,7 @@ class Inventory(models.Model):
 
     # TODO: This one should be filled automatically
     unique_id = models.CharField(max_length=50, blank=True, null=True,
-        verbose_name=_(u"Identificador único"))
+        verbose_name=_(u"Identificador único"), unique=True)
     block = models.CharField(max_length=50, blank=False, null=False, verbose_name=_(u'Block'))
     macro_lot = models.CharField(blank=False, null=False,
         verbose_name=_(u'Macro lot'), max_length=50)
@@ -106,6 +107,9 @@ class Inventory(models.Model):
     price = models.DecimalField(null=True, blank=True, max_digits=20, decimal_places=2, verbose_name=_(u"Price"))
     x = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=6)
     y = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=6)
+    commission_percentage = models.DecimalField(max_digits=5, decimal_places=2, 
+                                                verbose_name=u"Porcentaje de comisión", 
+                                                default=decimal.Decimal("0.00"), blank=True, null=True)
 
     # TODO: Add a get_price method that returns the correct price. Either the one in the prototype or
     # the one in the Inventory entry

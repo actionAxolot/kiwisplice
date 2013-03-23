@@ -41,6 +41,7 @@ PROSPECTION_FINANCIAL_OPTIONS = (
 
 TOTAL_INCOME_BUCKET = (
     (1, u"Hasta 12 Mil"),
+    
     (2, u"Entre 12 y 18 Mil"),
     (3, u"Entre 18 y 25 Mil"),
     (4, u"Entre 25 y 35 Mil"),
@@ -55,8 +56,8 @@ PROSPECTION_CHANNEL_OPTIONS = (
     (u"Recomendado", _(u"Recomendado")),
     (u"Base de datos", _(u"Base de datos")),
     (u"Periódico", _(u"Periodico")),
-    (u"Radio", _(u"Radio")),
-    (u"Televisión", _(u"Televisión")),
+    (u"Empresa", _(u"Empresa")),
+    (u"Volanteo", _(u"Volanteo")),
     (u"Internet", _(u"Internet")),
     (u"Expo", _(u"Expo")),
     (u"Fraccionamiento", _(u"Fraccionamiento")),
@@ -111,12 +112,23 @@ class Prospection(models.Model):
     objects = ProspectionManager()
 
     def get_full_name(self):
+        # Sometimes names are.. not there
+        if not self.first_name:
+            self.first_name = " "
+
+        if not self.father_lastname:
+            self.father_lastname = " "
+
+        if not self.mother_lastname:
+            self.mother_lastname = " "
+
+        
         return u"%s %s %s" % (self.first_name, self.father_lastname, self.mother_lastname)
 
     def __unicode__(self):
         return "Vendedor: %s - Prospecto: %s" % (self.salesperson.first_name + " " + self.salesperson.last_name,
             self.get_full_name())
-
+        
     class Meta:
         verbose_name = _(u"Prospección")
         verbose_name_plural = _(u"Prospecciones")

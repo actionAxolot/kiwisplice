@@ -1,4 +1,12 @@
 docs
 *.pyc
 .DS_Store
+.DS_Store/
 .idea
+.project
+.pydevproject
+.settings
+.projectile
+sql
+sql/
+subl

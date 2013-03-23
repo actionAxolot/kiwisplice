@@ -1,8 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.conf import settings
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from apps.home.views import HomeView
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -20,6 +18,8 @@ urlpatterns = patterns('',
     (r'^documentos/', include('apps.document.urls')),
     (r'^usuarios/', include('apps.role.urls')),
     (r'^enganche/', include('apps.payment.urls')),
+    (r'^logout/$', 'django.contrib.auth.views.logout',
+                      {'next_page': '/'}),
     (r'^', include('apps.home.urls')),
 )
 

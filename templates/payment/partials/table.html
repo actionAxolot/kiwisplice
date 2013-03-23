@@ -13,20 +13,32 @@
                 <th>Email del cliente</th>
                 <th>Fecha de entrega</th>
                 <th>Estatus</th>
-                <th>Acciones</th>
+                {% if perms.payment.change_payment or perms.client.change_client %}
+                    <th>Acciones</th>
+                {% endif %}
             </tr>
             </thead>
             <tbody>
             {% for o in object_list %}
                 <tr>
-                    <td><a href="{% url client_edit client_id=o.pk %}">{{ o.pk }}</a></td>
+                    <td>
+                        {% if perms.client.change_client %}
+                            <a href="{% url client_edit ct='client' resource_id=o.pk %}">{{ o.pk }}</a>
+                        {% else %}
+                            {{ o.pk }}
+                        {% endif %}
+                    </td>
                     <td>{{ o.prospection.salesperson.first_name }} {{ o.prospection.salesperson.last_name }}</td>
                     <td>{{ o.prospection.get_full_name }}</td>
                     <td>{{ o.prospection.email }}</td>
                     <td>{{ o.delivery_date }}</td>
                     <td>{{ o.status }}</td>
+                    {% if perms.client.change_client or perms.payment.change_payment %}
                     <td>
+                        {% if perms.client.change_payment %}
                         <a href="{% url client_financial_params client_id=o.pk %}" class="btn btn-primary">Cobranza</a>
+                        {% endif %}
+                        
                         {% if o.status == "Cancelado" %}
                             <a href="{% url client_to_prospection client_id=o.pk %}"
                                class="btn btn-primary">Reactivar</a>
@@ -34,6 +46,7 @@
                             <a href="{% url client_to_prospection client_id=o.pk %}" class="btn btn-danger">Cancelar</a>
                         {% endif %}
                     </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>

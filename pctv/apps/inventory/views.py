@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Create your views here.
 from django.views.generic import TemplateView, ListView
 from django.shortcuts import redirect
@@ -9,7 +10,7 @@ from forms import (InventoryForm, SectionForm,
 from django.db.models import Q
 from apps.utils.views import JSONTemplateRenderMixin, JSONRenderMixin
 from apps.utils import get_months_header, MONTHS_DICT
-from django.db.models import Sum
+from django.db.models import Sum, F
 
 
 # <----- START LANDING PAGE ------>
@@ -33,12 +34,13 @@ class InventoryCreateView(TemplateView):
         if inventory_id:
             inventory = Inventory.objects.get(pk=inventory_id)
 
-        inventory_form = InventoryForm(instance=inventory, user=request.user)
+        inventory_form = InventoryForm(instance=inventory)
 
         return self.render_to_response({
             "form": inventory_form,
             'inventory': inventory,
             'inventory_id': inventory_id,
+            # 'change_commission': change_commission,
         })
 
     def post(self, request, inventory_id=None):
@@ -46,7 +48,7 @@ class InventoryCreateView(TemplateView):
         if inventory_id:
             inventory = Inventory.objects.get(pk=inventory_id)
         inventory_form = InventoryForm(request.POST, request.FILES,
-            instance=inventory, user=request.user)
+            instance=inventory)
         if inventory_form.is_valid():
             inventory_form.save()
             return redirect("inventory_home")
@@ -317,17 +319,36 @@ class InventoryAjaxCrappyMapView(JSONRenderMixin, ListView):
                 i += 1
 
         if sel_filter == "client_status_in": # By client status
-            allowed_statuses = ("Cancelado", "Firmado", "Viv. entregada", "Autorizado")
-            result["data"] = self.model.objects.filter(client__status__in=allowed_statuses).values(
-                "client__status", "x", "y")
+            
+            # TODO: Delete most below this line
+            result["data"] = self.model.objects.all().exclude(client__status="Cancelado", 
+                    client__isnull=True).values("client__status", "x", "y")
+            
+            # Clean the resulting
+            tmp_result = list() 
+            for r in result["data"]:
+                # If there is not a client status just continue next iteration
+                if not r["client__status"]:
+                    continue
+
+                if (r["client__status"] != "Firmado") or (r["client__status"] != "Viv. Entregada"):
+                    r["client__status"] = "Cliente en proceso"
+                    
+                tmp_result.append(r)
 
             result["data"] = dict()
-            for inv in self.model.objects.filter(
-                client__status__in=allowed_statuses).values("client__status", "x", "y"):
+            # TODO: Refactor line below. A call to the DB for data already in memory
+            for inv in self.model.objects.all().exclude(client__status="Cancelado", client__isnull=True).values("client__status", "x", "y"):
                 if not inv["x"]:
                     inv["x"] = 0.00
                 if not inv["y"]:
                     inv["y"] = 0.00
+                    
+                # If there is not a client status just continue next iteration
+                if not inv["client__status"]:
+                    continue
+                if (inv["client__status"] != "Firmado") or (inv["client__status"] != "Viv. Entregada"):
+                    inv["client__status"] = "Cliente en proceso"
 
                 if inv["client__status"] in result["data"]:
                     result["data"][inv["client__status"]].append((float(inv.get("x", 0.00)),
@@ -336,7 +357,7 @@ class InventoryAjaxCrappyMapView(JSONRenderMixin, ListView):
                     result["data"][inv["client__status"]] = [(float(inv.get("x", 0.00)), float(inv.get("y", 0.00)),)]
 
             i = 0
-            for s in allowed_statuses:
+            for s in ("Cliente en proceso", "Firmado", "Viv. Entregada"):
                 legend[s] = self.available_colors[i]
                 i += 1
 
@@ -354,9 +375,9 @@ class InventoryDashboardView(TemplateView):
         to display in the different dashboard tables
         """
         sections = Section.objects.all().order_by("-name")
-        d_section = dict() # Ordered by section, display total and how much $$ earned
-        o_section = dict() # Order by section, display % of completion and when it'll be completed
-        s_section = dict() # Order by status, display
+        d_section = dict()  # Ordered by section, display total and how much $$ earned
+        o_section = dict()  # Order by section, display % of completion and when it'll be completed
+        s_section = dict()  # Order by status, display
 
         for s in sections:
             # How many prototypes?
@@ -401,7 +422,6 @@ class InventoryDashboardView(TemplateView):
 class InventoryAjaxView(JSONTemplateRenderMixin, ListView):
     template_name = "inventory/partials/table.html"
     model = Inventory
-
 
     def get_queryset(self):
         section = self.request.GET.get("section", None)
@@ -459,13 +479,13 @@ class InventoryBridgeCreditDashboard(TemplateView):
             t_credit[c[0]] = None
             for s in special_headers:
                 if s == "TOTAL":
-                    kewlness = qs.aggregate(total=Sum("bridgecreditpayment__amount"))["total"]
+                    kewlness = qs.aggregate(total=Sum("approved_amount"))["total"]
                     if kewlness:
                         tmp[s] = kewlness
                     else:
                         tmp[s] = 0.00
                 else:
-                    kewlness = qs.filter(status=s).aggregate(total=Sum("bridgecreditpayment__amount"))["total"]
+                    kewlness = qs.filter(status=s).aggregate(total=Sum("approved_amount"))["total"]
                     if kewlness:
                         tmp[s] = kewlness
                     else:

@@ -18,18 +18,8 @@ class InventoryForm(forms.ModelForm):
             'created_by': HiddenInput(),
             'x': HiddenInput(),
             'y': HiddenInput(),
+            'user': HiddenInput()
         }
-
-    def __init__(self, *args, **kwargs):
-        self._user = kwargs.pop("user")
-        super(InventoryForm, self).__init__(*args, **kwargs)
-
-    def save(self, commit=True):
-        inst = super(InventoryForm, self).save(commit=False)
-        inst.created_by = self._user
-        if commit:
-            inst.save()
-        return inst
 
 
 class SectionForm(forms.ModelForm):

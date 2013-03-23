@@ -6,20 +6,32 @@ from django.contrib.contenttypes.models import ContentType
 from models import Commission, CommissionPayment
 from apps.client.models import Client
 from apps.inventory.models import Inventory
+from apps.utils.views import JSONRenderMixin
+from django.shortcuts import redirect
 
 
 class CommissionDashboardView(TemplateView):
     template_name = 'commission/index.html'
     def get(self, request):
         # Get all salespeople that have clients... ergo commissions
-        salespeople = User.objects.annotate(Count("prospection__client")) \
-            .filter(prospection__client__count__gt=0).distinct().order_by("-id")
-
-        # Clients
-        clients = Client.objects.all().order_by("-id")
-
-        # Inventory
-        inventory = Inventory.objects.filter(construction_status="Con cliente").order_by("-id")
+        # TODO: Refactor this to use Q objects and such to form dynamic queries
+        if request.user.is_superuser:
+            salespeople = User.objects.annotate(Count("prospection__client")) \
+                .filter(prospection__client__count__gt=0).distinct().order_by("-id")
+    
+            # Clients
+            clients = Client.objects.all().order_by("-id")
+    
+            # Inventory
+            inventory = Inventory.objects.filter(construction_status="Con cliente").order_by("-id")
+        else:
+            salespeople = User.objects.annotate(Count("prospection__client")).filter(prospection__client__count__gt=0) \
+                .filter(pk=request.user.pk)
+                
+            clients = Client.objects.filter(prospection__salesperson=request.user).order_by("-id")
+            
+            inventory = Inventory.objects.filter(client__prospection__salesperson=request.user,
+                                                  construction_status="Con cliente").order_by("-id")
         
         return self.render_to_response(
             {
@@ -34,6 +46,19 @@ class CommissionPaymentView(ListView):
 
     def get_queryset(self):
         return CommissionPayment.objects.filter(commission__pk=self.args[0])
+
+
+class CommissionPaymentPayView(TemplateView):
+    def get(self, request, payment_id):
+        # Commission to change
+        try:
+            comm = CommissionPayment.objects.get(pk=payment_id)
+            comm.status = u"Pagado"
+            comm.save()
+        except CommissionPayment.DoesNotExist:
+            raise Http404
+        return redirect("commission_payment", comm.commission.pk)
+
     
 
 class CommissionAjaxView(TemplateView):
@@ -70,4 +95,3 @@ class CommissionAjaxView(TemplateView):
             }
 
         return self.render_to_response(ctx)
-

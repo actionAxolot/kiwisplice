@@ -24,6 +24,7 @@ class ClientForm(ModelForm):
             'pricing_date': DateInput(format='%d/%m/%Y', attrs={"class": "date-picker"}),
             'payment_date': DateInput(format='%d/%m/%Y', attrs={"class": "date-picker"}),
             'delivery_date': DateInput(format='%d/%m/%Y', attrs={"class": "date-picker"}),
+            'created_date': DateInput(format='%d/%m/%Y', attrs={"class": "date-picker"}),
         }
 
 
@@ -41,8 +42,8 @@ class PaymentCollectForm(ModelForm):
         model = Payment
         widgets = {
             'date_payed': DateInput(format='%d/%m/%Y', attrs={"class": "date-picker"}),
-            'amount': TextInput(attrs={"disabled": "disabled"}),
-            'date_due': DateInput(format='%d/%m/%Y', attrs={"disabled": "disabled"}),
+            #'amount': TextInput(attrs={"disabled": "disabled"}),
+            #'date_due': DateInput(format='%d/%m/%Y', attrs={"disabled": "disabled"}),
         }
 
 

@@ -21,7 +21,7 @@ register = template.Library()
 
 @register.filter()
 def get_earned_total(qs):
-    total = qs.filter(client__payment_date__isnull=False).aggregate(total=Sum("client__payment__amount"))["total"]
+    total = qs.filter(client__payment__status=u"Pagado").aggregate(total=Sum("client__payment__amount"))["total"]
     if not total:
         total = u"No cuenta con pagos"
 
@@ -37,7 +37,8 @@ def count_by_month(obj, date=None):
         month = MONTHS[month]
 
         # Now count how many are 
-        return len(obj.filter(construction_end_date__month=month, construction_end_date__year=year))
+        return len(obj.filter(construction_end_date__month=month, 
+                              construction_end_date__year=year))
 
     return len(obj)
 

@@ -70,9 +70,28 @@
                                                data-date="{{ months.7 }}"
                                                data-status="{{ key }}">{{ val|get_by_month:months.7 }}</a></td>
                                         <td><a class="render_table" href="{% url payment_ajax %}"
-                                               data-status="{{ key }}">{{ val|get_by_month }}</a></td>
+                                               data-status="{{ key }}">{{ val|get_by_month:months }}</a></td>
                                     </tr>
                                 {% endfor %}
+                                </tbody>
+                            </table>
+
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                  <th>Concepto</th>
+                                  <th>Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>Pagados</td>
+                                    <td><a class="render_table" href="{% url payment_ajax %}" data-status="Pagado" data-date="NONE">{{ total_pagados|length }}</a></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Vencidos</td>
+                                    <td><a class="render_table" href="{% url payment_ajax %}" data-status="Vencido" data-date="NONE">{{ total_vencido|length }}</a></td>
+                                  </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -110,6 +129,26 @@
                                 {% endfor %}
                                 </tbody>
                             </table>
+
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                  <th>Concepto</th>
+                                  <th>Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>Pagados</td>
+                                    <td>{{ total_pagados|get_quantity_by_total|floatformat:2|intcomma }}</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Vencidos</td>
+                                    <td>{{ total_vencido|get_quantity_by_total|floatformat:2|intcomma }}</td>
+                                  </tr>
+                                </tbody>
+                            </table>
+
                         </div>
                     </div>
                 </div>

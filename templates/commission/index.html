@@ -61,7 +61,7 @@
               <tbody>
                 {% for c in clients %}
                 <tr>
-                  <td><a href="{% url client_edit client_id=c.pk %}">{{ c.pk }}</td>
+                  <td><a href="{% url client_edit ct='client' resource_id=c.pk %}">{{ c.pk }}</td>
                   <td>{{ c.prospection.salesperson.first_name }} {{ o.prospection.salesperson.last_name }}</td>
                   <td>{{ c.prospection.get_full_name }}</td>
                   <td>{{ c.prospection.email }}</td>

@@ -85,7 +85,7 @@
 			if (!this.isInput) {
 				$(document).off('mousedown', this.hide);
 			}
-			this.setValue();
+			// this.setValue();
 			this.element.trigger({
 				type: 'hide',
 				date: this.date
