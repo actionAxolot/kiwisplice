@@ -103,13 +103,11 @@
   siguiente manera:</span></p>
 
   <p class="c4"><span>(I). La cantidad de $</span><span class=
-  "c12">X,XXX</span><span>&nbsp;PESOS</span> <span class=
-  "c12">XX</span><span>/100 M.N. que EL PROMITENTE VENDEDOR
+  "">{{ total_payed|intcomma }}</span><span>&nbsp;PESOS</span> M.N. que EL PROMITENTE VENDEDOR
   reconoce haber recibido con anterioridad a la firma de este
   instrumento y (II) la cantidad remanente, es
-  decir$</span><span class=
-  "c12">XXX,XXX</span><span>&nbsp;PESOS</span> <span class=
-  "c12">XX</span><span>/100 M.N. a la firma del contrato definitivo
+  decir $</span><span class=
+  "">{{ total_left|intcomma }}</span><span>&nbsp;PESOS</span> M.N. a la firma del contrato definitivo
   que aqu&iacute; se promete, importe que ser&aacute; cubierto a
   trav&eacute;s del cr&eacute;dito que ha solicitado EL PROMITENTE
   COMPRADOR, a una instituci&oacute;n financiera que otorgue a los
@@ -124,10 +122,10 @@
   quien este ultimo designe, ante Notario P&uacute;blico, el bien
   material de la presente, libre de gravamen, limitaci&oacute;n de
   domicilio y al corriente en el pago de impuestos y
-  contribuciones, en un plazo que vence el</span><span class=
-  "c12">xx</span><span>&nbsp;de</span> <span class=
-  "c12">xxx</span><span>del</span> <span class=
-  "c12">2013</span><span>.</span></p>
+  contribuciones, en un plazo que vence el </span><span class=
+  ""> {{ expiry_date.day }} </span><span>&nbsp;de </span> <span class=
+  ""> {{ expiry_date|date:"E" }} </span><span> del </span> <span class=
+  ""> {{ expiry_date.year }} </span><span>.</span></p>
 
   <p class="c4"><span class="c14">CUARTA</span><span>.- Los gastos
   de escrituraci&oacute;n, honorarios notariales el impuesto sobre
@@ -185,8 +183,11 @@
   naciones unidas # 5428-6 Colonia Vallarta universidad
   &nbsp;C.P.45110Zapopan, JAL.</span></p>
 
-  <p class="c4 c8"><span>EL PROMITENTE COMPRADOR, en</span>
-  <span class="c12">DIRECCI&Oacute;N DEL COMPRADOR</span></p>
+  <p class="c4 c8"><span>EL PROMITENTE COMPRADOR, en </span>
+  <span class="">
+    {{ client.prospection.street }} Colonia {{ client.prospection.block }} C.P. 
+    {{ client.prospection.postal_code }} {{ client.prospection.municipality }}, {{ client.prospection.state }}
+  </span></p>
 
   <p class="c4 c8 c9"></p>
 
@@ -202,10 +203,10 @@
 
   <p class="c4 c8"><span>Le&iacute;do que fue por las partes, y
   enteradas de su valor y alcances legales, se firma en la Ciudad
-  de Guadalajara, Jalisco siendo</span> <span class=
-  "c12">XX</span><span>&nbsp;de</span> <span class=
-  "c12">XXXXX</span><span>&nbsp;del</span> <span class=
-  "c12">XXXX</span><span>.</span></p>
+  de Guadalajara, Jalisco siendo </span> 
+  <span class=""> {{ today_date.day }} </span>
+  <span>&nbsp;de</span> <span class=""> {{ today_date|date:"E" }} </span>
+  <span>&nbsp;del</span> <span class=""> {{ today_date.year }} </span><span>.</span></p>
 
   <p class="c4 c8 c9"></p>
 
@@ -225,8 +226,8 @@
   PROMITENTE COMPRADOR</span></p>
 
   <p class="c4 c8"><span>Representado
-  por:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c12">NOMBRE
-  COMPRADOR</span></p>
+  por:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+  <span class="">{{ client.prospection.get_full_name }}</span></p>
 
   <p class="c4 c8"><span>Ing. Jos&eacute; &nbsp;Ignacio
   L&oacute;pez del R&iacute;o</span></p>
@@ -292,6 +293,8 @@
 
   <p class="c4 c8 c9"></p>
 
+
+{% comment %}
   <p class="c4 c8"><span>PAGARE (1/1)</span></p>
 
   <p class="c4 c8 c9"></p>
@@ -813,3 +816,4 @@
   "c6">Firma&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firma</span></p>
 </body>
 </html>
+{% endcomment %}

@@ -7,6 +7,7 @@ from django.db.models import Sum
 from apps.prospection.models import Prospection
 from apps.client.models import Client
 from apps.inventory.models import Inventory
+import datetime
 
 class DocsView(TemplateView):
     """
@@ -76,8 +77,17 @@ class DocsView(TemplateView):
     def render_contrato(self, client_id):
         try:
             client = Client.objects.get(pk=client_id)
+            total_payed = client.payment_set.filter(status="Pagado").aggregate(total=Sum("amount"))["total"]
+            total_left = client.inventory.get_price() - total_payed
+            expiry_date = client.inventory.construction_end_date + datetime.timedelta(days=30)
         except Client.DoesNotExist:
             raise Http404
         self.template_name = self.available_templates.get("contrato")
-        return {"client": client}
+        return {
+            "client": client,
+            "total_payed": total_payed,
+            "total_left": total_left,
+            "expiry_date": expiry_date,
+            "today_date": datetime.date.today()
+        }
 
