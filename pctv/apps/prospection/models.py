@@ -41,7 +41,7 @@ PROSPECTION_FINANCIAL_OPTIONS = (
 
 TOTAL_INCOME_BUCKET = (
     (1, u"Hasta 12 Mil"),
-    
+
     (2, u"Entre 12 y 18 Mil"),
     (3, u"Entre 18 y 25 Mil"),
     (4, u"Entre 25 y 35 Mil"),
@@ -122,13 +122,13 @@ class Prospection(models.Model):
         if not self.mother_lastname:
             self.mother_lastname = " "
 
-        
+
         return u"%s %s %s" % (self.first_name, self.father_lastname, self.mother_lastname)
 
     def __unicode__(self):
         return "Vendedor: %s - Prospecto: %s" % (self.salesperson.first_name + " " + self.salesperson.last_name,
             self.get_full_name())
-        
+
     class Meta:
         verbose_name = _(u"Prospección")
         verbose_name_plural = _(u"Prospecciones")

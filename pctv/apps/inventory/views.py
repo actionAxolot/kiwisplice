@@ -319,13 +319,13 @@ class InventoryAjaxCrappyMapView(JSONRenderMixin, ListView):
                 i += 1
 
         if sel_filter == "client_status_in": # By client status
-            
+
             # TODO: Delete most below this line
-            result["data"] = self.model.objects.all().exclude(client__status="Cancelado", 
+            result["data"] = self.model.objects.all().exclude(client__status="Cancelado",
                     client__isnull=True).values("client__status", "x", "y")
-            
+
             # Clean the resulting
-            tmp_result = list() 
+            tmp_result = list()
             for r in result["data"]:
                 # If there is not a client status just continue next iteration
                 if not r["client__status"]:
@@ -333,22 +333,28 @@ class InventoryAjaxCrappyMapView(JSONRenderMixin, ListView):
 
                 if (r["client__status"] != "Firmado") or (r["client__status"] != "Viv. Entregada"):
                     r["client__status"] = "Cliente en proceso"
-                    
+
                 tmp_result.append(r)
 
             result["data"] = dict()
+
             # TODO: Refactor line below. A call to the DB for data already in memory
             for inv in self.model.objects.all().exclude(client__status="Cancelado", client__isnull=True).values("client__status", "x", "y"):
                 if not inv["x"]:
                     inv["x"] = 0.00
                 if not inv["y"]:
                     inv["y"] = 0.00
-                    
+
                 # If there is not a client status just continue next iteration
                 if not inv["client__status"]:
                     continue
-                if (inv["client__status"] != "Firmado") or (inv["client__status"] != "Viv. Entregada"):
-                    inv["client__status"] = "Cliente en proceso"
+
+                if inv["client__status"] == "Firmado":
+                    print "This is it... it exists"
+
+                if inv["client__status"] != "Firmado":
+                    if inv["client__status"] != "Viv. Entregada":
+                        inv["client__status"] = "Cliente en proceso"
 
                 if inv["client__status"] in result["data"]:
                     result["data"][inv["client__status"]].append((float(inv.get("x", 0.00)),
