@@ -8,6 +8,7 @@ from apps.prospection.models import Prospection
 from apps.client.models import Client
 from apps.inventory.models import Inventory
 import datetime
+from decimal import Decimal
 
 class DocsView(TemplateView):
     """
@@ -39,7 +40,7 @@ class DocsView(TemplateView):
             context = self.render_contrato(request.GET.get("pk", 1))
 
         return self.render_to_response(context)
-        
+
     def render_entrega_escrituracion(self, prospection_id, reason="entrega"):
         try:
             prospection = Prospection.objects.get(pk=prospection_id)
@@ -72,13 +73,17 @@ class DocsView(TemplateView):
 
         self.template_name = self.available_templates.get("ubicacion")
         return {"client": client, "new_location": new_location}
-        
-        
+
+
     def render_contrato(self, client_id):
         try:
             client = Client.objects.get(pk=client_id)
             total_payed = client.payment_set.filter(status="Pagado").aggregate(total=Sum("amount"))["total"]
-            total_left = client.inventory.get_price() - total_payed
+            try:
+                total_left = client.inventory.get_price() - total_payed
+            except TypeError:
+                total_left = client.inventory.get_price()
+                total_payed = Decimal("0.00")
             expiry_date = client.inventory.construction_end_date + datetime.timedelta(days=30)
         except Client.DoesNotExist:
             raise Http404
