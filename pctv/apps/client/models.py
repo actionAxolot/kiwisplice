@@ -59,8 +59,8 @@ class Client(models.Model):
             self.created_date = datetime.date.today()
         super(Client, self).save(*args, **kwargs)
 
-    # def __unicode__(self):
-    #     return u"%s" % self.prospection.get_full_name()
+    def __unicode__(self):
+        return u"%s" % self.prospection.get_full_name()
 
     class Meta:
         verbose_name = _(u"Client")

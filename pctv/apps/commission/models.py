@@ -25,12 +25,12 @@ class Commission(models.Model):
                                         verbose_name=_(u"Fecha creación"))
     modified_date = models.DateTimeField(auto_now_add=True,
                                          verbose_name=_(u"Fecha modificación"))
-    status = models.CharField(blank=False, null=False, choices=COMMISSION_STATUS, 
+    status = models.CharField(blank=False, null=False, choices=COMMISSION_STATUS,
         max_length=50, verbose_name=_(u"Status"), default="Pendiente")
 
     def __unicode__(self):
         return u"%s" % self.client
-    
+
     class Meta:
         verbose_name = _(u"Comision")
         verbose_name_plural = _(u"Comisiones")
@@ -38,7 +38,7 @@ class Commission(models.Model):
 
 class CommissionPayment(models.Model):
     commission = models.ForeignKey(Commission, verbose_name=_(u"Pago de comisión"))
-    percentage = models.DecimalField(blank=False, null=False, verbose_name=_(u"Porcentaje"), 
+    percentage = models.DecimalField(blank=False, null=False, verbose_name=_(u"Porcentaje"),
         decimal_places=2, max_digits=5)
     payment_date = models.DateField(blank=True, null=True, verbose_name=_(u"Fecha de pago"))
     status = models.CharField(max_length=15, blank=False, null=False,
@@ -48,14 +48,14 @@ class CommissionPayment(models.Model):
 
     def __unicode__(self):
         return u"Pagar a %s" % self.commission.client.prospection.salesperson
-    
+
 
 def create_commission(sender, instance, created, **kwargs):
     def create_payments(commission):
         CommissionPayment(commission=commission, percentage=0.20).save()
         CommissionPayment(commission=commission, percentage=0.20).save()
         CommissionPayment(commission=commission, percentage=0.60).save()
-        
+
     if created:
         # If the client was just created raise the three necessary payments
         commission = Commission(client=instance)
@@ -70,7 +70,7 @@ def create_commission(sender, instance, created, **kwargs):
             commission.save()
             create_payments(commission)
         # Check if payments have been generated... could be an old record or something
-            
+
         two_weeks = datetime.date.today() + datetime.timedelta(days=15)
         if instance.status == "Cancelado":
             commission.status = "Cancelado"

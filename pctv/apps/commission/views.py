@@ -8,6 +8,7 @@ from apps.client.models import Client
 from apps.inventory.models import Inventory
 from apps.utils.views import JSONRenderMixin
 from django.shortcuts import redirect
+import datetime
 
 
 class CommissionDashboardView(TemplateView):
@@ -18,21 +19,21 @@ class CommissionDashboardView(TemplateView):
         if request.user.is_superuser:
             salespeople = User.objects.annotate(Count("prospection__client")) \
                 .filter(prospection__client__count__gt=0).distinct().order_by("-id")
-    
+
             # Clients
             clients = Client.objects.all().order_by("-id")
-    
+
             # Inventory
             inventory = Inventory.objects.filter(construction_status="Con cliente").order_by("-id")
         else:
             salespeople = User.objects.annotate(Count("prospection__client")).filter(prospection__client__count__gt=0) \
                 .filter(pk=request.user.pk)
-                
+
             clients = Client.objects.filter(prospection__salesperson=request.user).order_by("-id")
-            
+
             inventory = Inventory.objects.filter(client__prospection__salesperson=request.user,
                                                   construction_status="Con cliente").order_by("-id")
-        
+
         return self.render_to_response(
             {
                 "clients": clients,
@@ -54,12 +55,13 @@ class CommissionPaymentPayView(TemplateView):
         try:
             comm = CommissionPayment.objects.get(pk=payment_id)
             comm.status = u"Pagado"
+            comm.payment_date = datetime.date.today()
             comm.save()
         except CommissionPayment.DoesNotExist:
             raise Http404
         return redirect("commission_payment", comm.commission.pk)
 
-    
+
 
 class CommissionAjaxView(TemplateView):
     """ Just return a rendered table template with the relevant commission data """
