@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-This has so much potential. We could create a Parent mixin that could be inherited 
+This has so much potential. We could create a Parent mixin that could be inherited
 that way we could render a lot of different formats.
 """
 # Create your views here.
@@ -46,7 +46,7 @@ class JSONRenderMixin(JSONTemplate):
 
 class CSVRenderMixin(object):
     """
-    Mixin for ListView. Override the render_to_response method 
+    Mixin for ListView. Override the render_to_response method
     so that it returns a nice csv file download thing
     if certain get parameter is found
     """

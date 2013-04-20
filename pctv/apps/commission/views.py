@@ -6,9 +6,59 @@ from django.contrib.contenttypes.models import ContentType
 from models import Commission, CommissionPayment
 from apps.client.models import Client
 from apps.inventory.models import Inventory
-from apps.utils.views import JSONRenderMixin
+from apps.utils.views import JSONRenderMixin, CSVRenderMixin
 from django.shortcuts import redirect
 import datetime
+from decimal import Decimal
+
+
+class CommissionCSVView(CSVRenderMixin, ListView):
+    model = CommissionPayment
+    template_name = 'commission/index.html'
+    csv_filename = "comisiones.csv"
+
+    def prepare_data(self, queryset):
+        """ Really long string of data that needs be rendered """
+        prepared_data = list()
+        # Get a nicely ordered set of keys
+        keys = [
+            "id",
+            "status",
+            "nombre_cliente",
+            "nombre_vendedor",
+            "inmueble",
+            "fecha_de_pago",
+            "porcentaje",
+            "cantidad_a_pagar",
+        ]
+
+        prepared_data.append(keys)
+        for com in CommissionPayment.objects.all().exclude(status="Cancelado").exclude(commission__client__status="Cancelado"):
+            # Just generate the list manually
+            tmp_row = list()
+            tmp_row.append(com.pk)
+            tmp_row.append(com.status)
+            tmp_row.append(com.commission.client)
+            tmp_row.append(com.commission.client.prospection.salesperson)
+            tmp_row.append(com.commission.client.inventory)
+            tmp_row.append(com.payment_date)
+            tmp_row.append(com.percentage)
+
+            # Before setting this calculate the total amount
+            payout = com.commission.client.inventory.price * Decimal(str((com.commission.client.inventory.commission_percentage * Decimal(".01")) * com.percentage))
+            tmp_row.append(payout)
+            prepared_data.append(tmp_row)
+
+        return prepared_data
+
+
+    def generate_file_download(self, data_list):
+        """Overriding stuff on the CSV mixin"""
+        return super(CommissionCSVView, self).generate_file_download(data_list)
+
+    def get(self, request, *args, **kwargs):
+        """Meh"""
+        return self.render_csv_to_response(self.queryset)
 
 
 class CommissionDashboardView(TemplateView):

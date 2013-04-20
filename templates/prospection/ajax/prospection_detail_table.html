@@ -13,16 +13,13 @@
                     <th>Email del prospecto</th>
                     <th>Fecha de visita</th>
                     <th>Estatus</th>
-                    {% if can_delete %}
-                    	<th>Borrar</th>
-                    {% endif %}
                     {% if can_change %}
                     	<th>Apartar</th>
                     {% endif %}
                 </tr>
             </thead>
             <tbody>
-                {% for o in object_list %}                              
+                {% for o in object_list %}
                 <tr>
                     <td>
                         {% if perms.prospection.change_prospection %}
@@ -36,9 +33,6 @@
                     <td>{{ o.email }}</td>
                     <td>{{ o.visitation_date }}</td>
                     <td>{{ o.status }}</td>
-                    {% if perms.prospection.delete_prospection %}
-                    	<td><a href="{% url prospection_delete prospection_id=o.pk %}" class="btn btn-danger">X</td>
-                	{% endif %}
                 	{% if perms.client.add_client %}
                 		<td><a href="{% url prospection_apartar %}?prospection_id={{ o.pk }}" class="btn btn-danger">Apartar</td>
                 	{% endif %}
