@@ -94,9 +94,7 @@ LANGUAGES = (
 if LOCAL_DEV:
     MEDIA_ROOT = os.path.join(PROJECT_DIRNAME, 'assets', 'media')
 else:
-    MEDIA_ROOT = os.path.abspath(os.path.join(PROJECT_DIRNAME, "..",
-                                              "static", "kiwisplice",
-                                              "media"))
+    MEDIA_ROOT = os.path.abspath(os.path.join(PROJECT_DIRNAME, "..", "media", "media"))
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -113,8 +111,8 @@ else:
 if LOCAL_DEV:
     STATIC_ROOT = os.path.join(PROJECT_DIRNAME, 'static')
 else:
-    STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_DIRNAME, "..", "static",
-                                               "kiwisplice"))
+    STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_DIRNAME, "..", "media",
+                                               "static"))
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
